@@ -1,0 +1,222 @@
+:root {
+  --primary-color: #2A2E35;
+  --secondary-color: #4A90E2;
+  --accent-color: #00C7B7;
+  --light-text: #F8F9FA;
+  --dark-text: #2A2E35;
+  --background: #F8F9FA;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Réinitialisation basique */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--dark-text);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 
+   .container par défaut : 
+   - on limite la largeur du contenu,
+   - on le centre horizontalement,
+   - on ajoute un padding sur les côtés. 
+   Tu peux ajuster ou désactiver le max-width si nécessaire.
+*/
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* ========================= */
+/*         HEADER            */
+/* ========================= */
+
+.container.nav-content {
+  /* Le header occupe toute la largeur, 
+     on supprime la limite pour cet élément 
+     afin que le background s’étende de bord à bord. */
+  width: 100%;
+  max-width: 100%; 
+  background-color: var(--primary-color);
+  
+  /* Ajoute un peu de padding vertical */
+  padding: 1.2rem 0;
+  
+  /* On utilise un grid à 2 colonnes :
+     1) le H1 à gauche 
+     2) la navigation au centre */
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 1rem;
+  
+  /* Légère ombre */
+  box-shadow: var(--shadow);
+}
+
+/* Titre "Robot Monitoring" à gauche */
+.container.nav-content h1 {
+  color: var(--light-text);
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* La navigation est centrée sur la seconde colonne (justify-self: center) */
+.container.nav-content .nav-links {
+  justify-self: center; 
+  display: flex;
+  gap: 1.5rem;
+}
+
+/* Liens de navigation */
+.container.nav-content .nav-links a {
+  color: var(--light-text);
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.6rem 1.2rem;
+  border-radius: 4px;
+  
+  /* Texte en majuscules pour un look plus "titre" */
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  
+  transition: all 0.3s ease;
+}
+
+/* Survol : léger effet de surélévation */
+.container.nav-content .nav-links a:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* ========================= */
+/*        MAIN CONTENT       */
+/* ========================= */
+
+main.container {
+  flex: 1;
+  padding: 4rem 0;
+}
+
+main.container h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+}
+
+main.container p {
+  font-size: 1.1rem;
+  color: #666;
+  max-width: 600px;
+  line-height: 1.8;
+}
+
+/* ========================= */
+/*    FORM / AUTH CONTAINER  */
+/* ========================= */
+
+.auth-container {
+  background: #fff;
+  padding: 2.5rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  max-width: 480px;
+  margin: 2rem auto;
+}
+
+.auth-container h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: var(--primary-color);
+}
+
+.form-group {
+  margin-bottom: 1.8rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.8rem;
+  font-weight: 500;
+  color: var(--primary-color);
+}
+
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+  border-color: var(--secondary-color);
+  outline: none;
+}
+
+button {
+  width: 100%;
+  padding: 1rem;
+  background: var(--secondary-color);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background: #357ABD;
+  transform: translateY(-1px);
+}
+
+/* ========================= */
+/*         FOOTER            */
+/* ========================= */
+
+footer {
+  background: var(--primary-color);
+  color: var(--light-text);
+  padding: 2rem 0;
+  margin-top: auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+footer .container {
+  text-align: center;
+}
+
+footer p {
+  font-size: 0.95rem;
+  opacity: 0.9;
+}
+
+/* ========================= */
+/*       TRANSITIONS         */
+/* ========================= */
+
+@media (prefers-reduced-motion: no-preference) {
+  .nav-links a,
+  button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}

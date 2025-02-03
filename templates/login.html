@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Connexion - Robot Monitoring</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  {% include 'header.html' %}
+  <main class="container">
+    <section class="auth-container">
+      <h2>Connexion</h2>
+      <form action="/api/login" method="POST">
+        <div class="form-group">
+          <label for="email">Email :</label>
+          <input id="email" name="email" type="email" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Mot de passe :</label>
+          <input id="password" name="password" type="password" required>
+        </div>
+        <button type="submit">Se connecter</button>
+      </form>
+    </section>
+  </main>
+  {% include 'footer.html' %}
+</body>
+</html>

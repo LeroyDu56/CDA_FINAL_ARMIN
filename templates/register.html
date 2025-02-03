@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Inscription - Robot Monitoring</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  {% include 'header.html' %}
+  <main class="container">
+    <section class="auth-container">
+      <h2>Inscription</h2>
+      <form action="/api/register" method="POST">
+        <div class="form-group">
+          <label for="first_name">Prénom :</label>
+          <input id="first_name" name="first_name" type="text" required style="width: 100%; padding: 1rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s ease;">
+        </div>
+        <div class="form-group">
+          <label for="last_name">Nom :</label>
+          <input id="last_name" name="last_name" type="text" required style="width: 100%; padding: 1rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s ease;">
+        </div>
+        <div class="form-group">
+          <label for="email">Email :</label>
+          <input id="email" name="email" type="email" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Mot de passe :</label>
+          <input id="password" name="password" type="password" required>
+        </div>
+        <div class="form-group">
+          <label for="confirm_password">Confirmer le mot de passe :</label>
+          <input id="confirm_password" name="confirm_password" type="password" required>
+        </div>
+        <button type="submit">Créer un compte</button>
+      </form>
+    </section>
+  </main>
+  {% include 'footer.html' %}
+</body>
+</html>
