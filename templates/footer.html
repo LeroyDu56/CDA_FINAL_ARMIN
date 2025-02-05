@@ -1,5 +1,10 @@
-<footer>
-    <div class="container">
-        <p>&copy; 2024 Robot Monitoring - Tous droits réservés</p>
-    </div>
+<footer class="main-footer">
+  <div class="container footer-content">
+      <p>&copy; 2024 Robot Monitoring - Tous droits réservés</p>
+      <nav class="footer-links">
+          <a href="{{ url_for('home') }}">Accueil</a>
+          <a href="{{ url_for('login') }}">Connexion</a>
+          <a href="{{ url_for('register') }}">Inscription</a>
+      </nav>
+  </div>
 </footer>

@@ -10,6 +10,9 @@
   <main class="container">
     <h2>Bienvenue sur la plateforme de monitoring des robots</h2>
     <p>Cette plateforme vous permet de gérer vos robots en temps réel.</p>
+    {% if session.get('user_name') %}
+      <p>Bonjour, {{ session.get('user_name') }}! Vous êtes connecté.</p>
+    {% endif %}
   </main>
   {% include 'footer.html' %}
 </body>

@@ -25,13 +25,7 @@ body {
   flex-direction: column;
 }
 
-/* 
-   .container par défaut : 
-   - on limite la largeur du contenu,
-   - on le centre horizontalement,
-   - on ajoute un padding sur les côtés. 
-   Tu peux ajuster ou désactiver le max-width si nécessaire.
-*/
+/* .container par défaut : */
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -39,67 +33,127 @@ body {
 }
 
 /* ========================= */
-/*         HEADER            */
+/*        HEADER             */
 /* ========================= */
 
-.container.nav-content {
-  /* Le header occupe toute la largeur, 
-     on supprime la limite pour cet élément 
-     afin que le background s’étende de bord à bord. */
-  width: 100%;
-  max-width: 100%; 
-  background-color: var(--primary-color);
-  
-  /* Ajoute un peu de padding vertical */
-  padding: 1.2rem 0;
-  
-  /* On utilise un grid à 2 colonnes :
-     1) le H1 à gauche 
-     2) la navigation au centre */
-  display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: 1rem;
-  
-  /* Légère ombre */
+.main-header {
+  background: var(--primary-color);
   box-shadow: var(--shadow);
+  padding: 0.8rem 0;
 }
 
-/* Titre "Robot Monitoring" à gauche */
-.container.nav-content h1 {
-  color: var(--light-text);
+.container.nav-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Espace entre les blocs (logo/titre et navigation) */
+  height: 80px;
+  padding: 0 20px;
+}
+
+/* Logo à gauche */
+.logo-container {
+  flex-shrink: 0; /* Empêche le logo de rétrécir */
+  margin-right: 15px; /* Espace après le logo */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Aligne le logo à gauche */
+}
+
+.logo-container img {
+  height: 95%; /* Ajuste la hauteur du logo à 95% du header */
+  max-height: 76px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Titre à droite du logo */
+.header-title {
   font-size: 1.8rem;
   font-weight: 600;
-  letter-spacing: -0.5px;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  color: var(--light-text);
+  margin-right: auto; /* Étend le titre vers la droite */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center; /* Aligne le texte verticalement avec le logo */
 }
 
-/* La navigation est centrée sur la seconde colonne (justify-self: center) */
-.container.nav-content .nav-links {
-  justify-self: center; 
+/* Navigation centrée */
+.nav-links {
   display: flex;
+  justify-content: center; /* Centrer les liens */
+  align-items: center;
   gap: 1.5rem;
 }
 
-/* Liens de navigation */
-.container.nav-content .nav-links a {
+.nav-links a,
+.nav-links form button {
+  background: none;
+  border: none;
   color: var(--light-text);
-  text-decoration: none;
+  font-size: 1rem;
   font-weight: 500;
-  padding: 0.6rem 1.2rem;
-  border-radius: 4px;
-  
-  /* Texte en majuscules pour un look plus "titre" */
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  
   transition: all 0.3s ease;
+  text-decoration: none;
 }
 
-/* Survol : léger effet de surélévation */
-.container.nav-content .nav-links a:hover {
-  background: rgba(255, 255, 255, 0.1);
+.nav-links a:hover,
+.nav-links form button:hover {
+  background: rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
+}
+
+.logout-form {
+  display: inline-block;
+}
+
+.logout-form button {
+  cursor: pointer;
+}
+
+
+
+/* ========================= */
+/*        FOOTER             */
+/* ========================= */
+
+.main-footer {
+  background: var(--primary-color);
+  color: var(--light-text);
+  padding: 2rem 0;
+  text-align: center;
+  margin-top: auto;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-content p {
+  font-size: 0.95rem;
+  opacity: 0.9;
+  margin-bottom: 0.5rem;
+}
+
+.footer-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.footer-links a {
+  color: var(--light-text);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: opacity 0.3s ease;
+}
+
+.footer-links a:hover {
+  opacity: 0.7;
 }
 
 /* ========================= */
@@ -125,90 +179,222 @@ main.container p {
 }
 
 /* ========================= */
-/*    FORM / AUTH CONTAINER  */
+/*    FORMULAIRE AUTH        */
 /* ========================= */
 
 .auth-container {
-  background: #fff;
-  padding: 2.5rem;
+  background: white;
+  padding: 3rem;
   border-radius: 12px;
   box-shadow: var(--shadow);
-  max-width: 480px;
-  margin: 2rem auto;
+  max-width: 500px;
+  margin: 3rem auto;
+  text-align: center;
 }
 
 .auth-container h2 {
-  text-align: center;
-  margin-bottom: 2rem;
   font-size: 2rem;
   color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.auth-description {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 2rem;
 }
 
 .form-group {
-  margin-bottom: 1.8rem;
+  margin-bottom: 1.5rem;
+  text-align: left;
 }
 
-label {
+.form-group label {
   display: block;
-  margin-bottom: 0.8rem;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--primary-color);
+  margin-bottom: 0.5rem;
 }
 
-input[type="email"],
-input[type="password"] {
+.form-group input {
   width: 100%;
-  padding: 1rem;
+  padding: 0.8rem;
   border: 2px solid #e0e0e0;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 1rem;
   transition: border-color 0.3s ease;
+  background-color: #f9f9f9;
 }
 
-input[type="email"]:focus,
-input[type="password"]:focus {
+.form-group input:focus {
   border-color: var(--secondary-color);
   outline: none;
 }
 
 button {
   width: 100%;
-  padding: 1rem;
+  padding: 0.8rem;
   background: var(--secondary-color);
-  color: #fff;
+  color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: bold;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
   background: #357ABD;
-  transform: translateY(-1px);
 }
 
+
 /* ========================= */
-/*         FOOTER            */
+/*       FLASH MESSAGES      */
 /* ========================= */
 
-footer {
-  background: var(--primary-color);
-  color: var(--light-text);
-  padding: 2rem 0;
-  margin-top: auto;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-footer .container {
+.flash-messages {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
   text-align: center;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-footer p {
-  font-size: 0.95rem;
-  opacity: 0.9;
+.flash-messages ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
+
+.flash-messages li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  margin-bottom: 5px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.flash-messages li.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.flash-messages li.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.flash-messages li.logout {
+  background-color: #cce5ff;
+  color: #004085;
+  border: 1px solid #b8daff;
+}
+
+.flash-messages .close {
+  background: none;
+  border: none;
+  color: inherit;
+  font-weight: bold;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.flash-messages .close:hover {
+  color: #000;
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.flash-messages li {
+  animation: fade-out 4s ease forwards;
+}
+
+
+/* ========================= */
+/*      ADMIN TABLE          */
+/* ========================= */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background: white;
+  box-shadow: var(--shadow);
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background: var(--primary-color);
+  color: white;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Style pour les cellules contenant le formulaire */
+td form {
+  display: inline-flex; /* Inline-flex pour s'assurer que tout reste sur une seule ligne */
+  align-items: center;
+  gap: 10px; /* Espace entre le select et le bouton */
+  width: 100%; /* Assure que le contenu occupe tout l'espace disponible */
+}
+
+td form select {
+  flex: 1; /* Le select occupe toute la largeur disponible */
+  min-width: 150px; /* Largeur minimale pour un bon affichage */
+  text-align: center; /* Centre le texte horizontalement */
+  text-align-last: center; /* Centre le texte de l'option sélectionnée */
+  padding: 8px; /* Ajoute un peu de padding pour le confort visuel */
+  border: 1px solid #ddd; /* Bordure légère pour un effet visuel */
+  border-radius: 4px; /* Coins arrondis */
+  background-color: #f9f9f9; /* Couleur de fond */
+  color: var(--dark-text); /* Couleur du texte */
+}
+
+
+td form button {
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap; /* Empêche le bouton de s'étirer */
+  transition: background-color 0.3s ease;
+}
+
+td form button:hover {
+  background-color: #357ABD;
+}
+
 
 /* ========================= */
 /*       TRANSITIONS         */
@@ -220,3 +406,5 @@ footer p {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
+
+

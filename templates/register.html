@@ -10,28 +10,29 @@
   <main class="container">
     <section class="auth-container">
       <h2>Inscription</h2>
-      <form action="/api/register" method="POST">
+      <p class="auth-description">Rejoignez-nous et accédez à la gestion des robots.</p>
+      <form action="{{ url_for('register') }}" method="POST">
         <div class="form-group">
-          <label for="first_name">Prénom :</label>
-          <input id="first_name" name="first_name" type="text" required style="width: 100%; padding: 1rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s ease;">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="Entrez votre email" required>
         </div>
         <div class="form-group">
-          <label for="last_name">Nom :</label>
-          <input id="last_name" name="last_name" type="text" required style="width: 100%; padding: 1rem; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem; transition: border-color 0.3s ease;">
+          <label for="first_name">Prénom</label>
+          <input id="first_name" name="first_name" type="text" placeholder="Entrez votre prénom" required>
         </div>
         <div class="form-group">
-          <label for="email">Email :</label>
-          <input id="email" name="email" type="email" required>
+          <label for="last_name">Nom</label>
+          <input id="last_name" name="last_name" type="text" placeholder="Entrez votre nom" required>
         </div>
         <div class="form-group">
-          <label for="password">Mot de passe :</label>
-          <input id="password" name="password" type="password" required>
+          <label for="password">Mot de passe</label>
+          <input id="password" name="password" type="password" placeholder="Choisissez un mot de passe" required>
         </div>
         <div class="form-group">
-          <label for="confirm_password">Confirmer le mot de passe :</label>
-          <input id="confirm_password" name="confirm_password" type="password" required>
+          <label for="confirm_password">Confirmez le mot de passe</label>
+          <input id="confirm_password" name="confirm_password" type="password" placeholder="Répétez votre mot de passe" required>
         </div>
-        <button type="submit">Créer un compte</button>
+        <button type="submit">S'inscrire</button>
       </form>
     </section>
   </main>

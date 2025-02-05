@@ -1,8 +1,47 @@
-<div class="container nav-content">
-  <h1>Robot Monitoring</h1>
-  <div class="nav-links">
-    <a href="{{ url_for('home') }}">Accueil</a>
-    <a href="{{ url_for('login') }}">Connexion</a>
-    <a href="{{ url_for('register') }}">Inscription</a>
-  </div>
-</div>
+<header class="main-header">
+    <div class="container nav-content">
+        <!-- Logo -->
+        <div class="logo-container">
+            <a href="{{ url_for('home') }}">
+                <img src="{{ url_for('static', filename='images/armin.png') }}" alt="Logo Armin">
+            </a>
+        </div>
+  
+        <!-- Titre -->
+        <h1 class="header-title">Supervision Robots</h1>
+  
+        <!-- Navigation -->
+        <nav class="nav-links">
+            <a href="{{ url_for('home') }}">Accueil</a>
+            {% set current_user = session.get('user_name') %}
+            {% set is_admin = session.get('is_admin', False) %}
+            {% if current_user %}
+                {% if is_admin %}
+                    <a href="{{ url_for('admin_roles') }}">Admin</a>
+                {% endif %}
+                <form action="{{ url_for('logout_user') }}" method="post" class="logout-form">
+                    <button type="submit">Déconnexion</button>
+                </form>
+            {% else %}
+                <a href="{{ url_for('login') }}">Connexion</a>
+                <a href="{{ url_for('register') }}">Inscription</a>
+            {% endif %}
+        </nav>
+    </div>
+  </header>
+  
+<!-- Messages Flash en Premier Plan -->
+{% with messages = get_flashed_messages(with_categories=True) %}
+  {% if messages %}
+    <div class="flash-messages">
+      <ul>
+        {% for category, message in messages %}
+          <li class="{{ category }}">
+            {{ message }}
+            <button class="close" onclick="this.parentElement.style.display='none'">&times;</button>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+{% endwith %}

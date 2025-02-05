@@ -10,14 +10,15 @@
   <main class="container">
     <section class="auth-container">
       <h2>Connexion</h2>
-      <form action="/api/login" method="POST">
+      <p class="auth-description">Accédez à votre compte pour gérer les robots en toute sécurité.</p>
+      <form action="{{ url_for('login') }}" method="POST">
         <div class="form-group">
-          <label for="email">Email :</label>
-          <input id="email" name="email" type="email" required>
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="Entrez votre email" required>
         </div>
         <div class="form-group">
-          <label for="password">Mot de passe :</label>
-          <input id="password" name="password" type="password" required>
+          <label for="password">Mot de passe</label>
+          <input id="password" name="password" type="password" placeholder="Entrez votre mot de passe" required>
         </div>
         <button type="submit">Se connecter</button>
       </form>
