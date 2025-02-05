@@ -3918,3 +3918,2180 @@ Traceback (most recent call last):
     raise TemplateNotFound(template)
 jinja2.exceptions.TemplateNotFound: 404.html
 2025-02-05 13:57:24,192 [INFO] 192.168.200.207 - - [05/Feb/2025 13:57:24] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-02-05 14:08:12,298 [INFO] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:3000
+ * Running on http://192.168.200.219:3000
+2025-02-05 14:08:12,298 [INFO] [33mPress CTRL+C to quit[0m
+2025-02-05 14:08:23,536 [INFO] 192.168.200.203 - - [05/Feb/2025 14:08:23] "GET / HTTP/1.1" 200 -
+2025-02-05 14:08:23,589 [INFO] 192.168.200.203 - - [05/Feb/2025 14:08:23] "GET /static/styles.css HTTP/1.1" 200 -
+2025-02-05 14:08:23,595 [ERROR] Exception on /static/images/armin.png [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 278, in <lambda>
+    view_func=lambda **kw: self_ref().send_static_file(**kw),  # type: ignore # noqa: B950
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 326, in send_static_file
+    return send_from_directory(
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/helpers.py", line 565, in send_from_directory
+    return werkzeug.utils.send_from_directory(  # type: ignore[return-value]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/utils.py", line 575, in send_from_directory
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:08:23,604 [INFO] 192.168.200.203 - - [05/Feb/2025 14:08:23] "[35m[1mGET /static/images/armin.png HTTP/1.1[0m" 500 -
+2025-02-05 14:08:23,955 [ERROR] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:08:23,959 [INFO] 192.168.200.203 - - [05/Feb/2025 14:08:23] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-02-05 14:08:25,579 [INFO] 192.168.200.203 - - [05/Feb/2025 14:08:25] "GET /register HTTP/1.1" 200 -
+2025-02-05 14:08:25,623 [INFO] 192.168.200.203 - - [05/Feb/2025 14:08:25] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-02-05 14:08:25,630 [ERROR] Exception on /static/images/armin.png [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 278, in <lambda>
+    view_func=lambda **kw: self_ref().send_static_file(**kw),  # type: ignore # noqa: B950
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 326, in send_static_file
+    return send_from_directory(
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/helpers.py", line 565, in send_from_directory
+    return werkzeug.utils.send_from_directory(  # type: ignore[return-value]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/utils.py", line 575, in send_from_directory
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:08:25,641 [INFO] 192.168.200.203 - - [05/Feb/2025 14:08:25] "[35m[1mGET /static/images/armin.png HTTP/1.1[0m" 500 -
+2025-02-05 14:08:25,786 [ERROR] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:08:25,788 [INFO] 192.168.200.203 - - [05/Feb/2025 14:08:25] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-02-05 14:08:39,357 [INFO] 192.168.200.203 - - [05/Feb/2025 14:08:39] "[32mPOST /register HTTP/1.1[0m" 302 -
+2025-02-05 14:08:39,399 [INFO] 192.168.200.203 - - [05/Feb/2025 14:08:39] "GET /register HTTP/1.1" 200 -
+2025-02-05 14:08:39,437 [ERROR] Exception on /static/images/armin.png [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 278, in <lambda>
+    view_func=lambda **kw: self_ref().send_static_file(**kw),  # type: ignore # noqa: B950
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 326, in send_static_file
+    return send_from_directory(
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/helpers.py", line 565, in send_from_directory
+    return werkzeug.utils.send_from_directory(  # type: ignore[return-value]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/utils.py", line 575, in send_from_directory
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:08:39,438 [INFO] 192.168.200.203 - - [05/Feb/2025 14:08:39] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-02-05 14:08:39,439 [INFO] 192.168.200.203 - - [05/Feb/2025 14:08:39] "[35m[1mGET /static/images/armin.png HTTP/1.1[0m" 500 -
+2025-02-05 14:08:39,643 [ERROR] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:08:39,644 [INFO] 192.168.200.203 - - [05/Feb/2025 14:08:39] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-02-05 14:08:55,795 [INFO] 192.168.200.203 - - [05/Feb/2025 14:08:55] "[32mPOST /register HTTP/1.1[0m" 302 -
+2025-02-05 14:08:55,813 [INFO] 192.168.200.203 - - [05/Feb/2025 14:08:55] "GET /register HTTP/1.1" 200 -
+2025-02-05 14:08:55,879 [ERROR] Exception on /static/images/armin.png [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 278, in <lambda>
+    view_func=lambda **kw: self_ref().send_static_file(**kw),  # type: ignore # noqa: B950
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 326, in send_static_file
+    return send_from_directory(
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/helpers.py", line 565, in send_from_directory
+    return werkzeug.utils.send_from_directory(  # type: ignore[return-value]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/utils.py", line 575, in send_from_directory
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:08:55,880 [INFO] 192.168.200.203 - - [05/Feb/2025 14:08:55] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-02-05 14:08:55,881 [INFO] 192.168.200.203 - - [05/Feb/2025 14:08:55] "[35m[1mGET /static/images/armin.png HTTP/1.1[0m" 500 -
+2025-02-05 14:08:55,976 [ERROR] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:08:55,977 [INFO] 192.168.200.203 - - [05/Feb/2025 14:08:55] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-02-05 14:09:12,356 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:12] "[32mPOST /register HTTP/1.1[0m" 302 -
+2025-02-05 14:09:12,376 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:12] "GET / HTTP/1.1" 200 -
+2025-02-05 14:09:12,451 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:12] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-02-05 14:09:12,498 [ERROR] Exception on /static/images/armin.png [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 278, in <lambda>
+    view_func=lambda **kw: self_ref().send_static_file(**kw),  # type: ignore # noqa: B950
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 326, in send_static_file
+    return send_from_directory(
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/helpers.py", line 565, in send_from_directory
+    return werkzeug.utils.send_from_directory(  # type: ignore[return-value]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/utils.py", line 575, in send_from_directory
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:09:12,499 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:12] "[35m[1mGET /static/images/armin.png HTTP/1.1[0m" 500 -
+2025-02-05 14:09:12,654 [ERROR] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:09:12,655 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:12] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-02-05 14:09:27,987 [INFO] 192.168.200.219 - - [05/Feb/2025 14:09:27] "GET /admin/roles HTTP/1.1" 200 -
+2025-02-05 14:09:28,036 [INFO] 192.168.200.219 - - [05/Feb/2025 14:09:28] "GET /static/styles.css HTTP/1.1" 200 -
+2025-02-05 14:09:28,038 [ERROR] Exception on /static/images/armin.png [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 278, in <lambda>
+    view_func=lambda **kw: self_ref().send_static_file(**kw),  # type: ignore # noqa: B950
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 326, in send_static_file
+    return send_from_directory(
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/helpers.py", line 565, in send_from_directory
+    return werkzeug.utils.send_from_directory(  # type: ignore[return-value]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/utils.py", line 575, in send_from_directory
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:09:28,039 [INFO] 192.168.200.219 - - [05/Feb/2025 14:09:28] "[35m[1mGET /static/images/armin.png HTTP/1.1[0m" 500 -
+2025-02-05 14:09:31,730 [INFO] Rôle Admin attribué avec succès à l'utilisateur aa675a76-3780-4c4c-8900-20699d381d30
+2025-02-05 14:09:31,732 [INFO] 192.168.200.219 - - [05/Feb/2025 14:09:31] "[32mPOST /assign_role HTTP/1.1[0m" 302 -
+2025-02-05 14:09:31,740 [INFO] 192.168.200.219 - - [05/Feb/2025 14:09:31] "GET /admin/roles HTTP/1.1" 200 -
+2025-02-05 14:09:31,760 [INFO] 192.168.200.219 - - [05/Feb/2025 14:09:31] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-02-05 14:09:31,771 [ERROR] Exception on /static/images/armin.png [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 278, in <lambda>
+    view_func=lambda **kw: self_ref().send_static_file(**kw),  # type: ignore # noqa: B950
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 326, in send_static_file
+    return send_from_directory(
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/helpers.py", line 565, in send_from_directory
+    return werkzeug.utils.send_from_directory(  # type: ignore[return-value]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/utils.py", line 575, in send_from_directory
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:09:31,771 [INFO] 192.168.200.219 - - [05/Feb/2025 14:09:31] "[35m[1mGET /static/images/armin.png HTTP/1.1[0m" 500 -
+2025-02-05 14:09:36,607 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:36] "GET / HTTP/1.1" 200 -
+2025-02-05 14:09:36,657 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:36] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-02-05 14:09:36,662 [ERROR] Exception on /static/images/armin.png [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 278, in <lambda>
+    view_func=lambda **kw: self_ref().send_static_file(**kw),  # type: ignore # noqa: B950
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 326, in send_static_file
+    return send_from_directory(
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/helpers.py", line 565, in send_from_directory
+    return werkzeug.utils.send_from_directory(  # type: ignore[return-value]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/utils.py", line 575, in send_from_directory
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:09:36,663 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:36] "[35m[1mGET /static/images/armin.png HTTP/1.1[0m" 500 -
+2025-02-05 14:09:36,761 [ERROR] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:09:36,762 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:36] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-02-05 14:09:37,954 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:37] "GET / HTTP/1.1" 200 -
+2025-02-05 14:09:37,996 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:37] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-02-05 14:09:38,037 [ERROR] Exception on /static/images/armin.png [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 278, in <lambda>
+    view_func=lambda **kw: self_ref().send_static_file(**kw),  # type: ignore # noqa: B950
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 326, in send_static_file
+    return send_from_directory(
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/helpers.py", line 565, in send_from_directory
+    return werkzeug.utils.send_from_directory(  # type: ignore[return-value]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/utils.py", line 575, in send_from_directory
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:09:38,037 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:38] "[35m[1mGET /static/images/armin.png HTTP/1.1[0m" 500 -
+2025-02-05 14:09:38,141 [ERROR] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:09:38,142 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:38] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-02-05 14:09:39,253 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:39] "GET / HTTP/1.1" 200 -
+2025-02-05 14:09:39,287 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:39] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-02-05 14:09:39,300 [ERROR] Exception on /static/images/armin.png [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 278, in <lambda>
+    view_func=lambda **kw: self_ref().send_static_file(**kw),  # type: ignore # noqa: B950
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 326, in send_static_file
+    return send_from_directory(
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/helpers.py", line 565, in send_from_directory
+    return werkzeug.utils.send_from_directory(  # type: ignore[return-value]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/utils.py", line 575, in send_from_directory
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:09:39,302 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:39] "[35m[1mGET /static/images/armin.png HTTP/1.1[0m" 500 -
+2025-02-05 14:09:39,530 [ERROR] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:09:39,531 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:39] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-02-05 14:09:53,432 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:53] "GET / HTTP/1.1" 200 -
+2025-02-05 14:09:53,493 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:53] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-02-05 14:09:53,504 [ERROR] Exception on /static/images/armin.png [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 278, in <lambda>
+    view_func=lambda **kw: self_ref().send_static_file(**kw),  # type: ignore # noqa: B950
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 326, in send_static_file
+    return send_from_directory(
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/helpers.py", line 565, in send_from_directory
+    return werkzeug.utils.send_from_directory(  # type: ignore[return-value]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/utils.py", line 575, in send_from_directory
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:09:53,505 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:53] "[35m[1mGET /static/images/armin.png HTTP/1.1[0m" 500 -
+2025-02-05 14:09:53,794 [ERROR] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:09:53,795 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:53] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-02-05 14:09:57,477 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:57] "[32mPOST /logout HTTP/1.1[0m" 302 -
+2025-02-05 14:09:57,490 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:57] "GET / HTTP/1.1" 200 -
+2025-02-05 14:09:57,533 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:57] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-02-05 14:09:57,534 [ERROR] Exception on /static/images/armin.png [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 278, in <lambda>
+    view_func=lambda **kw: self_ref().send_static_file(**kw),  # type: ignore # noqa: B950
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 326, in send_static_file
+    return send_from_directory(
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/helpers.py", line 565, in send_from_directory
+    return werkzeug.utils.send_from_directory(  # type: ignore[return-value]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/utils.py", line 575, in send_from_directory
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:09:57,535 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:57] "[35m[1mGET /static/images/armin.png HTTP/1.1[0m" 500 -
+2025-02-05 14:09:57,687 [ERROR] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:09:57,687 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:57] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-02-05 14:09:59,735 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:59] "GET /login HTTP/1.1" 200 -
+2025-02-05 14:09:59,793 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:59] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-02-05 14:09:59,840 [ERROR] Exception on /static/images/armin.png [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 278, in <lambda>
+    view_func=lambda **kw: self_ref().send_static_file(**kw),  # type: ignore # noqa: B950
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 326, in send_static_file
+    return send_from_directory(
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/helpers.py", line 565, in send_from_directory
+    return werkzeug.utils.send_from_directory(  # type: ignore[return-value]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/utils.py", line 575, in send_from_directory
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:09:59,841 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:59] "[35m[1mGET /static/images/armin.png HTTP/1.1[0m" 500 -
+2025-02-05 14:09:59,976 [ERROR] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:09:59,977 [INFO] 192.168.200.203 - - [05/Feb/2025 14:09:59] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-02-05 14:10:05,287 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:05] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-02-05 14:10:05,317 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:05] "GET / HTTP/1.1" 200 -
+2025-02-05 14:10:05,405 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:05] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-02-05 14:10:05,406 [ERROR] Exception on /static/images/armin.png [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 278, in <lambda>
+    view_func=lambda **kw: self_ref().send_static_file(**kw),  # type: ignore # noqa: B950
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 326, in send_static_file
+    return send_from_directory(
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/helpers.py", line 565, in send_from_directory
+    return werkzeug.utils.send_from_directory(  # type: ignore[return-value]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/utils.py", line 575, in send_from_directory
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:10:05,407 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:05] "[35m[1mGET /static/images/armin.png HTTP/1.1[0m" 500 -
+2025-02-05 14:10:05,514 [ERROR] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:10:05,518 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:05] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-02-05 14:10:07,758 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:07] "GET /admin/roles HTTP/1.1" 200 -
+2025-02-05 14:10:07,891 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:07] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-02-05 14:10:07,912 [ERROR] Exception on /static/images/armin.png [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 278, in <lambda>
+    view_func=lambda **kw: self_ref().send_static_file(**kw),  # type: ignore # noqa: B950
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 326, in send_static_file
+    return send_from_directory(
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/helpers.py", line 565, in send_from_directory
+    return werkzeug.utils.send_from_directory(  # type: ignore[return-value]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/utils.py", line 575, in send_from_directory
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:10:07,915 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:07] "[35m[1mGET /static/images/armin.png HTTP/1.1[0m" 500 -
+2025-02-05 14:10:08,112 [ERROR] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:10:08,113 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:08] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-02-05 14:10:29,067 [INFO] Rôle Visiteur attribué avec succès à l'utilisateur aa675a76-3780-4c4c-8900-20699d381d30
+2025-02-05 14:10:29,068 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:29] "[32mPOST /assign_role HTTP/1.1[0m" 302 -
+2025-02-05 14:10:29,115 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:29] "[31m[1mGET /admin/roles HTTP/1.1[0m" 403 -
+2025-02-05 14:10:29,296 [ERROR] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:10:29,296 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:29] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-02-05 14:10:44,045 [ERROR] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:10:44,047 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:44] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-02-05 14:10:45,204 [ERROR] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:10:45,205 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:45] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-02-05 14:10:47,319 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:47] "[31m[1mGET /admin/roles HTTP/1.1[0m" 403 -
+2025-02-05 14:10:47,511 [ERROR] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:10:47,513 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:47] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-02-05 14:10:49,050 [ERROR] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:10:49,051 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:49] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-02-05 14:10:50,492 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:50] "[32mPOST /logout HTTP/1.1[0m" 302 -
+2025-02-05 14:10:50,524 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:50] "GET / HTTP/1.1" 200 -
+2025-02-05 14:10:50,590 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:50] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-02-05 14:10:50,600 [ERROR] Exception on /static/images/armin.png [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 278, in <lambda>
+    view_func=lambda **kw: self_ref().send_static_file(**kw),  # type: ignore # noqa: B950
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 326, in send_static_file
+    return send_from_directory(
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/helpers.py", line 565, in send_from_directory
+    return werkzeug.utils.send_from_directory(  # type: ignore[return-value]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/utils.py", line 575, in send_from_directory
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:10:50,601 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:50] "[35m[1mGET /static/images/armin.png HTTP/1.1[0m" 500 -
+2025-02-05 14:10:50,795 [ERROR] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:10:50,796 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:50] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-02-05 14:10:51,530 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:51] "GET /login HTTP/1.1" 200 -
+2025-02-05 14:10:51,604 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:51] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-02-05 14:10:51,610 [ERROR] Exception on /static/images/armin.png [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 278, in <lambda>
+    view_func=lambda **kw: self_ref().send_static_file(**kw),  # type: ignore # noqa: B950
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 326, in send_static_file
+    return send_from_directory(
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/helpers.py", line 565, in send_from_directory
+    return werkzeug.utils.send_from_directory(  # type: ignore[return-value]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/utils.py", line 575, in send_from_directory
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:10:51,611 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:51] "[35m[1mGET /static/images/armin.png HTTP/1.1[0m" 500 -
+2025-02-05 14:10:51,737 [ERROR] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:10:51,738 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:51] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-02-05 14:10:57,511 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:57] "[32mPOST /login HTTP/1.1[0m" 302 -
+2025-02-05 14:10:57,544 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:57] "GET / HTTP/1.1" 200 -
+2025-02-05 14:10:57,646 [ERROR] Exception on /static/images/armin.png [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 278, in <lambda>
+    view_func=lambda **kw: self_ref().send_static_file(**kw),  # type: ignore # noqa: B950
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 326, in send_static_file
+    return send_from_directory(
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/helpers.py", line 565, in send_from_directory
+    return werkzeug.utils.send_from_directory(  # type: ignore[return-value]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/utils.py", line 575, in send_from_directory
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:10:57,646 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:57] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-02-05 14:10:57,647 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:57] "[35m[1mGET /static/images/armin.png HTTP/1.1[0m" 500 -
+2025-02-05 14:10:57,963 [ERROR] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:10:57,965 [INFO] 192.168.200.203 - - [05/Feb/2025 14:10:57] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-02-05 14:11:34,958 [INFO] 192.168.200.203 - - [05/Feb/2025 14:11:34] "[32mPOST /logout HTTP/1.1[0m" 302 -
+2025-02-05 14:11:35,158 [INFO] 192.168.200.203 - - [05/Feb/2025 14:11:35] "GET / HTTP/1.1" 200 -
+2025-02-05 14:11:35,355 [INFO] 192.168.200.203 - - [05/Feb/2025 14:11:35] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-02-05 14:11:35,356 [ERROR] Exception on /static/images/armin.png [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 278, in <lambda>
+    view_func=lambda **kw: self_ref().send_static_file(**kw),  # type: ignore # noqa: B950
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 326, in send_static_file
+    return send_from_directory(
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/helpers.py", line 565, in send_from_directory
+    return werkzeug.utils.send_from_directory(  # type: ignore[return-value]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/utils.py", line 575, in send_from_directory
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:11:35,356 [INFO] 192.168.200.203 - - [05/Feb/2025 14:11:35] "[35m[1mGET /static/images/armin.png HTTP/1.1[0m" 500 -
+2025-02-05 14:11:35,517 [ERROR] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:11:35,518 [INFO] 192.168.200.203 - - [05/Feb/2025 14:11:35] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-02-05 14:11:41,497 [INFO] 192.168.200.203 - - [05/Feb/2025 14:11:41] "GET /register HTTP/1.1" 200 -
+2025-02-05 14:11:41,563 [INFO] 192.168.200.203 - - [05/Feb/2025 14:11:41] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-02-05 14:11:41,573 [ERROR] Exception on /static/images/armin.png [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 278, in <lambda>
+    view_func=lambda **kw: self_ref().send_static_file(**kw),  # type: ignore # noqa: B950
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 326, in send_static_file
+    return send_from_directory(
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/helpers.py", line 565, in send_from_directory
+    return werkzeug.utils.send_from_directory(  # type: ignore[return-value]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/utils.py", line 575, in send_from_directory
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:11:41,574 [INFO] 192.168.200.203 - - [05/Feb/2025 14:11:41] "[35m[1mGET /static/images/armin.png HTTP/1.1[0m" 500 -
+2025-02-05 14:11:41,694 [ERROR] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:11:41,695 [INFO] 192.168.200.203 - - [05/Feb/2025 14:11:41] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-02-05 14:12:44,671 [INFO] 192.168.200.203 - - [05/Feb/2025 14:12:44] "[32mPOST /register HTTP/1.1[0m" 302 -
+2025-02-05 14:12:44,732 [INFO] 192.168.200.203 - - [05/Feb/2025 14:12:44] "GET / HTTP/1.1" 200 -
+2025-02-05 14:12:44,810 [INFO] 192.168.200.203 - - [05/Feb/2025 14:12:44] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-02-05 14:12:44,811 [ERROR] Exception on /static/images/armin.png [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 278, in <lambda>
+    view_func=lambda **kw: self_ref().send_static_file(**kw),  # type: ignore # noqa: B950
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 326, in send_static_file
+    return send_from_directory(
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/helpers.py", line 565, in send_from_directory
+    return werkzeug.utils.send_from_directory(  # type: ignore[return-value]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/utils.py", line 575, in send_from_directory
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:12:44,813 [INFO] 192.168.200.203 - - [05/Feb/2025 14:12:44] "[35m[1mGET /static/images/armin.png HTTP/1.1[0m" 500 -
+2025-02-05 14:12:44,932 [ERROR] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:12:44,933 [INFO] 192.168.200.203 - - [05/Feb/2025 14:12:44] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-02-05 14:12:52,715 [INFO] 192.168.200.219 - - [05/Feb/2025 14:12:52] "GET /admin/roles HTTP/1.1" 200 -
+2025-02-05 14:12:52,735 [INFO] 192.168.200.219 - - [05/Feb/2025 14:12:52] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-02-05 14:12:52,739 [ERROR] Exception on /static/images/armin.png [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 278, in <lambda>
+    view_func=lambda **kw: self_ref().send_static_file(**kw),  # type: ignore # noqa: B950
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 326, in send_static_file
+    return send_from_directory(
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/helpers.py", line 565, in send_from_directory
+    return werkzeug.utils.send_from_directory(  # type: ignore[return-value]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/utils.py", line 575, in send_from_directory
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:12:52,740 [INFO] 192.168.200.219 - - [05/Feb/2025 14:12:52] "[35m[1mGET /static/images/armin.png HTTP/1.1[0m" 500 -
+2025-02-05 14:13:34,163 [INFO] 192.168.200.203 - - [05/Feb/2025 14:13:34] "[32mPOST /logout HTTP/1.1[0m" 302 -
+2025-02-05 14:13:34,179 [INFO] 192.168.200.203 - - [05/Feb/2025 14:13:34] "GET / HTTP/1.1" 200 -
+2025-02-05 14:13:34,234 [INFO] 192.168.200.203 - - [05/Feb/2025 14:13:34] "[36mGET /static/styles.css HTTP/1.1[0m" 304 -
+2025-02-05 14:13:34,243 [ERROR] Exception on /static/images/armin.png [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 902, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 278, in <lambda>
+    view_func=lambda **kw: self_ref().send_static_file(**kw),  # type: ignore # noqa: B950
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 326, in send_static_file
+    return send_from_directory(
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/helpers.py", line 565, in send_from_directory
+    return werkzeug.utils.send_from_directory(  # type: ignore[return-value]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/utils.py", line 575, in send_from_directory
+    raise NotFound()
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:13:34,244 [INFO] 192.168.200.203 - - [05/Feb/2025 14:13:34] "[35m[1mGET /static/images/armin.png HTTP/1.1[0m" 500 -
+2025-02-05 14:13:34,364 [ERROR] Exception on /favicon.ico [GET]
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 917, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 891, in dispatch_request
+    self.raise_routing_exception(req)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 500, in raise_routing_exception
+    raise request.routing_exception  # type: ignore[misc]
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/ctx.py", line 362, in match_request
+    result = self.url_adapter.match(return_rule=True)  # type: ignore
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/werkzeug/routing/map.py", line 629, in match
+    raise NotFound() from None
+werkzeug.exceptions.NotFound: 404 Not Found: The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 1511, in wsgi_app
+    response = self.full_dispatch_request()
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 919, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 802, in handle_user_exception
+    return self.handle_http_exception(e)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/app.py", line 777, in handle_http_exception
+    return self.ensure_sync(handler)(e)  # type: ignore[no-any-return]
+  File "/home/user/Documents/test/app.py", line 362, in not_found_error
+    return render_template('404.html'), 404
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 149, in render_template
+    template = app.jinja_env.get_or_select_template(template_name_or_list)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1087, in get_or_select_template
+    return self.get_template(template_name_or_list, parent, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 1016, in get_template
+    return self._load_template(name, globals)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/environment.py", line 975, in _load_template
+    template = self.loader.load(self, name, self.make_globals(globals))
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/jinja2/loaders.py", line 126, in load
+    source, filename, uptodate = self.get_source(environment, name)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 65, in get_source
+    return self._get_source_fast(environment, template)
+  File "/home/user/Documents/test/.venv/lib/python3.9/site-packages/flask/templating.py", line 99, in _get_source_fast
+    raise TemplateNotFound(template)
+jinja2.exceptions.TemplateNotFound: 404.html
+2025-02-05 14:13:34,365 [INFO] 192.168.200.203 - - [05/Feb/2025 14:13:34] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
