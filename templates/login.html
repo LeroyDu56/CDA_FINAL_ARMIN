@@ -12,14 +12,18 @@
       <h2>Connexion</h2>
       <p class="auth-description">Accédez à votre compte pour gérer les robots en toute sécurité.</p>
       <form action="{{ url_for('login') }}" method="POST">
+        {{ form.hidden_tag() }}  
+
         <div class="form-group">
           <label for="email">Email</label>
-          <input id="email" name="email" type="email" placeholder="Entrez votre email" required>
+          {{ form.email(id="email", class="form-control", placeholder="Entrez votre email", required=True) }}
         </div>
+
         <div class="form-group">
           <label for="password">Mot de passe</label>
-          <input id="password" name="password" type="password" placeholder="Entrez votre mot de passe" required>
+          {{ form.password(id="password", class="form-control", placeholder="Entrez votre mot de passe", required=True) }}
         </div>
+
         <button type="submit">Se connecter</button>
       </form>
     </section>

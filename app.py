@@ -3,13 +3,14 @@ import re
 import uuid  # Pour générer des UUID
 from datetime import datetime
 from functools import wraps
-from flask import Flask, render_template, request, redirect, url_for, session, flash, abort
+from flask import Flask, render_template, request, redirect, url_for, session, flash, abort,g 
 from config import Config  # Import de la configuration centralisée
 from extensions import db, bcrypt, limiter  # Import des extensions
 from auth_logs import log_auth_action, AuthLog  # Import de la fonction d'enregistrement des logs
 from sqlalchemy.dialects.postgresql import UUID  # Pour le type UUID dans SQLAlchemy
 from models.permissions import user_has_role, user_has_permission,IsAssignedTo, Role  # Gestion des rôles et permissions
-
+from extensions import csrf
+from forms import LoginForm, RegisterForm, LogoutForm
 
 
 # =============================================================================
@@ -38,7 +39,7 @@ app.config.from_object(Config)
 db.init_app(app)
 bcrypt.init_app(app)
 limiter.init_app(app)
-
+csrf.init_app(app)
 
 # =============================================================================
 # MODÈLE UTILISATEUR
@@ -127,116 +128,101 @@ def permission_required(permission_code):
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    form = LogoutForm()  # Instancier le formulaire
+    return render_template('index.html', form=form)
+
+@app.context_processor
+def inject_logout_form():
+    return {"logout_form": LogoutForm()}
+
 
 @app.route('/login', methods=['GET', 'POST'])
-@limiter.limit("5 per minute")
 def login():
-    if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
+    form = LoginForm()
+    
+    if form.validate_on_submit():  # Vérification des champs avec WTForms
+        email = form.email.data
+        password = form.password.data
 
-        if not email or not password:
-            flash("Email et mot de passe requis.", "error")
-            return redirect(url_for('login'))
+        user = User.query.filter_by(email=email).first()
 
-        try:
-            user = User.query.filter_by(email=email).first()
-            if not user or not user.check_password(password):
-                flash("Identifiants invalides.", "error")
-                return redirect(url_for('login'))
+        if not user or not user.check_password(password):
+            # Appliquer la limite uniquement si l'identifiant est incorrect
+            return failed_login_attempt()
 
-            # Vérifier tous les rôles associés
-            roles = db.session.query(Role.name).join(IsAssignedTo).filter(IsAssignedTo.user_id == user.id).all()
-            session['user_id'] = user.id
-            session['user_name'] = user.first_name
-            session['roles'] = [role.name for role in roles]  # Liste des rôles
+        # Connexion réussie, aucune limitation appliquée
+        roles = db.session.query(Role.name).join(IsAssignedTo).filter(IsAssignedTo.user_id == user.id).all()
+        session['user_id'] = user.id
+        session['user_name'] = user.first_name
+        session['roles'] = [role.name for role in roles]
+        session['is_admin'] = 'Admin' in session['roles']
 
-            # Vérifier si l'utilisateur est admin
-            session['is_admin'] = 'Admin' in session['roles']
+        # Enregistrement du log
+        log_auth_action(
+            user_id=user.id,
+            action_type="login",
+            ip_address=request.remote_addr,
+            user_agent=request.headers.get('User-Agent')
+        )
 
-            # Enregistrement du log
-            log_auth_action(
-                user_id=user.id,
-                action_type="login",
-                ip_address=request.remote_addr,
-                user_agent=request.headers.get('User-Agent')
-            )
+        flash("Connexion réussie !", "success")
+        return redirect(url_for('home'))
 
-            flash("Connexion réussie !", "success")
-            return redirect(url_for('home'))
-        except Exception as e:
-            logger.error(f"Erreur lors de la connexion : {e}")
-            flash("Une erreur est survenue. Veuillez réessayer.", "error")
-            return redirect(url_for('login'))
-    return render_template('login.html')
+    return render_template('login.html', form=form)  # Envoi du formulaire à la vue
 
+
+# Définition d'une fonction pour limiter les échecs de connexion
+@limiter.limit("5 per minute")
+def failed_login_attempt():
+    flash("Identifiants invalides.", "error")
+    return redirect(url_for('login'))
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method == 'POST':
-        email = request.form.get('email')
-        password = request.form.get('password')
-        confirm_password = request.form.get('confirm_password')  # Champ pour confirmer le mot de passe
-        first_name = request.form.get('first_name')
-        last_name = request.form.get('last_name')
+    form = RegisterForm()
 
-        if not all([email, password, confirm_password, first_name, last_name]):
-            flash("Tous les champs sont requis.", "error")
+    if form.validate_on_submit():  # Vérification des champs avec WTForms
+        email = form.email.data
+        first_name = form.first_name.data
+        last_name = form.last_name.data
+        password = form.password.data
+
+        # Vérifier si l'email existe déjà
+        if User.query.filter_by(email=email).first():
+            flash("Cet email est déjà enregistré.", "error")
             return redirect(url_for('register'))
 
-        if not is_valid_email(email):
-            flash("Format d'email invalide.", "error")
-            return redirect(url_for('register'))
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        new_user = User(
+            email=email,
+            password_hash=hashed_password,
+            first_name=first_name,
+            last_name=last_name
+        )
+        db.session.add(new_user)
+        db.session.commit()
 
-        if not is_valid_password(password):
-            flash("Le mot de passe doit contenir au moins 8 caractères.", "error")
-            return redirect(url_for('register'))
-
-        if password != confirm_password:
-            flash("Les mots de passe ne correspondent pas.", "error")
-            return redirect(url_for('register'))
-
-        try:
-            if User.query.filter_by(email=email).first():
-                flash("Cet email est déjà enregistré.", "error")
-                return redirect(url_for('register'))
-
-            hashed_password = bcrypt.generate_password_hash(password, rounds=14).decode('utf-8')
-            new_user = User(
-                email=email,
-                password_hash=hashed_password,
-                first_name=first_name,
-                last_name=last_name
-            )
-            db.session.add(new_user)
+        # Attribution automatique du rôle "Visiteur"
+        visitor_role = Role.query.filter_by(name="Visiteur").first()
+        if visitor_role:
+            is_assigned_to = IsAssignedTo(user_id=new_user.id, role_id=visitor_role.role_id)
+            db.session.add(is_assigned_to)
             db.session.commit()
 
-            # Attribuer automatiquement le rôle "Visiteur"
-            visitor_role = Role.query.filter_by(name="Visiteur").first()
-            if visitor_role:
-                is_assigned_to = IsAssignedTo(user_id=new_user.id, role_id=visitor_role.role_id)
-                db.session.add(is_assigned_to)
-                db.session.commit()
+        # Enregistrement du log
+        log_auth_action(
+            user_id=new_user.id,
+            action_type="register",
+            ip_address=request.remote_addr,
+            user_agent=request.headers.get('User-Agent')
+        )
 
-            # Enregistrement du log
-            log_auth_action(
-                user_id=new_user.id,
-                action_type="register",
-                ip_address=request.remote_addr,
-                user_agent=request.headers.get('User-Agent')
-            )
+        session['user_id'] = new_user.id
+        session['user_name'] = new_user.first_name
+        flash("Inscription réussie !", "success")
+        return redirect(url_for('home'))
 
-            session['user_id'] = new_user.id
-            session['user_name'] = new_user.first_name
-            flash("Inscription réussie !", "success")
-            return redirect(url_for('home'))
-        except Exception as e:
-            db.session.rollback()
-            logger.error("Erreur lors de l'inscription : %s", e)
-            flash("Une erreur est survenue. Veuillez réessayer.", "error")
-            return redirect(url_for('register'))
-    return render_template('register.html')
+    return render_template('register.html', form=form)
 
 
 
@@ -245,16 +231,19 @@ def register():
 @app.route('/logout', methods=['POST'])
 @login_required
 def logout_user():
-    # Enregistrement du log
-    log_auth_action(
-        user_id=session.get('user_id'),
-        action_type="logout",
-        ip_address=request.remote_addr,
-        user_agent=request.headers.get('User-Agent')
-    )
+    form = LogoutForm()
+    if form.validate_on_submit():  # Vérifie que le CSRF token est valide
+        log_auth_action(
+            user_id=session.get('user_id'),
+            action_type="logout",
+            ip_address=request.remote_addr,
+            user_agent=request.headers.get('User-Agent')
+        )
+        session.clear()  # Supprime la session
+        flash("Déconnexion réussie !", "success")
+        return redirect(url_for('home'))
 
-    session.clear()  # Réinitialise complètement la session
-    flash("Déconnexion réussie !", "success")
+    flash("Erreur CSRF détectée", "error")
     return redirect(url_for('home'))
 
 
@@ -264,7 +253,6 @@ def logout_user():
 @app.route('/admin/roles')
 @role_required('Admin')  # Seuls les admins peuvent voir cette page
 def admin_roles():
-    # Récupérer tous les utilisateurs et leurs dernières IP
     subquery_last_ip = (
         db.session.query(AuthLog.ip_address)
         .filter(AuthLog.user_id == User.id)
@@ -278,15 +266,13 @@ def admin_roles():
         User.email,
         User.first_name,
         User.last_name,
-        subquery_last_ip.label('last_ip')  # Pas besoin de coalesce ici
+        subquery_last_ip.label('last_ip')
     ).all()
 
-    # Récupérer leurs rôles actuels
     user_roles = {
         user_id: role_name for user_id, role_name in db.session.query(IsAssignedTo.user_id, Role.name).join(Role).all()
     }
 
-    # Ajouter les rôles actuels aux utilisateurs
     users_list = []
     for user in users:
         users_list.append({
@@ -298,13 +284,8 @@ def admin_roles():
             "current_role": user_roles.get(user.id, "Aucun")
         })
 
-    # Récupérer tous les rôles possibles
     roles = Role.query.all()
-
     return render_template('admin.html', users=users_list, roles=roles)
-
-
-
 
 
 @app.route('/edit_robot')
@@ -316,7 +297,7 @@ def edit_robot():
 
 
 @app.route('/assign_role', methods=['POST'])
-@role_required('Admin')  # Seuls les admins peuvent assigner des rôles
+@role_required('Admin')
 def assign_role():
     user_id = request.form.get('user_id')
     role_id = request.form.get('role_id')
@@ -327,17 +308,13 @@ def assign_role():
         return redirect(url_for('admin_roles'))
 
     try:
-        # Vérification que le rôle existe
         role = Role.query.get(role_id)
         if not role:
             flash("Rôle invalide", "error")
             logger.warning(f"Tentative d'attribution d'un rôle inexistant : role_id={role_id}")
             return redirect(url_for('admin_roles'))
 
-        # Supprimer les anciens rôles de cet utilisateur
         db.session.query(IsAssignedTo).filter_by(user_id=user_id).delete()
-
-        # Ajouter le nouveau rôle
         new_role = IsAssignedTo(user_id=user_id, role_id=role_id)
         db.session.add(new_role)
         db.session.commit()
