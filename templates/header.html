@@ -1,47 +1,45 @@
+<!-- templates/header.html -->
+{% load static %}
 <header class="main-header">
   <div class="container nav-content">
       <!-- Logo -->
       <div class="logo-container">
-          <a href="{{ url_for('home') }}">
-              <img src="{{ url_for('static', filename='images/armin.png') }}" alt="Logo Armin">
+          <a href="{% url 'index' %}">
+              <!-- Supposez que 'armin.png' est dans static/images/ -->
+              <img src="{% static 'images/armin_logo.jpeg' %}" alt="Logo Armin">
           </a>
       </div>
-
       <!-- Titre -->
       <h1 class="header-title">Supervision Robots</h1>
-
       <!-- Navigation -->
       <nav class="nav-links">
-          <a href="{{ url_for('home') }}">Accueil</a>
-          {% set current_user = session.get('user_name') %}
-          {% set is_admin = session.get('is_admin', False) %}
-          
-          {% if current_user %}
-              {% if is_admin %}
-                  <a href="{{ url_for('admin_roles') }}">Admin</a>
+          <a href="{% url 'index' %}">Accueil</a>
+          {% if user.is_authenticated %}
+              {% if user_is_admin %}
+                  <a href="{% url 'admin_roles' %}">Admin</a>
               {% endif %}
-              
-              <!-- Formulaire sécurisé pour la déconnexion -->
-              <form action="{{ url_for('logout_user') }}" method="post" class="logout-form">
-                {{ logout_form.hidden_tag() }}  <!-- Protection CSRF -->
+              {% if user_is_admin or user_is_roboticien %}
+                  <a href="{% url 'robot_list' %}">Liste Robots</a>
+              {% endif %}
+              <!-- Formulaire sécurisé de déconnexion -->
+              <form action="{% url 'logout' %}" method="post" class="logout-form">
+                {% csrf_token %}
                 <button type="submit">Déconnexion</button>
-            </form>
-              
+              </form>
           {% else %}
-              <a href="{{ url_for('login') }}">Connexion</a>
-              <a href="{{ url_for('register') }}">Inscription</a>
+              <a href="{% url 'login' %}">Connexion</a>
+              <a href="{% url 'register' %}">Inscription</a>
           {% endif %}
       </nav>
   </div>
 </header>
 
-<!-- Messages Flash en Premier Plan -->
-{% with messages = get_flashed_messages(with_categories=True) %}
+<!-- Zone d'affichage des messages flash -->
 {% if messages %}
   <div class="flash-messages">
     <ul>
-      {% for category, message in messages %}
-        <li class="{{ category }}">
+      {% for message in messages %}
+        <li class="{{ message.tags }}">
           {{ message }}
           <button class="close" onclick="this.parentElement.style.display='none'">&times;</button>
         </li>
@@ -49,4 +47,3 @@
     </ul>
   </div>
 {% endif %}
-{% endwith %}

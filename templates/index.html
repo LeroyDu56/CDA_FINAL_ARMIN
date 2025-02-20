@@ -1,19 +1,13 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <title>Accueil - Robot Monitoring</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body>
-  {% include 'header.html' %}
-  <main class="container">
-    <h2>Bienvenue sur la plateforme de monitoring des robots</h2>
-    <p>Cette plateforme vous permet de gérer vos robots en temps réel.</p>
-    {% if session.get('user_name') %}
-      <p>Bonjour, {{ session.get('user_name') }}! Vous êtes connecté.</p>
-    {% endif %}
-  </main>
-  {% include 'footer.html' %}
-</body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}Accueil - Robot Monitoring{% endblock %}
+
+{% block content %}
+<h2>Bienvenue sur la plateforme de monitoring des robots</h2>
+<p>Cette plateforme vous permet de gérer vos robots en temps réel.</p>
+{% if user.is_authenticated %}
+  <p>Bonjour, {{ user.first_name }} ! Vous êtes connecté.</p>
+{% else %}
+  <p>Veuillez vous connecter ou vous inscrire pour accéder aux fonctionnalités.</p>
+{% endif %}
+{% endblock %}

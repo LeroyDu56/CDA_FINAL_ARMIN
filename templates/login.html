@@ -1,33 +1,21 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <title>Connexion - Robot Monitoring</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body>
-  {% include 'header.html' %}
-  <main class="container">
-    <section class="auth-container">
-      <h2>Connexion</h2>
-      <p class="auth-description">Accédez à votre compte pour gérer les robots en toute sécurité.</p>
-      <form action="{{ url_for('login') }}" method="POST">
-        {{ form.hidden_tag() }}  
+{% extends 'base.html' %}
+{% block title %}Connexion - Robot Monitoring{% endblock %}
 
-        <div class="form-group">
-          <label for="email">Email</label>
-          {{ form.email(id="email", class="form-control", placeholder="Entrez votre email", required=True) }}
-        </div>
-
-        <div class="form-group">
-          <label for="password">Mot de passe</label>
-          {{ form.password(id="password", class="form-control", placeholder="Entrez votre mot de passe", required=True) }}
-        </div>
-
-        <button type="submit">Se connecter</button>
-      </form>
-    </section>
-  </main>
-  {% include 'footer.html' %}
-</body>
-</html>
+{% block content %}
+<section class="auth-container">
+  <h2>Connexion</h2>
+  <p class="auth-description">Accédez à votre compte pour gérer les robots en toute sécurité.</p>
+  <form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="id_email">Email</label>
+      {{ form.email }}
+    </div>
+    <div class="form-group">
+      <label for="id_password">Mot de passe</label>
+      {{ form.password }}
+    </div>
+    <button type="submit" class="auth-btn">Se connecter</button>
+  </form>
+</section>
+{% endblock %}

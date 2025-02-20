@@ -1,0 +1,17 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}Robot Monitoring{% endblock %}</title>
+  <!-- Feuille de style -->
+  <link rel="stylesheet" href="{% static 'css/styles2.css' %}">
+</head>
+<body>
+  {% include 'header.html' %}
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+  {% include 'footer.html' %}
+</body>
+</html>

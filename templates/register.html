@@ -1,48 +1,70 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <title>Inscription - Robot Monitoring</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-<body>
-  {% include 'header.html' %}
-  <main class="container">
-    <section class="auth-container">
-      <h2>Inscription</h2>
-      <p class="auth-description">Rejoignez-nous et accédez à la gestion des robots.</p>
-      <form action="{{ url_for('register') }}" method="POST">
-        {{ form.hidden_tag() }}  
+{% extends 'base.html' %}
+{% block title %}Inscription - Robot Monitoring{% endblock %}
 
-        <div class="form-group">
-          <label for="email">Email</label>
-          {{ form.email(id="email", class="form-control", placeholder="Entrez votre email", required=True) }}
-        </div>
+{% block content %}
+<section class="auth-container">
+  <h2>Inscription</h2>
+  <p class="auth-description">Rejoignez-nous et accédez à la gestion des robots.</p>
+  
+  <!-- Affiche les erreurs globales (ex. "Les deux mots de passe ne correspondent pas") -->
+  {% if form.non_field_errors %}
+    <div class="error-global">
+      {% for error in form.non_field_errors %}
+        <p class="error-text">{{ error }}</p>
+      {% endfor %}
+    </div>
+  {% endif %}
 
-        <div class="form-group">
-          <label for="first_name">Prénom</label>
-          {{ form.first_name(id="first_name", class="form-control", placeholder="Entrez votre prénom", required=True) }}
-        </div>
+  <form method="post" action="{% url 'register' %}">
+    {% csrf_token %}
+    
+    <!-- Champ Email -->
+    <div class="form-group {% if form.email.errors %}has-error{% endif %}">
+      <label for="id_email">Email</label>
+      <!-- Affichage des messages d'erreur en rouge -->
+      {% for error in form.email.errors %}
+        <p class="error-text">{{ error }}</p>
+      {% endfor %}
+      {{ form.email }}
+    </div>
 
-        <div class="form-group">
-          <label for="last_name">Nom</label>
-          {{ form.last_name(id="last_name", class="form-control", placeholder="Entrez votre nom", required=True) }}
-        </div>
+    <!-- Champ Prénom -->
+    <div class="form-group {% if form.first_name.errors %}has-error{% endif %}">
+      <label for="id_first_name">Prénom</label>
+      {% for error in form.first_name.errors %}
+        <p class="error-text">{{ error }}</p>
+      {% endfor %}
+      {{ form.first_name }}
+    </div>
 
-        <div class="form-group">
-          <label for="password">Mot de passe</label>
-          {{ form.password(id="password", class="form-control", placeholder="Choisissez un mot de passe", required=True) }}
-        </div>
+    <!-- Champ Nom -->
+    <div class="form-group {% if form.last_name.errors %}has-error{% endif %}">
+      <label for="id_last_name">Nom</label>
+      {% for error in form.last_name.errors %}
+        <p class="error-text">{{ error }}</p>
+      {% endfor %}
+      {{ form.last_name }}
+    </div>
 
-        <div class="form-group">
-          <label for="confirm_password">Confirmez le mot de passe</label>
-          {{ form.confirm_password(id="confirm_password", class="form-control", placeholder="Répétez votre mot de passe", required=True) }}
-        </div>
+    <!-- Mot de passe 1 -->
+    <div class="form-group {% if form.password1.errors %}has-error{% endif %}">
+      <label for="id_password1">Mot de passe</label>
+      {% for error in form.password1.errors %}
+        <p class="error-text">{{ error }}</p>
+      {% endfor %}
+      {{ form.password1 }}
+    </div>
 
-        <button type="submit">S'inscrire</button>
-      </form>
-    </section>
-  </main>
-  {% include 'footer.html' %}
-</body>
-</html>
+    <!-- Mot de passe 2 -->
+    <div class="form-group {% if form.password2.errors %}has-error{% endif %}">
+      <label for="id_password2">Confirmez le mot de passe</label>
+      {% for error in form.password2.errors %}
+        <p class="error-text">{{ error }}</p>
+      {% endfor %}
+      {{ form.password2 }}
+    </div>
+    
+    <button type="submit" class="auth-btn">S'inscrire</button>
+  </form>
+</section>
+{% endblock %}

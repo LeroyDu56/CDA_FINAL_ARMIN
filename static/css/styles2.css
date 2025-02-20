@@ -1,0 +1,513 @@
+:root {
+  --primary-color: #2A2E35;
+  --secondary-color: #4A90E2;
+  --accent-color: #00C7B7;
+  --light-text: #F8F9FA;
+  --dark-text: #2A2E35;
+  --background: #F8F9FA;
+  --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Réinitialisation basique */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--dark-text);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* .container par défaut : */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* ========================= */
+/*        HEADER             */
+/* ========================= */
+
+.main-header {
+  background: var(--primary-color);
+  box-shadow: var(--shadow);
+  padding: 0.8rem 0;
+}
+
+.container.nav-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Espace entre les blocs (logo/titre et navigation) */
+  height: 80px;
+  padding: 0 20px;
+}
+
+/* Logo à gauche */
+.logo-container {
+  flex-shrink: 0; /* Empêche le logo de rétrécir */
+  margin-right: 15px; /* Espace après le logo */
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Aligne le logo à gauche */
+}
+
+.logo-container img {
+  height: 95%; /* Ajuste la hauteur du logo à 95% du header */
+  max-height: 76px;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Titre à droite du logo */
+.header-title {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--light-text);
+  margin-right: auto; /* Étend le titre vers la droite */
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center; /* Aligne le texte verticalement avec le logo */
+}
+
+/* Navigation centrée */
+.nav-links {
+  display: flex;
+  justify-content: center; /* Centrer les liens */
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-links a,
+.nav-links form button {
+  background: none;
+  border: none;
+  color: var(--light-text);
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.nav-links a:hover,
+.nav-links form button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.logout-form {
+  display: inline-block;
+}
+
+.logout-form button {
+  cursor: pointer;
+}
+
+/* ========================= */
+/*        FOOTER             */
+/* ========================= */
+
+.main-footer {
+  background: var(--primary-color);
+  color: var(--light-text);
+  padding: 2rem 0;
+  text-align: center;
+  margin-top: auto;
+}
+
+.footer-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-content p {
+  font-size: 0.95rem;
+  opacity: 0.9;
+  margin-bottom: 0.5rem;
+}
+
+.footer-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.footer-links a {
+  color: var(--light-text);
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: opacity 0.3s ease;
+}
+
+.footer-links a:hover {
+  opacity: 0.7;
+}
+
+/* ========================= */
+/*        MAIN CONTENT       */
+/* ========================= */
+
+main.container {
+  flex: 1;
+  padding: 4rem 0;
+}
+
+main.container h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+  text-align: center; /* Centrage horizontal du texte */
+}
+
+main.container p {
+  font-size: 1.1rem;
+  color: #666;
+  max-width: 600px;
+  line-height: 1.8;
+}
+
+/* ========================= */
+/*    FORMULAIRE AUTH        */
+/* ========================= */
+
+.auth-container {
+  background: white;
+  padding: 3rem;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  max-width: 500px;
+  margin: 3rem auto;
+  text-align: center;
+}
+
+.auth-container h2 {
+  font-size: 2rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.auth-description {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 2rem;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.8rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  background-color: #f9f9f9;
+}
+
+.form-group input:focus {
+  border-color: var(--secondary-color);
+  outline: none;
+}
+
+.auth-container .auth-btn,
+.search-cell .admin-btn {
+  width: 100%;
+  padding: 0.8rem;
+  background: var(--secondary-color);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.5s ease;
+}
+
+button:hover {
+  background: #357ABD;
+}
+
+/* ========================= */
+/*       FLASH MESSAGES      */
+/* ========================= */
+
+.flash-messages {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10000;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+  text-align: center;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.flash-messages ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.flash-messages li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  margin-bottom: 5px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.flash-messages li.success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.flash-messages li.error {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
+
+.flash-messages li.logout {
+  background-color: #cce5ff;
+  color: #004085;
+  border: 1px solid #b8daff;
+}
+
+.flash-messages .close {
+  background: none;
+  border: none;
+  color: inherit;
+  font-weight: bold;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.flash-messages .close:hover {
+  color: #000;
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.flash-messages li {
+  animation: fade-out 4s ease forwards;
+}
+
+/* Le bloc d'erreur global */
+.error-global {
+  background-color: #ffe6e6;
+  border: 2px solid #e74c3c;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+/* Le conteneur du champ en erreur */
+.form-group.has-error {
+  border: 2px solid #e74c3c;
+  background-color: #ffe6e6;
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 1rem;
+}
+
+/* Le texte d'erreur sous chaque champ */
+.error-text {
+  color: #e74c3c;
+  font-weight: bold;
+  margin: 6px 0;
+}
+
+/* ========================= */
+/*      ADMIN TABLE          */
+/* ========================= */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background: white;
+  box-shadow: var(--shadow);
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background: var(--primary-color);
+  color: white;
+}
+
+tr:hover {
+  background-color: #f1f1f1;
+}
+
+/* Style pour les cellules contenant le formulaire */
+td form {
+  display: inline-flex; /* Inline-flex pour s'assurer que tout reste sur une seule ligne */
+  align-items: center;
+  gap: 10px; /* Espace entre le select et le bouton */
+  width: 100%; /* Assure que le contenu occupe tout l'espace disponible */
+}
+
+td form select {
+  flex: 1; /* Le select occupe toute la largeur disponible */
+  min-width: 150px; /* Largeur minimale pour un bon affichage */
+  text-align: center; /* Centre le texte horizontalement */
+  text-align-last: center; /* Centre le texte de l'option sélectionnée */
+  padding: 8px; /* Ajoute un peu de padding pour le confort visuel */
+  border: 1px solid #ddd; /* Bordure légère pour un effet visuel */
+  border-radius: 4px; /* Coins arrondis */
+  background-color: #f9f9f9; /* Couleur de fond */
+  color: var(--dark-text); /* Couleur du texte */
+}
+
+td form button {
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap; /* Empêche le bouton de s'étirer */
+  transition: background-color 0.3s ease;
+}
+
+td form button:hover {
+  background-color: #357ABD;
+}
+
+/* ========================= */
+/*       TRANSITIONS         */
+/* ========================= */
+
+@media (prefers-reduced-motion: no-preference) {
+  .nav-links a,
+  button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* Barre de recherche en table à 6 colonnes */
+.search-header {
+  display: table;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.search-row {
+  display: table-row;
+}
+
+.search-cell {
+  display: table-cell;
+  vertical-align: bottom;
+  text-align: center;
+  padding: 0.5rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.search-cell label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 500;
+}
+
+/* Sans marge interne pour le form principal */
+.no-margin {
+  margin: 0;
+  padding: 0;
+}
+
+/* Champs de saisie */
+.search-cell input {
+  width: 130px;
+  padding: 5px;
+  text-align: center;
+}
+
+/* Bouton Filtrer */
+.search-cell button {
+  width: 100px;
+  padding: 6px 0;
+  cursor: pointer;
+}
+
+/* Table (re-définition pour s'assurer qu'il n'y a pas de conflit) */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+
+/* Style pour le conteneur des boutons */
+.robot-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Style de base pour les boutons */
+.robot-btn {
+  padding: 10px 15px;
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+button.robot-btn.btn-success {
+  background-color: #28a745 !important;
+}
+
+button.robot-btn.btn-danger {
+  background-color: #dc3545 !important;
+}
+
+/* Effet de survol */
+.robot-btn:hover {
+  opacity: 0.8;
+}
