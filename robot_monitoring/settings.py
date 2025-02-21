@@ -1,4 +1,5 @@
 import os
+import environ
 from pathlib import Path
 
 # Chemin de base du projet
@@ -9,6 +10,17 @@ SECRET_KEY = 'django-insecure-hccl9e*&5un=sv3t_s-!uw8u&#bz=!qgsabt4p%tic)42qj#!v
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+# Initialiser la lecture du fichier .env
+env = environ.Env()
+env_file = os.path.join(BASE_DIR, '.env')
+env.read_env(env_file)
+
+# Récupérer les variables
+INFLUXDB_URL = env('INFLUXDB_URL', default='http://localhost:8086')
+INFLUXDB_TOKEN = env('INFLUXDB_TOKEN', default='')
+INFLUXDB_ORG = env('INFLUXDB_ORG', default='')
+INFLUXDB_BUCKET = env('INFLUXDB_BUCKET', default='')
 
 # Applications installées
 INSTALLED_APPS = [

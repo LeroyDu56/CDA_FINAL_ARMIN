@@ -1,18 +1,20 @@
+<!-- templates/robot_list.html -->
 {% extends 'base.html' %}
-{% block title %}Liste des Robots - Robot Monitoring{% endblock %}
+{% block title %}Liste des Hosts{% endblock %}
 
 {% block content %}
 <section class="container">
-  <h2>Liste des Robots</h2>
-  <p>Les boutons en vert indiquent que le robot répond au ping, ceux en rouge indiquent qu'il est hors ligne.</p>
-
-  <div class="robot-buttons">
-{% for robot in robots %}
-  <button class="robot-btn {% if robot.is_up %}btn-success{% else %}btn-danger{% endif %}">
-    {{ robot.name }} ({{ robot.ip }})
-  </button>
-{% endfor %}
+  <h2>Liste des Hosts</h2>
+  <div class="hosts-buttons">
+    {% if hosts_status %}
+      {% for host, is_fresh in hosts_status.items %}
+        <button class="host-button {% if is_fresh %}host-ok{% else %}host-ko{% endif %}">
+          {{ host }}
+        </button>
+      {% endfor %}
+    {% else %}
+      <p>Aucun host trouvé.</p>
+    {% endif %}
   </div>
 </section>
 {% endblock %}
-

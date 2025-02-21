@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import LoginForm, RegisterForm
 from .models import User, Role, AuthLog
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from utils.influx import get_hosts_status
 
 def index(request):
     """Page d'accueil"""
@@ -161,3 +162,15 @@ def admin_roles_view(request):
         'user_is_admin': user_is_admin,
     })
 
+@login_required
+def robot_list_view(request):
+    user_is_admin = request.user.roles.filter(name='Admin').exists()
+    
+    # Récupérer le dict {host: is_fresh}
+    hosts_status = get_hosts_status()
+    # Par exemple => {"VM1telegraf": True, "VM2telegraf": False, ...}
+
+    return render(request, 'robot_list.html', {
+        'user_is_admin': user_is_admin,
+        'hosts_status': hosts_status,
+    })

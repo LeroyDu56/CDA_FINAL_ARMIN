@@ -244,6 +244,22 @@ main.container p {
   transition: background-color 0.5s ease;
 }
 
+.filtrer-btn {
+  padding: 0.8rem 1rem;
+  background: var(--secondary-color); /* bleu, comme le bouton attribuer */
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.5s ease;
+}
+
+.filtrer-btn:hover {
+  background: #357ABD;
+}
+
 button:hover {
   background: #357ABD;
 }
@@ -479,35 +495,30 @@ table {
   border-collapse: collapse;
 }
 
-
-/* Style pour le conteneur des boutons */
-.robot-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-/* Style de base pour les boutons */
-.robot-btn {
-  padding: 10px 15px;
-  border: none;
-  color: white;
-  font-weight: bold;
+.host-button {
+  padding: 0.6rem 1rem;
+  margin: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: 6px;
   cursor: pointer;
-  border-radius: 4px;
+  border: none;
+  color: #fff; /* Couleur texte */
   transition: background-color 0.3s ease;
 }
 
-button.robot-btn.btn-success {
-  background-color: #28a745 !important;
+/* Bouton vert */
+.host-ok {
+  background-color: #4CAF50; /* Vert */
+}
+.host-ok:hover {
+  background-color: #3e8e41; /* Vert un peu plus foncé au survol */
 }
 
-button.robot-btn.btn-danger {
-  background-color: #dc3545 !important;
+/* Bouton rouge */
+.host-ko {
+  background-color: #e74c3c; /* Rouge */
 }
-
-/* Effet de survol */
-.robot-btn:hover {
-  opacity: 0.8;
+.host-ko:hover {
+  background-color: #c0392b; /* Rouge plus foncé au survol */
 }
