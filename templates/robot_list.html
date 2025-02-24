@@ -8,9 +8,9 @@
   <div class="hosts-buttons">
     {% if hosts_status %}
       {% for host, is_fresh in hosts_status.items %}
-        <button class="host-button {% if is_fresh %}host-ok{% else %}host-ko{% endif %}">
+        <a href="{% url 'host_detail' host=host %}" class="host-button {% if is_fresh %}host-ok{% else %}host-ko{% endif %}">
           {{ host }}
-        </button>
+        </a>
       {% endfor %}
     {% else %}
       <p>Aucun host trouvé.</p>

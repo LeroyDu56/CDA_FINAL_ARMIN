@@ -15,4 +15,5 @@ urlpatterns = [
     path('register/', views.register_view, name='register'),
     path('logout/', views.logout_view, name='logout'),
     path('robots/', views.robot_list_view, name='robot_list'),
+    path('host/<str:host>/', views.host_detail_view, name='host_detail'),
 ]

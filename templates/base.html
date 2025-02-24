@@ -9,9 +9,16 @@
 </head>
 <body>
   {% include 'header.html' %}
+  
+  {% block extra_body %}{% endblock %}
+  
+  {# Bloc enveloppant par défaut, que l'on peut surcharger dans certaines pages #}
+  {% block content_wrapper %}
   <main class="container">
     {% block content %}{% endblock %}
   </main>
+  {% endblock %}
+  
   {% include 'footer.html' %}
 </body>
 </html>

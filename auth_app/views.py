@@ -1,9 +1,11 @@
 # auth_app/views.py
 from django.db.models import Q
+from django.urls import reverse
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.clickjacking import xframe_options_exempt
 from .forms import LoginForm, RegisterForm
 from .models import User, Role, AuthLog
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -174,3 +176,30 @@ def robot_list_view(request):
         'user_is_admin': user_is_admin,
         'hosts_status': hosts_status,
     })
+
+@login_required
+def host_detail_view(request, host):
+    # Construire l'URL du panneau CPU avec une plage de temps par défaut (ici, 60 minutes)
+    cpu_dashboard_url = (
+        "http://localhost:3001/d-solo/dee0o5db5zgn4f/armin-graph?"
+        "orgId=1&from=now-60m&to=now&timezone=browser&panelId=1"
+        f"&var-host={host}&refresh=5s"
+    )
+    # Construire l'URL du panneau Disque avec la même plage de temps par défaut
+    disk_dashboard_url = (
+        "http://localhost:3001/d-solo/dee0o5db5zgn4f/armin-disk?"
+        "orgId=1&from=now-60m&to=now&timezone=browser&panelId=2"
+        f"&var-host={host}&refresh=5s"
+    )
+
+    # Exemple de dernière connexion (à adapter selon vos données réelles)
+    last_connection_display = "maintenant"  
+
+    context = {
+        "host": host,
+        "last_connection_display": last_connection_display,
+        "cpu_dashboard_url": cpu_dashboard_url,
+        "disk_dashboard_url": disk_dashboard_url,
+    }
+    return render(request, "host_detail.html", context)
+
