@@ -1,65 +1,75 @@
 {% extends 'base.html' %}
 {% block title %}Détail de l'Hôte - Robot Monitoring{% endblock %}
-
+{% load static %}
+{% load dict_filters %}
 {% block content_wrapper %}
+<!-- Bouton de retour -->
+<div class="back-btn-container">
+    <a href="{% url 'robot_list' %}" class="back-btn-red">
+        <i class="fa fa-arrow-left"></i> Retour
+    </a>
+</div>
 <div class="host-detail-container">
-  <!-- Informations principales -->
-  <div class="host-main-info">
-    <h2>Détail de l'Hôte : {{ host }}</h2>
-    <p>Dernière connexion : {{ last_connection_display }}</p>
-  </div>
-
-  <!-- Sélecteur de plage de temps -->
-  <div class="time-range-selector">
-    <label for="time_range">Plage de temps :</label>
-    <select id="time_range">
-      <option value="60m">1h</option>
-      <option value="6h">6h</option>
-      <option value="12h">12h</option>
-      <option value="24h">24h</option>
-    </select>
-  </div>
-
-  <!-- Conteneur des sections -->
-  <div class="host-sections">
-    <!-- Section PC (Graphiques Grafana) -->
-    <div class="host-section pc-section">
-      <h3>Utilisation du CPU</h3>
-      <div class="grafana-panel">
-        <iframe id="cpu_iframe"
-                src="{{ cpu_dashboard_url }}"
-                width="100%" height="300"
-                frameborder="0" allowfullscreen>
-        </iframe>
-      </div>
-      <h3>Espace Disque Libre</h3>
-      <div class="grafana-panel">
-        <iframe id="disk_iframe"
-                src="{{ disk_dashboard_url }}"
-                width="100%" height="300"
-                frameborder="0" allowfullscreen>
-        </iframe>
-      </div>
+    <!-- Informations principales -->
+    <div class="host-main-info">
+        <h2>Détail de l'Hôte : {{ host }}</h2>
+        <p>Dernière connexion : {{ last_connection_display }}</p>
+        <p class="host-status">
+            État: 
+            <span class="{% if is_host_active %}status-active{% else %}status-inactive{% endif %}">
+                {% if is_host_active %}Connecté{% else %}Déconnecté{% endif %}
+            </span>
+        </p>
     </div>
-    <!-- Section Robot (à venir) -->
-    <div class="host-section robot-section">
-      <h3>Informations du Robot</h3>
-      <p>Les informations spécifiques au robot seront affichées ici ultérieurement.</p>
+    
+    <!-- Sélecteur de plage de temps -->
+    <div class="time-range-selector">
+        <label for="time_range">Plage de temps :</label>
+        <select id="time_range">
+            <option value="60m">1h</option>
+            <option value="6h">6h</option>
+            <option value="12h">12h</option>
+            <option value="24h">24h</option>
+        </select>
     </div>
-  </div>
+    
+    <!-- Conteneur des sections -->
+    <div class="host-sections">
+        <!-- Section PC (Graphiques Grafana) -->
+        <div class="host-section pc-section">
+            <h3>Utilisation du CPU</h3>
+            <div class="grafana-panel">
+                <iframe id="cpu_iframe"
+                    width="100%" height="300"
+                    frameborder="0" allowfullscreen>
+                </iframe>
+            </div>
+            <h3>Espace Disque Libre</h3>
+            <div class="grafana-panel">
+                <iframe id="disk_iframe"
+                    width="100%" height="300"
+                    frameborder="0" allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+        
+        <!-- Section Robot (à venir) -->
+        <div class="host-section robot-section">
+            <h3>Informations du Robot</h3>
+            <p>Les informations spécifiques au robot seront affichées ici ultérieurement.</p>
+        </div>
+    </div>
 </div>
 
-<!-- Script pour mettre à jour la plage de temps sans recharger la page -->
-<script>
-  const baseCpuUrl = "http://localhost:3001/d-solo/dee0o5db5zgn4f/armin-graph?orgId=1&timezone=browser&panelId=1&var-host={{ host }}&refresh=5s";
-  const baseDiskUrl = "http://localhost:3001/d-solo/dee0o5db5zgn4f/armin-disk?orgId=1&timezone=browser&panelId=2&var-host={{ host }}&refresh=5s";
-
-  document.getElementById("time_range").addEventListener("change", function() {
-      var range = this.value;  // Par ex. "60m", "6h", etc.
-      var newCpuUrl = baseCpuUrl + "&from=now-" + range + "&to=now";
-      var newDiskUrl = baseDiskUrl + "&from=now-" + range + "&to=now";
-      document.getElementById("cpu_iframe").src = newCpuUrl;
-      document.getElementById("disk_iframe").src = newDiskUrl;
-  });
+<!-- Données insérées via templates Django -->
+<script id="host-data" type="application/json">
+    {
+        "isHostActive": {{ is_host_active|yesno:"true,false" }},
+        "host": "{{ host }}",
+        "lastConnectionTime": "{{ last_connection_timestamp|default:'' }}"
+    }
 </script>
+
+<!-- Charger le fichier JavaScript externe -->
+<script src="{% static 'js/host_detail.js' %}"></script>
 {% endblock %}
