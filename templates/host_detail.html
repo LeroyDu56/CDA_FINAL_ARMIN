@@ -2,15 +2,15 @@
 {% block title %}Détail de l'Hôte - Robot Monitoring{% endblock %}
 {% load static %}
 {% load dict_filters %}
+
 {% block content_wrapper %}
-<!-- Bouton de retour -->
 <div class="back-btn-container">
     <a href="{% url 'robot_list' %}" class="back-btn-red">
         <i class="fa fa-arrow-left"></i> Retour
     </a>
 </div>
+
 <div class="host-detail-container">
-    <!-- Informations principales -->
     <div class="host-main-info">
         <h2>Détail de l'Hôte : {{ host }}</h2>
         <p>Dernière connexion : {{ last_connection_display }}</p>
@@ -22,7 +22,6 @@
         </p>
     </div>
     
-    <!-- Sélecteur de plage de temps -->
     <div class="time-range-selector">
         <label for="time_range">Plage de temps :</label>
         <select id="time_range">
@@ -33,27 +32,18 @@
         </select>
     </div>
     
-    <!-- Conteneur des sections -->
     <div class="host-sections">
-        <!-- Section PC (Graphiques Grafana) -->
         <div class="host-section pc-section">
             <h3>Utilisation du CPU</h3>
             <div class="grafana-panel">
-                <iframe id="cpu_iframe"
-                    width="100%" height="300"
-                    frameborder="0" allowfullscreen>
-                </iframe>
+                <iframe id="cpu_iframe" width="100%" height="300" frameborder="0" allowfullscreen></iframe>
             </div>
             <h3>Espace Disque Libre</h3>
             <div class="grafana-panel">
-                <iframe id="disk_iframe"
-                    width="100%" height="300"
-                    frameborder="0" allowfullscreen>
-                </iframe>
+                <iframe id="disk_iframe" width="100%" height="300" frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
         
-        <!-- Section Robot (à venir) -->
         <div class="host-section robot-section">
             <h3>Informations du Robot</h3>
             <p>Les informations spécifiques au robot seront affichées ici ultérieurement.</p>
@@ -61,15 +51,16 @@
     </div>
 </div>
 
-<!-- Données insérées via templates Django -->
 <script id="host-data" type="application/json">
     {
         "isHostActive": {{ is_host_active|yesno:"true,false" }},
         "host": "{{ host }}",
-        "lastConnectionTime": "{{ last_connection_timestamp|default:'' }}"
+        "lastConnectionTime": "{{ last_connection_timestamp|default:'' }}",
+        "grafanaBaseUrl": "http://localhost:3001/d-solo/dee0o5db5zgn4f",
+        "cpuPanelId": 1,
+        "diskPanelId": 2
     }
 </script>
 
-<!-- Charger le fichier JavaScript externe -->
 <script src="{% static 'js/host_detail.js' %}"></script>
 {% endblock %}

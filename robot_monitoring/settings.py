@@ -1,3 +1,4 @@
+# robot_monitoring/settings.py
 import os
 import environ
 from pathlib import Path
@@ -5,9 +6,7 @@ from pathlib import Path
 # Chemin de base du projet
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-hccl9e*&5un=sv3t_s-!uw8u&#bz=!qgsabt4p%tic)42qj#!v' 
 
-DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -17,6 +16,8 @@ env_file = os.path.join(BASE_DIR, '.env')
 env.read_env(env_file)
 
 # Récupérer les variables
+SECRET_KEY = env('SECRET_KEY')
+DEBUG = env('DEBUG')
 INFLUXDB_URL = env('INFLUXDB_URL', default='http://localhost:8086')
 INFLUXDB_TOKEN = env('INFLUXDB_TOKEN', default='')
 INFLUXDB_ORG = env('INFLUXDB_ORG', default='')

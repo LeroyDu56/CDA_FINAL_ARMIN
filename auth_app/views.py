@@ -179,23 +179,18 @@ def robot_list_view(request):
 
 @login_required
 def host_detail_view(request, host):
-    # Récupérer le statut des hôtes
     from utils.influx import get_hosts_status, get_last_connection_time
     from datetime import datetime, timezone
 
-    hosts_status = get_hosts_status() or {}  # Si None, mettre un dict vide
+    # Récupérer les informations de l'hôte
+    hosts_status = get_hosts_status() or {}
     is_host_active = hosts_status.get(host, False)
-
-    # Récupérer le temps de dernière connexion
     last_connection_time = get_last_connection_time(host)
 
-    # Timestamp formaté pour JavaScript (si disponible)
-    last_connection_timestamp = ""
-    if last_connection_time:
-        # Format ISO pour JavaScript
-        last_connection_timestamp = last_connection_time.isoformat()
+    # Formater le timestamp pour JavaScript
+    last_connection_timestamp = last_connection_time.isoformat() if last_connection_time else ""
 
-    # Déterminer l'affichage du temps de dernière connexion
+    # Déterminer l'affichage de la dernière connexion
     if is_host_active:
         last_connection_display = "Connecté actuellement"
     elif last_connection_time:
@@ -203,40 +198,28 @@ def host_detail_view(request, host):
         time_diff = now - last_connection_time
 
         if time_diff.days > 30:
-            # Si plus de 30 jours, afficher la date
             last_connection_display = f"Dernière connexion le {last_connection_time.strftime('%d/%m/%Y')}"
         elif time_diff.days > 0:
-            # Si plus d'un jour
             last_connection_display = f"Il y a {time_diff.days} jour{'s' if time_diff.days > 1 else ''}"
         elif time_diff.seconds // 3600 > 0:
-            # Si plus d'une heure
             hours = time_diff.seconds // 3600
             last_connection_display = f"Il y a {hours} heure{'s' if hours > 1 else ''}"
         elif time_diff.seconds // 60 > 0:
-            # Si plus d'une minute
             minutes = time_diff.seconds // 60
             last_connection_display = f"Il y a {minutes} minute{'s' if minutes > 1 else ''}"
         else:
-            # Si moins d'une minute
             last_connection_display = "Il y a quelques secondes"
     else:
         last_connection_display = "Non disponible"
 
-    # URLs de base pour les tableaux de bord (sans paramètre de rafraîchissement)
-    cpu_dashboard_url = f"http://localhost:3001/d-solo/dee0o5db5zgn4f/armin-graph?orgId=1&timezone=browser&panelId=1&var-host={host}"
-    disk_dashboard_url = f"http://localhost:3001/d-solo/dee0o5db5zgn4f/armin-disk?orgId=1&timezone=browser&panelId=2&var-host={host}"
-
-# Vérification correcte des rôles de l'utilisateur, cohérente avec le reste de votre application
+    # Vérification des rôles
     user_is_admin = request.user.roles.filter(name='Admin').exists()
     user_is_roboticien = request.user.roles.filter(name='Roboticien').exists()
 
     context = {
         "host": host,
-        "hosts_status": hosts_status,
         "is_host_active": is_host_active,
         "last_connection_timestamp": last_connection_timestamp,
-        "cpu_dashboard_url": cpu_dashboard_url,
-        "disk_dashboard_url": disk_dashboard_url,
         "last_connection_display": last_connection_display,
         "user_is_admin": user_is_admin,
         "user_is_roboticien": user_is_roboticien,
