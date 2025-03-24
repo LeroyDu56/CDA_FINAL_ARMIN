@@ -1,4 +1,6 @@
 # auth_app/views.py
+import requests
+from datetime import datetime
 from django.db.models import Q
 from django.urls import reverse
 from django.shortcuts import render, redirect
@@ -12,13 +14,64 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from utils.influx import get_hosts_status
 
 def index(request):
-    """Page d'accueil"""
+    # Page d'accueil
     user_is_admin = False
+    user_is_roboticien = False
+    notifications = []
+
     if request.user.is_authenticated:
         user_is_admin = request.user.roles.filter(name='Admin').exists()
-    return render(request, 'index.html', {
-        'user_is_admin': user_is_admin
-    })
+        user_is_roboticien = request.user.roles.filter(name='Roboticien').exists()
+
+        # Ajouter la récupération des notifications GitHub
+        try:
+            # Remplacez par votre nom d'utilisateur et nom de repo GitHub
+            github_updates = get_github_commits('LeroyDu56', 'CDA_FINAL_ARMIN', count=2)
+
+            # Convertir les commits en "notifications"
+            for update in github_updates:
+                notifications.append({
+                    'title': update['title'],
+                    'content': update['content'],
+                    'date': update['date'].strftime("%d/%m/%Y %H:%M"),
+                    'priority': update['priority'],
+                    'url': update['url']
+                })
+        except Exception as e:
+            # En cas d'erreur, afficher un message générique
+            notifications = [{
+                'title': 'Impossible de récupérer les mises à jour',
+                'content': 'Un problème est survenu lors de la récupération des mises à jour depuis GitHub.',
+                'date': datetime.now().strftime("%d/%m/%Y %H:%M"),
+                'priority': 'medium'
+            }]
+            # Vous pourriez également logger l'erreur
+            print(f"Erreur lors de la récupération des commits GitHub: {e}")
+
+    # Récupérer les statistiques des robots depuis get_hosts_status
+    try:
+        from utils.influx import get_hosts_status
+        hosts_status = get_hosts_status() or {}
+        robots_count = len(hosts_status)
+        active_robots = sum(1 for status in hosts_status.values() if status)
+    except Exception as e:
+        print(f"Erreur lors de la récupération des statistiques des robots: {e}")
+        robots_count = '--'
+        active_robots = '--'
+
+    # Contexte avec statistiques des robots
+    context = {
+        'user_is_admin': user_is_admin,
+        'user_is_roboticien': user_is_roboticien,
+        'notifications': notifications,
+        'robots_count': robots_count,
+        'active_robots': active_robots,
+        'alerts_count': 0,  # À remplacer par votre logique d'alertes
+        'tasks_count': '--',  # À remplacer par votre logique de tâches
+    }
+
+    # Retourner le contexte complet
+    return render(request, 'index.html', context)
 
 def login_view(request):
     """Vue de connexion"""
@@ -167,6 +220,7 @@ def admin_roles_view(request):
 @login_required
 def robot_list_view(request):
     user_is_admin = request.user.roles.filter(name='Admin').exists()
+    user_is_roboticien = request.user.roles.filter(name='Roboticien').exists()
     
     # Récupérer le dict {host: is_fresh}
     hosts_status = get_hosts_status()
@@ -174,6 +228,7 @@ def robot_list_view(request):
 
     return render(request, 'robot_list.html', {
         'user_is_admin': user_is_admin,
+        'user_is_roboticien': user_is_roboticien,
         'hosts_status': hosts_status,
     })
 
@@ -225,3 +280,45 @@ def host_detail_view(request, host):
         "user_is_roboticien": user_is_roboticien,
     }
     return render(request, "host_detail.html", context)
+
+
+def get_github_commits(repo_owner, repo_name, count=2):
+    """Récupère les derniers commits d'un dépôt GitHub"""
+    url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/commits"
+
+    response = requests.get(url, params={'per_page': count})
+
+    if response.status_code == 200:
+        commits = response.json()
+        formatted_commits = []
+
+        for commit in commits:
+            # Extraction des informations pertinentes
+            author = commit['commit']['author']['name']
+            message = commit['commit']['message']
+
+            # Tronquer le message s'il est trop long
+            if len(message) > 100:
+                message = message[:97] + "..."
+
+            date_str = commit['commit']['author']['date']
+            date = datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%SZ")
+
+            # Déterminer la priorité basée sur le message du commit
+            priority = 'low'
+            if 'fix' in message.lower() or 'bug' in message.lower():
+                priority = 'medium'
+            if 'urgent' in message.lower() or 'critical' in message.lower():
+                priority = 'high'
+
+            formatted_commits.append({
+                'title': f"Mise à jour par {author}",
+                'content': message,
+                'date': date,
+                'priority': priority,
+                'url': commit['html_url']
+            })
+
+        return formatted_commits
+
+    return []

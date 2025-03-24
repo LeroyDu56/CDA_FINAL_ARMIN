@@ -3,16 +3,120 @@
 {% block title %}Accueil - Robot Monitoring{% endblock %}
 
 {% block content %}
-<h2>Bienvenue sur la plateforme de monitoring des robots</h2>
-<p>Cette plateforme vous permet de gérer vos robots en temps réel.</p>
-
-<div class="notifications">
-    <h3>Notifications Internes</h3>
-    <p>Aucune notification pour le moment.</p>
+<div class="welcome-section">
+  <h2>Bienvenue sur la plateforme de monitoring des robots</h2>
+  <p class="welcome-description">Cette plateforme vous permet de surveiller et gérer vos robots en temps réel.</p>
+  
+  {% if user.is_authenticated %}
+    <div class="user-greeting">
+      <span class="greeting-icon">👋</span>
+      <p>Bonjour, <strong>{{ user.first_name }}</strong> ! Vous êtes connecté.</p>
+    </div>
+    
+    <div class="dashboard-overview">
+      <div class="dashboard-row">
+        <!-- Panneau de statistiques -->
+        <div class="dashboard-panel stats-panel">
+          <h3>Aperçu du système</h3>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <div class="stat-icon">🤖</div>
+              <div class="stat-info">
+                <span class="stat-value">{{ robots_count|default:"--" }}</span>
+                <span class="stat-label">Robots</span>
+              </div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-icon">✅</div>
+              <div class="stat-info">
+                <span class="stat-value">{{ active_robots|default:"--" }}</span>
+                <span class="stat-label">Actifs</span>
+              </div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-icon">⚠️</div>
+              <div class="stat-info">
+                <span class="stat-value">{{ alerts_count|default:"0" }}</span>
+                <span class="stat-label">Alertes</span>
+              </div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-icon">📊</div>
+              <div class="stat-info">
+                <span class="stat-value">{{ tasks_count|default:"--" }}</span>
+                <span class="stat-label">Tâches</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Section de notifications internes (version compacte) -->
+        <div class="notifications-panel">
+          <h3>Dernières mises à jour</h3>
+          <div class="notification-list">
+            {% if notifications %}
+              {% for notification in notifications %}
+                <div class="notification-item">
+                  <div class="notification-header">
+                    <span class="notification-date">{{ notification.date }}</span>
+                    <span class="notification-badge {% if notification.priority == 'high' %}high-priority{% elif notification.priority == 'medium' %}medium-priority{% else %}low-priority{% endif %}">
+                      {{ notification.priority|title }}
+                    </span>
+                  </div>
+                  <h4 class="notification-title">{{ notification.title }}</h4>
+                  <p class="notification-content">{{ notification.content }}</p>
+                  {% if notification.url %}
+                    <a href="{{ notification.url }}" target="_blank" class="notification-link">Voir le commit</a>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            {% else %}
+              <div class="notification-empty">
+                <p>Aucune mise à jour récente</p>
+              </div>
+            {% endif %}
+          </div>
+          <div class="notification-footer">
+            <a href="https://github.com/LeroyDu56/CDA_FINAL_ARMIN/commits/main" target="_blank" class="view-more-link">
+              Voir toutes les mises à jour
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Actions rapides -->
+      <div class="quick-actions">
+        <h3>Actions rapides</h3>
+        <div class="action-buttons">
+          <a href="{% url 'robot_list' %}" class="action-button">
+            <span class="action-icon">📋</span>
+            <span class="action-text">Liste des robots</span>
+          </a>
+          {% if user.is_staff %}
+          <a href="{% url 'admin_roles' %}" class="action-button">
+            <span class="action-icon">⚙️</span>
+            <span class="action-text">Administration</span>
+          </a>
+          {% endif %}
+          <a href="#" class="action-button">
+            <span class="action-icon">📊</span>
+            <span class="action-text">Statistiques</span>
+          </a>
+          <a href="#" class="action-button">
+            <span class="action-icon">❓</span>
+            <span class="action-text">Aide</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <div class="login-prompt">
+      <p>Veuillez vous connecter ou vous inscrire pour accéder aux fonctionnalités de monitoring.</p>
+      <div class="auth-buttons">
+        <a href="{% url 'login' %}" class="auth-button login-btn">Connexion</a>
+        <a href="{% url 'register' %}" class="auth-button register-btn">Inscription</a>
+      </div>
+    </div>
+  {% endif %}
 </div>
-{% if user.is_authenticated %}
-  <p>Bonjour, {{ user.first_name }} ! Vous êtes connecté.</p>
-{% else %}
-  <p>Veuillez vous connecter ou vous inscrire pour accéder aux fonctionnalités.</p>
-{% endif %}
 {% endblock %}
