@@ -1,4 +1,3 @@
-# robot_monitoring/settings.py
 import os
 import environ
 from pathlib import Path
@@ -6,9 +5,7 @@ from pathlib import Path
 # Chemin de base du projet
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.200.251']
 
 # Initialiser la lecture du fichier .env
 env = environ.Env()
@@ -18,7 +15,7 @@ env.read_env(env_file)
 # Récupérer les variables
 SECRET_KEY = env('SECRET_KEY')
 DEBUG = env('DEBUG')
-INFLUXDB_URL = env('INFLUXDB_URL', default='http://localhost:8086')
+INFLUXDB_URL = env('INFLUXDB_URL', default='http://192.168.200.251:8086')
 INFLUXDB_TOKEN = env('INFLUXDB_TOKEN', default='')
 INFLUXDB_ORG = env('INFLUXDB_ORG', default='')
 INFLUXDB_BUCKET = env('INFLUXDB_BUCKET', default='')

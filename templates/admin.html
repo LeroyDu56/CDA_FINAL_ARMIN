@@ -4,103 +4,111 @@
 {% block content %}
 <h2>Gestion des rôles utilisateurs</h2>
 
-<!-- Barre de recherche en "table" pour aligner 6 colonnes
-     Comme dans le tableau : Email, Prénom, Nom, (vide), Rôle, Bouton Filtrer -->
-<div class="search-header">
-  <div class="search-row">
-
-    <!-- Col 1 : Email -->
-    <div class="search-cell">
-      <label>Email</label>
-      <form method="get" class="no-margin" id="searchForm">
-        <input type="text" name="email" 
+<!-- Barre de recherche améliorée pour le responsive -->
+<div class="search-container">
+  <form method="get" id="searchForm">
+    <div class="search-grid">
+      <div class="search-item">
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email" 
                value="{{ request.GET.email|default_if_none:'' }}"
                placeholder="Tapez un email...">
-      </form>
+      </div>
+      
+      <div class="search-item">
+        <label for="first_name">Prénom</label>
+        <input type="text" id="first_name" name="first_name"
+               value="{{ request.GET.first_name|default_if_none:'' }}"
+               placeholder="Tapez un prénom...">
+      </div>
+      
+      <div class="search-item">
+        <label for="last_name">Nom</label>
+        <input type="text" id="last_name" name="last_name"
+               value="{{ request.GET.last_name|default_if_none:'' }}"
+               placeholder="Tapez un nom...">
+      </div>
+      
+      <div class="search-item">
+        <label for="role">Rôle</label>
+        <input type="text" id="role" name="role"
+               value="{{ request.GET.role|default_if_none:'' }}"
+               placeholder="Tapez un rôle...">
+      </div>
+      
+      <div class="search-item search-button">
+        <button type="submit" class="filtrer-btn">Filtrer</button>
+      </div>
     </div>
-
-    <!-- Col 2 : Prénom -->
-    <div class="search-cell">
-      <label>Prénom</label>
-      <input type="text" form="searchForm" name="first_name"
-             value="{{ request.GET.first_name|default_if_none:'' }}"
-             placeholder="Tapez un prénom...">
-    </div>
-
-    <!-- Col 3 : Nom -->
-    <div class="search-cell">
-      <label>Nom</label>
-      <input type="text" form="searchForm" name="last_name"
-             value="{{ request.GET.last_name|default_if_none:'' }}"
-             placeholder="Tapez un nom...">
-    </div>
-
-    <!-- Col 4 : Vide (on n'a plus IP) -->
-    <div class="search-cell">
-      <!-- Laisser vide pour garder 6 colonnes alignées -->
-      <label>&nbsp;</label>
-      <!-- pas de champ -->
-    </div>
-
-    <!-- Col 5 : Rôle -->
-    <div class="search-cell">
-      <label>Rôle</label>
-      <input type="text" form="searchForm" name="role"
-             value="{{ request.GET.role|default_if_none:'' }}"
-             placeholder="Tapez un rôle...">
-    </div>
-
-    <!-- Col 6 : Bouton Filtrer -->
-    <div class="search-cell">
-      <label>&nbsp;</label>
-      <button type="submit" class="filtrer-btn" form="searchForm">Filtrer</button>
-    </div>
-
-  </div>
+  </form>
 </div>
 
-<table>
-  <thead>
-    <tr>
-      <th>Email</th>
-      <th>Prénom</th>
-      <th>Nom</th>
-      <th>Dernière IP</th>
-      <th>Rôle actuel</th>
-      <th>Attribuer un rôle</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for user in users %}
-    <tr>
-      <td>{{ user.email }}</td>
-      <td>{{ user.first_name }}</td>
-      <td>{{ user.last_name }}</td>
-      <td>{{ user.last_ip }}</td>
-      <td>
-        {% for role in user.roles %}
-          {{ role.name }}
-        {% empty %}
-          Aucun
-        {% endfor %}
-      </td>
-      <td>
-        <form method="post">
-          {% csrf_token %}
-          <input type="hidden" name="user_id" value="{{ user.user_id }}">
-          <select name="role_id">
-            {% for role in roles %}
-            <option value="{{ role.role_id }}"
-              {% if role in user.roles %}selected{% endif %}>
-              {{ role.name }}
-            </option>
-            {% endfor %}
-          </select>
-          <button type="submit" class="auth-btn">Attribuer</button>
-        </form>
-      </td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+<!-- Indicateur de défilement pour mobile et tablette -->
+<div class="scroll-indicator">
+  ← Faites défiler horizontalement pour voir toutes les données →
+</div>
+
+<div class="table-responsive">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Prénom</th>
+        <th>Nom</th>
+        <th>Dernière IP</th>
+        <th>Rôle actuel</th>
+        <th>Attribuer un rôle</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+      <tr>
+        <td>{{ user.email }}</td>
+        <td>{{ user.first_name }}</td>
+        <td>{{ user.last_name }}</td>
+        <td>{{ user.last_ip }}</td>
+        <td>
+          {% for role in user.roles %}
+            {{ role.name }}
+          {% empty %}
+            Aucun
+          {% endfor %}
+        </td>
+        <td>
+          <form method="post" class="role-form">
+            {% csrf_token %}
+            <input type="hidden" name="user_id" value="{{ user.user_id }}">
+            <div class="role-select-container">
+              <select name="role_id">
+                {% for role in roles %}
+                <option value="{{ role.role_id }}"
+                  {% if role in user.roles %}selected{% endif %}>
+                  {{ role.name }}
+                </option>
+                {% endfor %}
+              </select>
+              <button type="submit" class="auth-btn">Attribuer</button>
+            </div>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<!-- Pagination simple -->
+{% if users.has_other_pages %}
+<div class="pagination">
+  {% if users.has_previous %}
+    <button onclick="window.location.href='?page={{ users.previous_page_number }}'">Précédent</button>
+  {% endif %}
+  
+  <span>Page {{ users.number }} sur {{ users.paginator.num_pages }}</span>
+  
+  {% if users.has_next %}
+    <button onclick="window.location.href='?page={{ users.next_page_number }}'">Suivant</button>
+  {% endif %}
+</div>
+{% endif %}
 {% endblock %}

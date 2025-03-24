@@ -1,6 +1,8 @@
 <!-- templates/header.html -->
 {% load static %}
-<header class="main-header">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<header class="main-header">  
   <div class="container nav-content">
       <!-- Logo -->
       <div class="logo-container">
@@ -42,8 +44,9 @@
 </header>
 
 <!-- Zone d'affichage des messages flash -->
+<!-- Zone d'affichage des messages flash -->
 {% if messages %}
-  <div class="flash-messages">
+  <div class="flash-messages" id="flash-messages">
     <ul>
       {% for message in messages %}
         <li class="{{ message.tags }}">
@@ -53,6 +56,18 @@
       {% endfor %}
     </ul>
   </div>
+  <script>
+    // Automatically hide flash messages after 4 seconds
+    setTimeout(() => {
+      const flashMessages = document.getElementById('flash-messages');
+      if (flashMessages) {
+        flashMessages.style.opacity = '0';
+        setTimeout(() => {
+          flashMessages.style.display = 'none';
+        }, 300); // Match the CSS transition duration
+      }
+    }, 4000); // 4 seconds
+  </script>
 {% endif %}
 
 <!-- Script pour le menu responsive -->
