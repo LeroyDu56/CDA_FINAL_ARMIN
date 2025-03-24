@@ -5,6 +5,11 @@
 {% block content %}
 <h2>Bienvenue sur la plateforme de monitoring des robots</h2>
 <p>Cette plateforme vous permet de gérer vos robots en temps réel.</p>
+
+<div class="notifications">
+    <h3>Notifications Internes</h3>
+    <p>Aucune notification pour le moment.</p>
+</div>
 {% if user.is_authenticated %}
   <p>Bonjour, {{ user.first_name }} ! Vous êtes connecté.</p>
 {% else %}
