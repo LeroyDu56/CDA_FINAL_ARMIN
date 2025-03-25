@@ -246,6 +246,32 @@ def host_detail_view(request, host):
     from utils.influx import get_hosts_status, get_last_connection_time
     from datetime import datetime, timezone
 
+    # Traitement du formulaire d'ajout de tâche SAV
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        priority = request.POST.get('priority')
+        status = request.POST.get('status')
+
+        if title and description:
+            try:
+                # Créer une nouvelle tâche SAV
+                ServiceTask.objects.create(
+                    host=host,  # Utilisez directement la chaîne host
+                    title=title,
+                    description=description,
+                    priority=priority,
+                    status=status,
+                    # Ne pas inclure created_by si ce champ n'existe pas dans votre modèle
+                )
+                messages.success(request, "Tâche SAV ajoutée avec succès.")
+                return redirect('host_detail', host=host)
+            except Exception as e:
+                messages.error(request, f"Erreur lors de l'ajout de la tâche: {str(e)}")
+                print(f"Erreur lors de l'ajout de la tâche: {str(e)}")
+        else:
+            messages.error(request, "Veuillez remplir tous les champs obligatoires.")
+
     # Récupérer les informations de l'hôte
     hosts_status = get_hosts_status() or {}
     is_host_active = hosts_status.get(host, False)
