@@ -64,10 +64,10 @@ def index(request):
         'user_is_admin': user_is_admin,
         'user_is_roboticien': user_is_roboticien,
         'notifications': notifications,
-        'robots_count': robots_count,
-        'active_robots': active_robots,
-        'alerts_count': 0,  # À remplacer par votre logique d'alertes
-        'tasks_count': '--',  # À remplacer par votre logique de tâches
+        'robots_count': robots_count if robots_count != '--' else 0,
+        'active_robots': active_robots if active_robots != '--' else 0,
+        'alerts_count': 0,
+        'tasks_count': 0,  # À remplacer par votre logique de tâches
     }
 
     # Retourner le contexte complet

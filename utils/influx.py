@@ -47,7 +47,7 @@ def get_hosts_status():
                 for record in table.records:
                     host_name = record.values["host"]
                     last_time = record.values["_time"]
-                    is_fresh = (now_utc - last_time).total_seconds() < 15
+                    is_fresh = (now_utc - last_time).total_seconds() < 30
                     host_status[host_name] = is_fresh
 
             return host_status
