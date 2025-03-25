@@ -1,5 +1,6 @@
 # auth_app/views.py
 import requests
+import os
 from datetime import datetime
 from django.db.models import Q
 from django.urls import reverse
@@ -25,8 +26,10 @@ def index(request):
 
         # Ajouter la récupération des notifications GitHub
         try:
-            # Remplacez par votre nom d'utilisateur et nom de repo GitHub
-            github_updates = get_github_commits('LeroyDu56', 'CDA_FINAL_ARMIN', count=2)
+            # Utiliser les variables d'environnement
+            github_owner = os.environ.get('GITHUB_REPO_OWNER')
+            github_repo = os.environ.get('GITHUB_REPO_NAME')
+            github_updates = get_github_commits(github_owner, github_repo, count=2)
 
             # Convertir les commits en "notifications"
             for update in github_updates:

@@ -2,12 +2,55 @@ document.addEventListener('DOMContentLoaded', function() {
     // Récupérer les données JSON du template
     const appData = JSON.parse(document.getElementById('host-data').textContent);
     
-    const { isHostActive, host, lastConnectionTime, grafanaBaseUrl, cpuPanelId, diskPanelId } = appData;
+    const { 
+        isHostActive, 
+        host, 
+        lastConnectionTime, 
+        grafanaBaseUrl
+    } = appData;
     
-    // Construire les URLs de base
+    // Définir les IDs de panneau selon l'ordre dans Grafana
+    // 1=CPU, 2=Mémoire, 3=Disque, 4=Nombre processus, 5=SWAP, 6=Trafic réseau, 7=Charge système
+    const panels = {
+        cpu: {
+            id: 1,  // Semble correct
+            element: "cpu_iframe",
+            dashboard: "armin_graph"
+        },
+        memory: {
+            id: 3,  // À déterminer - actuellement "Panel not found"
+            element: "memory_iframe",
+            dashboard: "armin_graph"
+        },
+        disk: {
+            id: 4,  // Actuellement affiche Mémoire, donc ID=2
+            element: "disk_iframe",
+            dashboard: "armin_graph"
+        },
+        processes: {
+            id: 8,  // Semble correct
+            element: "processes_iframe",
+            dashboard: "armin_graph"
+        },
+        swap: {
+            id: 7,  // Actuellement affiche Charge système, donc ID=7
+            element: "swap_iframe",
+            dashboard: "armin_graph"
+        },
+        network: {
+            id: 6,  // Semble correct
+            element: "network_iframe",
+            dashboard: "armin_graph"
+        },
+        system: {
+            id: 5,  // Actuellement affiche SWAP, donc ID=5
+            element: "load_iframe",
+            dashboard: "armin_graph"
+        }
+    };
+    
+    // Construire les URLs de base avec le refresh approprié
     const refreshParam = isHostActive ? "&refresh=5s" : "&refresh=0";
-    const baseCpuUrl = `${grafanaBaseUrl}/armin-graph?orgId=1&timezone=browser&panelId=${cpuPanelId}&var-host=${host}${refreshParam}`;
-    const baseDiskUrl = `${grafanaBaseUrl}/armin-disk?orgId=1&timezone=browser&panelId=${diskPanelId}&var-host=${host}${refreshParam}`;
     
     // Fonction pour convertir les plages temporelles en millisecondes
     function convertTimeRangeToMs(range) {
@@ -23,13 +66,12 @@ document.addEventListener('DOMContentLoaded', function() {
         return value * (multipliers[unit] || 60 * 1000);
     }
     
-    // Fonction pour générer les URLs selon les paramètres
-    function generateUrls(timeRange) {
+    // Fonction pour générer l'URL d'un panneau
+    function generatePanelUrl(panel, timeRange) {
+        const baseUrl = `${grafanaBaseUrl}/${panel.dashboard}?orgId=1&timezone=browser&panelId=${panel.id}&var-host=${host}${refreshParam}`;
+        
         if (isHostActive) {
-            return {
-                cpuUrl: `${baseCpuUrl}&from=now-${timeRange}&to=now`,
-                diskUrl: `${baseDiskUrl}&from=now-${timeRange}&to=now`
-            };
+            return `${baseUrl}&from=now-${timeRange}&to=now`;
         } 
         
         if (lastConnectionTime) {
@@ -37,24 +79,22 @@ document.addEventListener('DOMContentLoaded', function() {
             const endTimeMs = lastConnDate.getTime() + (5 * 60 * 1000);
             const startTimeMs = endTimeMs - convertTimeRangeToMs(timeRange);
             
-            return {
-                cpuUrl: `${baseCpuUrl}&from=${startTimeMs}&to=${endTimeMs}`,
-                diskUrl: `${baseDiskUrl}&from=${startTimeMs}&to=${endTimeMs}`
-            };
+            return `${baseUrl}&from=${startTimeMs}&to=${endTimeMs}`;
         }
         
-        // Cas par défaut si aucune condition n'est remplie
-        return {
-            cpuUrl: `${baseCpuUrl}&from=now-${timeRange}&to=now`,
-            diskUrl: `${baseDiskUrl}&from=now-${timeRange}&to=now`
-        };
+        // Cas par défaut
+        return `${baseUrl}&from=now-${timeRange}&to=now`;
     }
     
-    // Mettre à jour les iframes
+    // Mettre à jour tous les iframes
     function updateIframes(timeRange) {
-        const urls = generateUrls(timeRange);
-        document.getElementById("cpu_iframe").src = urls.cpuUrl;
-        document.getElementById("disk_iframe").src = urls.diskUrl;
+        // Parcourir tous les panneaux et mettre à jour leurs iframes
+        Object.values(panels).forEach(panel => {
+            const iframe = document.getElementById(panel.element);
+            if (iframe) {
+                iframe.src = generatePanelUrl(panel, timeRange);
+            }
+        });
     }
     
     // Initialiser avec la plage de temps par défaut

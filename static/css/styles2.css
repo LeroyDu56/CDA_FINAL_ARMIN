@@ -17,7 +17,7 @@
   --large-desktop: 1200px;
   --xlarge-desktop: 1600px;
   --xxlarge-desktop: 2000px;
-  --max-content-width: 1600px;
+  --max-content-width: 1400px;
 }
 
 /* ========================================================================= */
@@ -2029,7 +2029,7 @@ button:hover {
 
 @media (min-width: 1600px) {
   html {
-    font-size: 18px; /* Augmentation légère de la taille de base des polices */
+    font-size: 17px; /* Augmentation légère de la taille de base des polices */
   }
   
   .container {
@@ -2217,5 +2217,57 @@ button:hover {
   .host-section h3 {
     font-size: 1.6rem;
     margin-bottom: 20px;
+  }
+}
+
+/* Optimisations pour écrans de 15 pouces */
+@media (min-width: 1366px) and (max-width: 1599px) {
+  html {
+    font-size: 15px; /* Taille de base réduite */
+  }
+  
+  /* Ajustements du dashboard */
+  .stats-panel {
+    flex: 0.5;
+  }
+  
+  .notifications-panel {
+    flex: 1.5;
+  }
+  
+  .stat-icon {
+    font-size: 1.8rem;
+  }
+  
+  .stat-value {
+    font-size: 1.4rem;
+  }
+  
+  /* Réduction des marges et paddings */
+  .dashboard-row {
+    gap: 15px;
+  }
+  
+  .dashboard-panel {
+    padding: 15px;
+  }
+  
+  /* Ajustement des boutons d'action */
+  .action-buttons {
+    gap: 12px;
+  }
+  
+  .action-button {
+    padding: 15px 12px;
+  }
+  
+  .action-icon {
+    font-size: 1.7rem;
+    margin-bottom: 8px;
+  }
+  
+  /* Réduction de la taille des conteneurs */
+  .container, .welcome-section, .dashboard-overview {
+    max-width: 1200px;
   }
 }

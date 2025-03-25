@@ -34,13 +34,46 @@
     
     <div class="host-sections">
         <div class="host-section pc-section">
+            <!-- Section CPU -->
             <h3>Utilisation du CPU</h3>
             <div class="grafana-panel">
                 <iframe id="cpu_iframe" width="100%" height="300" frameborder="0" allowfullscreen></iframe>
             </div>
-            <h3>Espace Disque Libre</h3>
+            
+            <!-- Section Mémoire -->
+            <h3>Utilisation de la Mémoire</h3>
+            <div class="grafana-panel">
+                <iframe id="memory_iframe" width="100%" height="300" frameborder="0" allowfullscreen></iframe>
+            </div>
+            
+            <!-- Section Disque -->
+            <h3>Espace Disque</h3>
             <div class="grafana-panel">
                 <iframe id="disk_iframe" width="100%" height="300" frameborder="0" allowfullscreen></iframe>
+            </div>
+            
+            <!-- Section Nombre de Processus -->
+            <h3>Nombre de Processus</h3>
+            <div class="grafana-panel">
+                <iframe id="processes_iframe" width="100%" height="300" frameborder="0" allowfullscreen></iframe>
+            </div>
+            
+            <!-- Section Utilisation SWAP -->
+            <h3>Utilisation SWAP</h3>
+            <div class="grafana-panel">
+                <iframe id="swap_iframe" width="100%" height="300" frameborder="0" allowfullscreen></iframe>
+            </div>
+            
+            <!-- Section Trafic Réseau -->
+            <h3>Trafic Réseau</h3>
+            <div class="grafana-panel">
+                <iframe id="network_iframe" width="100%" height="300" frameborder="0" allowfullscreen></iframe>
+            </div>
+            
+            <!-- Section Charge Système -->
+            <h3>Charge Système</h3>
+            <div class="grafana-panel">
+                <iframe id="load_iframe" width="100%" height="300" frameborder="0" allowfullscreen></iframe>
             </div>
         </div>
         
@@ -56,9 +89,7 @@
         "isHostActive": {{ is_host_active|yesno:"true,false" }},
         "host": "{{ host }}",
         "lastConnectionTime": "{{ last_connection_timestamp|default:'' }}",
-        "grafanaBaseUrl": "http://192.168.200.251:3001/d-solo/dee0o5db5zgn4f",
-        "cpuPanelId": 1,
-        "diskPanelId": 2
+        "grafanaBaseUrl": "http://192.168.200.251:3001/d-solo/dee0o5db5zgn4f"
     }
 </script>
 
