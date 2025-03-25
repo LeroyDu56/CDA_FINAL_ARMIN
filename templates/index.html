@@ -4,8 +4,6 @@
 
 {% block content %}
 <div class="welcome-section">
-  <h2>Bienvenue sur la plateforme de monitoring des robots</h2>
-  <p class="welcome-description">Cette plateforme vous permet de surveiller et gérer vos robots en temps réel.</p>
   
   {% if user.is_authenticated %}
     <div class="user-greeting">
@@ -88,15 +86,17 @@
       <div class="quick-actions">
         <h3>Actions rapides</h3>
         <div class="action-buttons">
-          <a href="{% url 'robot_list' %}" class="action-button">
-            <span class="action-icon">📋</span>
-            <span class="action-text">Liste des robots</span>
-          </a>
+          {% if not user_is_visitor %}
+            <a href="{% url 'robot_list' %}" class="action-button">
+              <span class="action-icon">📋</span>
+              <span class="action-text">Liste des robots</span>
+            </a>
+          {% endif %}
           {% if user.is_staff %}
-          <a href="{% url 'admin_roles' %}" class="action-button">
-            <span class="action-icon">⚙️</span>
-            <span class="action-text">Administration</span>
-          </a>
+            <a href="{% url 'admin_roles' %}" class="action-button">
+              <span class="action-icon">⚙️</span>
+              <span class="action-text">Administration</span>
+            </a>
           {% endif %}
           <a href="#" class="action-button">
             <span class="action-icon">📊</span>

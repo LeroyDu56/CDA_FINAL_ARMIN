@@ -16,4 +16,8 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('robots/', views.robot_list_view, name='robot_list'),
     path('host/<str:host>/', views.host_detail_view, name='host_detail'),
+    path('sav/', views.sav_list_view, name='sav_list'),
+    path('sav/<int:task_id>/', views.sav_detail_view, name='sav_detail'),
+    path('host/<str:host>/add_task/', views.add_service_task, name='add_service_task'),
+    
 ]

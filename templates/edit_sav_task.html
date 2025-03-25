@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Modifier la tâche SAV - Robot Monitoring{% endblock %}
+
+{% block content %}
+<div class="back-btn-container">
+    <a href="{% url 'sav_detail' task.id %}" class="back-btn-red">
+        <i class="fa fa-arrow-left"></i> Retour aux détails
+    </a>
+</div>
+
+<div class="sav-detail-container">
+    <div class="sav-detail-header">
+        <h2>Modifier la tâche SAV</h2>
+    </div>
+    
+    <form method="post" class="edit-task-form">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="title">Titre</label>
+            <input type="text" class="form-control" id="title" name="title" value="{{ task.title }}" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="5" required>{{ task.description }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="priority">Priorité</label>
+            <select class="form-select" id="priority" name="priority">
+                <option value="low" {% if task.priority == 'low' %}selected{% endif %}>Basse</option>
+                <option value="medium" {% if task.priority == 'medium' %}selected{% endif %}>Moyenne</option>
+                <option value="high" {% if task.priority == 'high' %}selected{% endif %}>Haute</option>
+                <option value="urgent" {% if task.priority == 'urgent' %}selected{% endif %}>Urgente</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="status">Statut</label>
+            <select class="form-select" id="status" name="status">
+                <option value="pending" {% if task.status == 'pending' %}selected{% endif %}>À faire</option>
+                <option value="in_progress" {% if task.status == 'in_progress' %}selected{% endif %}>En cours</option>
+                <option value="completed" {% if task.status == 'completed' %}selected{% endif %}>Terminée</option>
+            </select>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+            <a href="{% url 'sav_detail' task.id %}" class="btn btn-secondary">Annuler</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

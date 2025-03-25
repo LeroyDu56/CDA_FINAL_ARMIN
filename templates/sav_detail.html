@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Détail de la tâche SAV - Robot Monitoring{% endblock %}
+{% load static %}
+
+{% block content_wrapper %}
+<div class="back-btn-container">
+    <a href="{% url 'sav_list' %}" class="back-btn-red">
+        <i class="fa fa-arrow-left"></i> Retour à la liste
+    </a>
+</div>
+
+<div class="sav-detail-container">
+    <div class="sav-detail-header">
+        <h2>{{ task.title }}</h2>
+        <div class="task-badges">
+            <span class="priority-badge priority-{{ task.priority }}">{{ task.get_priority_display }}</span>
+            <span class="status-badge status-{{ task.status }}">{{ task.get_status_display }}</span>
+        </div>
+    </div>
+    
+    <div class="sav-detail-info">
+        <div class="info-row">
+            <span class="info-label">Hôte:</span>
+            <span class="info-value">{{ task.host }}</span>
+            <a href="{% url 'host_detail' host=task.host %}" class="view-host-link">Voir l'hôte</a>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Créée le:</span>
+            <span class="info-value">{{ task.created_at|date:"d/m/Y H:i" }}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Dernière mise à jour:</span>
+            <span class="info-value">{{ task.updated_at|date:"d/m/Y H:i" }}</span>
+        </div>
+    </div>
+    
+    <div class="sav-detail-description">
+        <h3>Description</h3>
+        <div class="description-content">
+            {{ task.description|linebreaks }}
+        </div>
+    </div>
+    
+    <div class="sav-detail-actions">
+        <h3>Mettre à jour le statut</h3>
+        <form action="{% url 'sav_detail' task_id=task.id %}" method="post" class="status-update-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="status">Nouveau statut:</label>
+                <select id="status" name="status">
+                    <option value="pending" {% if task.status == 'pending' %}selected{% endif %}>À faire</option>
+                    <option value="in_progress" {% if task.status == 'in_progress' %}selected{% endif %}>En cours</option>
+                    <option value="completed" {% if task.status == 'completed' %}selected{% endif %}>Terminée</option>
+                </select>
+            </div>
+            <button type="submit" name="update_status" class="update-status-btn">Mettre à jour</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

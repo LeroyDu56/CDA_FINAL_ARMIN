@@ -83,6 +83,66 @@
         </div>
     </div>
 </div>
+        
+        <div class="host-section robot-section">
+            <h3>Service Après-Vente (SAV)</h3>
+            
+            <!-- Liste des tâches existantes -->
+            {% if service_tasks %}
+                <h6>Tâches existantes :</h6>
+                <ul class="task-list">
+                    {% for task in service_tasks %}
+                        <li class="task-item priority-{{ task.priority }}">
+                            <div class="task-header">
+                                <a href="{% url 'sav_detail' task.id %}" class="task-title">{{ task.title }}</a>
+                                <div>
+                                    <span class="priority-badge priority-{{ task.priority }}">{{ task.get_priority_display }}</span>
+                                    <span class="status-badge status-{{ task.status }}">{{ task.get_status_display }}</span>
+                                </div>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="no-tasks">Aucune tâche SAV pour cet hôte.</p>
+            {% endif %}
+
+            <!-- Formulaire pour ajouter une nouvelle tâche -->
+            <div class="add-task-form">
+                <h6>Ajouter une nouvelle tâche :</h6>
+                <form method="post" action="">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="title">Titre</label>
+                        <input type="text" id="title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea id="description" name="description" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="priority">Priorité</label>
+                        <select id="priority" name="priority">
+                            <option value="low">Basse</option>
+                            <option value="medium" selected>Moyenne</option>
+                            <option value="high">Haute</option>
+                            <option value="urgent">Urgente</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Statut</label>
+                        <select id="status" name="status">
+                            <option value="pending" selected>À faire</option>
+                            <option value="in_progress">En cours</option>
+                            <option value="completed">Terminée</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="add-task-btn">Ajouter</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script id="host-data" type="application/json">
     {
@@ -94,4 +154,100 @@
 </script>
 
 <script src="{% static 'js/host_detail.js' %}"></script>
+
+    <script>
+        // Fonction pour mettre à jour l'affichage de la dernière connexion
+        function updateLastConnectionTime() {
+            const lastConnectionTimestamp = "{{ last_connection_timestamp }}";
+            if (lastConnectionTimestamp && "{{ is_host_active }}" !== "True") {
+                const lastConnectionTime = new Date(lastConnectionTimestamp);
+                const now = new Date();
+                const timeDiff = Math.floor((now - lastConnectionTime) / 1000); // différence en secondes
+
+                let displayText = "";
+                if (timeDiff < 60) {
+                    displayText = "Il y a quelques secondes";
+                } else if (timeDiff < 3600) {
+                    const minutes = Math.floor(timeDiff / 60);
+                    displayText = `Il y a ${minutes} minute${minutes > 1 ? 's' : ''}`;
+                } else if (timeDiff < 86400) {
+                    const hours = Math.floor(timeDiff / 3600);
+                    displayText = `Il y a ${hours} heure${hours > 1 ? 's' : ''}`;
+                } else if (timeDiff < 2592000) { // moins de 30 jours
+                    const days = Math.floor(timeDiff / 86400);
+                    displayText = `Il y a ${days} jour${days > 1 ? 's' : ''}`;
+                } else {
+                    // Format: DD/MM/YYYY
+                    const day = lastConnectionTime.getDate().toString().padStart(2, '0');
+                    const month = (lastConnectionTime.getMonth() + 1).toString().padStart(2, '0');
+                    const year = lastConnectionTime.getFullYear();
+                    displayText = `Dernière connexion le ${day}/${month}/${year}`;
+                }
+
+                document.getElementById('last-connection').textContent = displayText;
+            }
+        }
+
+        // Mettre à jour l'affichage toutes les minutes
+        setInterval(updateLastConnectionTime, 60000);
+
+        // Gestion des boutons d'action
+        document.addEventListener('DOMContentLoaded', function() {
+            const rebootBtn = document.getElementById('rebootBtn');
+            const shutdownBtn = document.getElementById('shutdownBtn');
+
+            if (rebootBtn) {
+                rebootBtn.addEventListener('click', function() {
+                    if (confirm('Êtes-vous sûr de vouloir redémarrer cet hôte ?')) {
+                        // Envoyer une requête pour redémarrer l'hôte
+                        fetch(`/api/host/{{ host }}/reboot`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRFToken': '{{ csrf_token }}',
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert('Commande de redémarrage envoyée avec succès.');
+                            } else {
+                                alert('Erreur lors de l\'envoi de la commande de redémarrage: ' + data.error);
+                            }
+                        })
+                        .catch(error => {
+                            alert('Erreur lors de l\'envoi de la commande de redémarrage: ' + error);
+                        });
+                    }
+                });
+            }
+
+            if (shutdownBtn) {
+                shutdownBtn.addEventListener('click', function() {
+                    if (confirm('Êtes-vous sûr de vouloir éteindre cet hôte ?')) {
+                        // Envoyer une requête pour éteindre l'hôte
+                        fetch(`/api/host/{{ host }}/shutdown`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRFToken': '{{ csrf_token }}',
+                                'Content-Type': 'application/json'
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert('Commande d\'extinction envoyée avec succès.');
+                            } else {
+                                alert('Erreur lors de l\'envoi de la commande d\'extinction: ' + data.error);
+                            }
+                        })
+                        .catch(error => {
+                            alert('Erreur lors de l\'envoi de la commande d\'extinction: ' + error);
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+</main>
 {% endblock %}

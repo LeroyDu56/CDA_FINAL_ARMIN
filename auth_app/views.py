@@ -4,34 +4,38 @@ import os
 from datetime import datetime
 from django.db.models import Q
 from django.urls import reverse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.clickjacking import xframe_options_exempt
+from django.http import HttpResponseForbidden
 from .forms import LoginForm, RegisterForm
-from .models import User, Role, AuthLog
+from .models import User, Role, AuthLog, ServiceTask
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from utils.influx import get_hosts_status
+from .decorators import role_required
 
 def index(request):
     # Page d'accueil
     user_is_admin = False
     user_is_roboticien = False
+    user_is_visitor = False
+    user_is_client = False
     notifications = []
 
     if request.user.is_authenticated:
         user_is_admin = request.user.roles.filter(name='Admin').exists()
         user_is_roboticien = request.user.roles.filter(name='Roboticien').exists()
+        user_is_visitor = request.user.roles.filter(name='Visiteur').exists()
+        user_is_client = request.user.roles.filter(name='Client').exists()
 
         # Ajouter la récupération des notifications GitHub
         try:
-            # Utiliser les variables d'environnement
             github_owner = os.environ.get('GITHUB_REPO_OWNER')
             github_repo = os.environ.get('GITHUB_REPO_NAME')
             github_updates = get_github_commits(github_owner, github_repo, count=2)
 
-            # Convertir les commits en "notifications"
             for update in github_updates:
                 notifications.append({
                     'title': update['title'],
@@ -41,14 +45,12 @@ def index(request):
                     'url': update['url']
                 })
         except Exception as e:
-            # En cas d'erreur, afficher un message générique
             notifications = [{
                 'title': 'Impossible de récupérer les mises à jour',
                 'content': 'Un problème est survenu lors de la récupération des mises à jour depuis GitHub.',
                 'date': datetime.now().strftime("%d/%m/%Y %H:%M"),
                 'priority': 'medium'
             }]
-            # Vous pourriez également logger l'erreur
             print(f"Erreur lors de la récupération des commits GitHub: {e}")
 
     # Récupérer les statistiques des robots depuis get_hosts_status
@@ -62,18 +64,23 @@ def index(request):
         robots_count = '--'
         active_robots = '--'
 
-    # Contexte avec statistiques des robots
+    # Si l'utilisateur est un visiteur ou client, afficher "XX" au lieu des valeurs réelles
+    if user_is_visitor or user_is_client:
+        robots_count = "XX"
+        active_robots = "XX"
+
     context = {
         'user_is_admin': user_is_admin,
         'user_is_roboticien': user_is_roboticien,
+        'user_is_visitor': user_is_visitor,
+        'user_is_client': user_is_client,
         'notifications': notifications,
         'robots_count': robots_count if robots_count != '--' else 0,
         'active_robots': active_robots if active_robots != '--' else 0,
         'alerts_count': 0,
-        'tasks_count': 0,  # À remplacer par votre logique de tâches
+        'tasks_count': 0,
     }
 
-    # Retourner le contexte complet
     return render(request, 'index.html', context)
 
 def login_view(request):
@@ -92,7 +99,7 @@ def login_view(request):
                     ip_address=request.META.get('REMOTE_ADDR'),
                     user_agent=request.META.get('HTTP_USER_AGENT')
                 )
-                messages.success(request, "Connexion réussie !")
+                messages.success(request, "Connexion réussie !")
                 return redirect('index')
             else:
                 messages.error(request, "Identifiants invalides.")
@@ -129,13 +136,13 @@ def register_view(request):
                 user_agent=request.META.get('HTTP_USER_AGENT')
             )
             # Succès
-            messages.success(request, "Inscription réussie !")
+            messages.success(request, "Inscription réussie !")
             login(request, user)
             return redirect('index')
         else:
             # NE PAS faire messages.error(...) ici.
             pass
-            # Le formulaire va contenir les erreurs 
+            # Le formulaire va contenir les erreurs
             # qu'on affichera directement dans le template.
     else:
         form = RegisterForm()
@@ -158,19 +165,15 @@ def logout_view(request):
             user_agent=request.META.get('HTTP_USER_AGENT')
         )
         logout(request)
-        messages.success(request, "Déconnexion réussie !")
+        messages.success(request, "Déconnexion réussie !")
         return redirect('index')
     else:
-        from django.http import HttpResponseForbidden
         return HttpResponseForbidden("Méthode non autorisée.")
 
 @login_required
+@role_required(['Admin'])
 def admin_roles_view(request):
-    user_is_admin = request.user.roles.filter(name='Admin').exists()
-    if not user_is_admin:
-        from django.http import HttpResponseForbidden
-        return HttpResponseForbidden("Accès interdit.")
-
+    """Vue pour gérer les rôles (réservée aux admins)"""
     email = request.GET.get('email', '')
     first_name = request.GET.get('first_name', '')
     last_name = request.GET.get('last_name', '')
@@ -217,17 +220,18 @@ def admin_roles_view(request):
     return render(request, 'admin.html', {
         'users': users_data,
         'roles': roles,
-        'user_is_admin': user_is_admin,
+        'user_is_admin': True,
     })
 
 @login_required
+@role_required(['Admin', 'Roboticien'])
 def robot_list_view(request):
+    """Vue pour afficher la liste des robots"""
     user_is_admin = request.user.roles.filter(name='Admin').exists()
     user_is_roboticien = request.user.roles.filter(name='Roboticien').exists()
-    
+
     # Récupérer le dict {host: is_fresh}
     hosts_status = get_hosts_status()
-    # Par exemple => {"VM1telegraf": True, "VM2telegraf": False, ...}
 
     return render(request, 'robot_list.html', {
         'user_is_admin': user_is_admin,
@@ -236,7 +240,9 @@ def robot_list_view(request):
     })
 
 @login_required
+@role_required(['Admin', 'Roboticien'])
 def host_detail_view(request, host):
+    """Vue pour afficher les détails d'un hôte"""
     from utils.influx import get_hosts_status, get_last_connection_time
     from datetime import datetime, timezone
 
@@ -274,6 +280,9 @@ def host_detail_view(request, host):
     user_is_admin = request.user.roles.filter(name='Admin').exists()
     user_is_roboticien = request.user.roles.filter(name='Roboticien').exists()
 
+    # Récupérer les tâches SAV pour cet hôte
+    service_tasks = ServiceTask.objects.filter(host=host).order_by('-created_at')
+
     context = {
         "host": host,
         "is_host_active": is_host_active,
@@ -281,6 +290,7 @@ def host_detail_view(request, host):
         "last_connection_display": last_connection_display,
         "user_is_admin": user_is_admin,
         "user_is_roboticien": user_is_roboticien,
+        "service_tasks": service_tasks,
     }
     return render(request, "host_detail.html", context)
 
@@ -296,18 +306,15 @@ def get_github_commits(repo_owner, repo_name, count=2):
         formatted_commits = []
 
         for commit in commits:
-            # Extraction des informations pertinentes
             author = commit['commit']['author']['name']
             message = commit['commit']['message']
 
-            # Tronquer le message s'il est trop long
             if len(message) > 100:
                 message = message[:97] + "..."
 
             date_str = commit['commit']['author']['date']
             date = datetime.strptime(date_str, "%Y-%m-%dT%H:%M:%SZ")
 
-            # Déterminer la priorité basée sur le message du commit
             priority = 'low'
             if 'fix' in message.lower() or 'bug' in message.lower():
                 priority = 'medium'
@@ -325,3 +332,89 @@ def get_github_commits(repo_owner, repo_name, count=2):
         return formatted_commits
 
     return []
+
+@login_required
+@role_required(['Admin', 'Roboticien'])
+def sav_list_view(request):
+    """Vue pour afficher la liste des tâches SAV"""
+    tasks = ServiceTask.objects.all().order_by('-created_at')
+    user_is_admin = request.user.roles.filter(name='Admin').exists()
+    user_is_roboticien = request.user.roles.filter(name='Roboticien').exists()
+
+    return render(request, 'sav_list.html', {
+        'tasks': tasks,
+        'user_is_admin': user_is_admin,
+        'user_is_roboticien': user_is_roboticien
+    })
+
+@login_required
+@role_required(['Admin', 'Roboticien'])
+def sav_detail_view(request, task_id):
+    """Vue pour afficher les détails d'une tâche SAV"""
+    task = get_object_or_404(ServiceTask, id=task_id)
+    user_is_admin = request.user.roles.filter(name='Admin').exists()
+    user_is_roboticien = request.user.roles.filter(name='Roboticien').exists()
+
+    if request.method == 'POST':
+        if 'update_status' in request.POST:
+            task.status = request.POST.get('status')
+            task.save()
+            messages.success(request, "Statut de la tâche mis à jour avec succès.")
+            return redirect('sav_detail', task_id=task.id)
+
+    return render(request, 'sav_detail.html', {
+        'task': task,
+        'user_is_admin': user_is_admin,
+        'user_is_roboticien': user_is_roboticien
+    })
+
+@login_required
+@role_required(['Admin', 'Roboticien'])
+def add_service_task(request, host):
+    """Vue pour ajouter une tâche SAV"""
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        priority = request.POST.get('priority')
+        status = request.POST.get('status', 'pending')  # Ajout de cette ligne
+
+        if title and description:
+            ServiceTask.objects.create(
+                host=host,
+                title=title,
+                description=description,
+                priority=priority,
+                status=status  # Ajout de cette ligne
+            )
+            messages.success(request, "Tâche SAV ajoutée avec succès.")
+            return redirect('host_detail', host=host)
+        else:
+            messages.error(request, "Veuillez remplir tous les champs obligatoires.")
+
+    return redirect('host_detail', host=host)
+
+
+
+@login_required
+def add_sav_task_view(request, host):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        priority = request.POST.get('priority')
+        status = request.POST.get('status', 'pending')  # Valeur par défaut: 'pending'
+
+        if title and description and priority:
+            task = ServiceTask(
+                host=host,
+                title=title,
+                description=description,
+                priority=priority,
+                status=status
+            )
+            task.save()
+
+            # Rediriger vers la page de détail de l'hôte
+            return redirect('host_detail', host=host)
+
+    # En cas d'erreur ou si la méthode n'est pas POST, rediriger vers la page de détail de l'hôte
+    return redirect('host_detail', host=host)

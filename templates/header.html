@@ -22,24 +22,25 @@
       
       <!-- Navigation -->
       <nav class="nav-links">
-          <a href="{% url 'index' %}">Accueil</a>
-          {% if user.is_authenticated %}
-              {% if user_is_admin %}
-                  <a href="{% url 'admin_roles' %}">Admin</a>
-              {% endif %}
-              {% if user_is_admin or user_is_roboticien %}
-                  <a href="{% url 'robot_list' %}">Liste Robots</a>
-              {% endif %}
-              <!-- Formulaire sécurisé de déconnexion -->
-              <form action="{% url 'logout' %}" method="post" class="logout-form">
-                {% csrf_token %}
-                <button type="submit">Déconnexion</button>
-              </form>
-          {% else %}
-              <a href="{% url 'login' %}">Connexion</a>
-              <a href="{% url 'register' %}">Inscription</a>
-          {% endif %}
-      </nav>
+        <a href="{% url 'index' %}">Accueil</a>
+        {% if user.is_authenticated %}
+            {% if user_is_admin %}
+                <a href="{% url 'admin_roles' %}">Admin</a>
+            {% endif %}
+            {% if user_is_admin or user_is_roboticien %}
+                <a href="{% url 'robot_list' %}">Liste Robots</a>
+                <a href="{% url 'sav_list' %}">SAV</a>
+            {% endif %}
+            <!-- Formulaire sécurisé de déconnexion -->
+            <form action="{% url 'logout' %}" method="post" class="logout-form">
+              {% csrf_token %}
+              <button type="submit">Déconnexion</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}">Connexion</a>
+            <a href="{% url 'register' %}">Inscription</a>
+        {% endif %}
+    </nav>
   </div>
 </header>
 

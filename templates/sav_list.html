@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}Liste des tâches SAV - Robot Monitoring{% endblock %}
+{% load static %}
+
+{% block content_wrapper %}
+<div class="sav-list-container">
+    <h2>Liste des tâches SAV</h2>
+    
+    <div class="sav-filters">
+        <select id="status-filter">
+            <option value="all">Tous les statuts</option>
+            <option value="pending">À faire</option>
+            <option value="in_progress">En cours</option>
+            <option value="completed">Terminée</option>
+        </select>
+        
+        <select id="priority-filter">
+            <option value="all">Toutes les priorités</option>
+            <option value="low">Basse</option>
+            <option value="medium">Moyenne</option>
+            <option value="high">Haute</option>
+            <option value="urgent">Urgente</option>
+        </select>
+        
+        <button id="apply-filters" class="filter-btn">Filtrer</button>
+    </div>
+    
+    <div class="sav-tasks-list">
+        {% if tasks %}
+            {% for task in tasks %}
+                <div class="sav-task-card priority-{{ task.priority }} status-{{ task.status }}">
+                    <div class="task-header">
+                        <h3>{{ task.title }}</h3>
+                        <div class="task-badges">
+                            <span class="priority-badge priority-{{ task.priority }}">{{ task.get_priority_display }}</span>
+                            <span class="status-badge status-{{ task.status }}">{{ task.get_status_display }}</span>
+                        </div>
+                    </div>
+                    <div class="task-host">Hôte: {{ task.host }}</div>
+                    <div class="task-dates">
+                        <div>Créée le: {{ task.created_at|date:"d/m/Y H:i" }}</div>
+                        <div>Mise à jour: {{ task.updated_at|date:"d/m/Y H:i" }}</div>
+                    </div>
+                    <div class="task-actions">
+                        <a href="{% url 'sav_detail' task_id=task.id %}" class="view-task-btn">Voir détails</a>
+                        <a href="{% url 'host_detail' host=task.host %}" class="view-host-btn">Voir l'hôte</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="no-tasks-message">
+                <p>Aucune tâche SAV trouvée.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+    // Script pour le filtrage des tâches
+    document.getElementById('apply-filters').addEventListener('click', function() {
+        const statusFilter = document.getElementById('status-filter').value;
+        const priorityFilter = document.getElementById('priority-filter').value;
+        
+        const taskCards = document.querySelectorAll('.sav-task-card');
+        
+        taskCards.forEach(card => {
+            let showByStatus = statusFilter === 'all' || card.classList.contains('status-' + statusFilter);
+            let showByPriority = priorityFilter === 'all' || card.classList.contains('priority-' + priorityFilter);
+            
+            if (showByStatus && showByPriority) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+</script>
+{% endblock %}

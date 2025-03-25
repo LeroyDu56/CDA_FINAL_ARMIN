@@ -2271,3 +2271,476 @@ button:hover {
     max-width: 1200px;
   }
 }
+
+
+
+/* ========================================================================= */
+/* STYLES POUR LA SECTION SAV                                               */
+/* ========================================================================= */
+.sav-section {
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+}
+
+.sav-tasks {
+  margin-bottom: 25px;
+}
+
+.sav-tasks h4, .add-task-form h4 {
+  font-size: 1.1rem;
+  color: var(--primary-color);
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.task-list {
+  list-style: none;
+  padding: 0;
+}
+
+.task-item {
+  background-color: #f8f9fa;
+  border-radius: 6px;
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  border-left: 4px solid #ccc;
+}
+
+.task-item.priority-low {
+  border-left-color: #28a745;
+}
+
+.task-item.priority-medium {
+  border-left-color: #ffc107;
+}
+
+.task-item.priority-high {
+  border-left-color: #fd7e14;
+}
+
+.task-item.priority-urgent {
+  border-left-color: #dc3545;
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.task-title {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--primary-color);
+}
+
+.task-priority {
+  font-size: 0.8rem;
+  padding: 3px 8px;
+  border-radius: 12px;
+  background-color: #e9ecef;
+}
+
+.task-status, .task-date {
+  font-size: 0.85rem;
+  color: #6c757d;
+  margin-top: 4px;
+}
+
+.no-tasks {
+  color: #6c757d;
+  font-style: italic;
+  text-align: center;
+  padding: 15px;
+}
+
+/* Formulaire d'ajout de tâche */
+.add-task-form form {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 6px;
+}
+
+.add-task-form .form-group {
+  margin-bottom: 15px;
+}
+
+.add-task-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: var(--primary-color);
+}
+
+.add-task-form input,
+.add-task-form textarea,
+.add-task-form select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 0.95rem;
+}
+
+.add-task-form textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.add-task-btn {
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-task-btn:hover {
+  background-color: #357ABD;
+}
+
+/* ========================================================================= */
+/* STYLES POUR LA LISTE DES TÂCHES SAV                                      */
+/* ========================================================================= */
+.sav-list-container {
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+.sav-list-container h2 {
+  font-size: 1.8rem;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.sav-filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  background-color: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.sav-filters select {
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  flex: 1;
+}
+
+.filter-btn {
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.filter-btn:hover {
+  background-color: #357ABD;
+}
+
+.sav-tasks-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.sav-task-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  border-top: 4px solid #ccc;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sav-task-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.sav-task-card.priority-low {
+  border-top-color: #28a745;
+}
+
+.sav-task-card.priority-medium {
+  border-top-color: #ffc107;
+}
+
+.sav-task-card.priority-high {
+  border-top-color: #fd7e14;
+}
+
+.sav-task-card.priority-urgent {
+  border-top-color: #dc3545;
+}
+
+.sav-task-card .task-header {
+  margin-bottom: 12px;
+}
+
+.sav-task-card h3 {
+  font-size: 1.2rem;
+  color: var(--primary-color);
+  margin: 0;
+}
+
+.task-badges {
+  display: flex;
+  gap: 5px;
+  margin-top: 8px;
+}
+
+.priority-badge, .status-badge {
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 12px;
+}
+
+.priority-badge.priority-low {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.priority-badge.priority-medium {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.priority-badge.priority-high {
+  background-color: #ffe5d0;
+  color: #b54800;
+}
+
+.priority-badge.priority-urgent {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.status-badge.status-pending {
+  background-color: #e2e3e5;
+  color: #383d41;
+}
+
+.status-badge.status-in_progress {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.status-badge.status-completed {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.task-host, .task-dates {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-bottom: 8px;
+}
+
+.task-dates {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.task-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.view-task-btn, .view-host-btn {
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  text-decoration: none;
+  text-align: center;
+  flex: 1;
+}
+
+.view-task-btn {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.view-host-btn {
+  background-color: #f8f9fa;
+  color: var(--primary-color);
+  border: 1px solid #ced4da;
+}
+
+.no-tasks-message {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 30px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* ========================================================================= */
+/* STYLES POUR LE DÉTAIL D'UNE TÂCHE SAV                                    */
+/* ========================================================================= */
+.sav-detail-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 25px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.sav-detail-header {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.sav-detail-header h2 {
+  font-size: 1.8rem;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.sav-detail-info {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.info-label {
+  font-weight: 600;
+  color: var(--primary-color);
+  width: 150px;
+}
+
+.view-host-link {
+  margin-left: 10px;
+  font-size: 0.85rem;
+  color: var(--secondary-color);
+  text-decoration: none;
+}
+
+.view-host-link:hover {
+  text-decoration: underline;
+}
+
+.sav-detail-description {
+  margin-bottom: 25px;
+}
+
+.sav-detail-description h3, .sav-detail-actions h3 {
+  font-size: 1.3rem;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.description-content {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 6px;
+  line-height: 1.6;
+}
+
+.status-update-form {
+  background-color: #f8f9fa;
+  padding: 15px;
+  border-radius: 6px;
+}
+
+.status-update-form .form-group {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.status-update-form label {
+  font-weight: 500;
+  color: var(--primary-color);
+  min-width: 120px;
+}
+
+.status-update-form select {
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  flex: 1;
+}
+
+.update-status-btn {
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.update-status-btn:hover {
+  background-color: #357ABD;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sav-filters {
+    flex-direction: column;
+  }
+  
+  .sav-tasks-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .info-label {
+    width: 100%;
+    margin-bottom: 5px;
+  }
+  
+  .info-value {
+    width: 100%;
+  }
+  
+  .view-host-link {
+    margin-left: 0;
+    margin-top: 5px;
+  }
+  
+  .status-update-form .form-group {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .status-update-form label {
+    margin-bottom: 5px;
+  }
+}
+
+

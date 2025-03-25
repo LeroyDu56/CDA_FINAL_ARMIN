@@ -102,3 +102,34 @@ class IsAssignedTo(models.Model):
 
     def __str__(self):
         return f"{self.user} assigned to {self.role}"
+
+class ServiceTask(models.Model):
+    PRIORITY_CHOICES = [
+        ('low', 'Basse'),
+        ('medium', 'Moyenne'),
+        ('high', 'Haute'),
+        ('urgent', 'Urgente')
+    ]
+
+    STATUS_CHOICES = [
+        ('pending', 'À faire'),
+        ('in_progress', 'En cours'),
+        ('completed', 'Terminée')
+    ]
+
+    host = models.CharField(max_length=100)
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    priority = models.CharField(max_length=10, choices=PRIORITY_CHOICES, default='medium')
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='pending')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"{self.title} - {self.host}"
+
+    def get_priority_display(self):
+        return dict(self.PRIORITY_CHOICES).get(self.priority, '')
+
+    def get_status_display(self):
+        return dict(self.STATUS_CHOICES).get(self.status, '')
