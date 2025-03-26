@@ -125,6 +125,8 @@ class ServiceTask(models.Model):
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default='pending')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    # Nouveau champ pour le client
+    client = models.CharField(max_length=255, blank=True, default="Non spécifié")
 
     def __str__(self):
         return f"{self.title} - {self.host}"

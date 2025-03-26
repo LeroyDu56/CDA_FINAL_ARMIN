@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.http import HttpResponseForbidden, JsonResponse
 from .forms import LoginForm, RegisterForm
@@ -294,8 +295,17 @@ def robot_list_view(request):
 @login_required
 @role_required(['Admin', 'Roboticien'])
 def host_detail_view(request, host):
-    """Vue pour afficher les détails d'un hôte"""
-    from utils.influx import get_hosts_status, get_last_connection_time
+    """
+    Vue pour afficher les détails d'un hôte et gérer les tâches SAV associées.
+
+    Args:
+        request: L'objet HttpRequest
+        host: Le nom de l'hôte à afficher
+
+    Returns:
+        HttpResponse: La page de détails de l'hôte
+    """
+    from utils.influx import get_hosts_status, get_last_connection_time, get_host_ip_info
     from datetime import datetime, timezone
 
     # Traitement du formulaire d'ajout de tâche SAV
@@ -307,20 +317,24 @@ def host_detail_view(request, host):
 
         if title and description:
             try:
-                # Créer une nouvelle tâche SAV
+                # Récupérer le client actuel pour cet hôte
+                client = "Non spécifié"
+                existing_task = ServiceTask.objects.filter(host=host).exclude(client="").exclude(client="Non spécifié").first()
+                if existing_task:
+                    client = existing_task.client
+
                 ServiceTask.objects.create(
-                    host=host,  # Utilisez directement la chaîne host
+                    host=host,
                     title=title,
                     description=description,
                     priority=priority,
                     status=status,
-                    # Ne pas inclure created_by si ce champ n'existe pas dans votre modèle
+                    client=client  # Utiliser le client existant
                 )
                 messages.success(request, "Tâche SAV ajoutée avec succès.")
                 return redirect('host_detail', host=host)
             except Exception as e:
                 messages.error(request, f"Erreur lors de l'ajout de la tâche: {str(e)}")
-                print(f"Erreur lors de l'ajout de la tâche: {str(e)}")
         else:
             messages.error(request, "Veuillez remplir tous les champs obligatoires.")
 
@@ -350,7 +364,7 @@ def host_detail_view(request, host):
             minutes = time_diff.seconds // 60
             last_connection_display = f"Il y a {minutes} minute{'s' if minutes > 1 else ''}"
         else:
-            last_connection_display = "Il y a quelques secondes"
+            last_connection_display = f"Il y a {time_diff.seconds} seconde{'s' if time_diff.seconds != 1 else ''}"
     else:
         last_connection_display = "Non disponible"
 
@@ -361,6 +375,22 @@ def host_detail_view(request, host):
     # Récupérer les tâches SAV pour cet hôte, en excluant les tâches archivées
     service_tasks = ServiceTask.objects.filter(host=host).exclude(status='archived').order_by('-created_at')
 
+    # Récupérer les informations IP
+    ip_info = get_host_ip_info()
+    host_ip = ip_info.get(host, {}).get('ip', "Non spécifiée")
+
+    # Récupérer le client depuis les tâches SAV
+    client = "Non spécifié"
+    task_with_client = service_tasks.exclude(client="").exclude(client="Non spécifié").first()
+    if task_with_client:
+        client = task_with_client.client
+
+    # Créer un dictionnaire d'informations pour l'hôte
+    host_info = {
+        'ip': host_ip,
+        'client': client
+    }
+
     context = {
         "host": host,
         "is_host_active": is_host_active,
@@ -369,6 +399,7 @@ def host_detail_view(request, host):
         "user_is_admin": user_is_admin,
         "user_is_roboticien": user_is_roboticien,
         "service_tasks": service_tasks,
+        "info": host_info,  # Ajouter les informations IP et client au contexte
     }
     return render(request, "host_detail.html", context)
 
@@ -559,3 +590,34 @@ def add_sav_task_view(request, host):
 
     # En cas d'erreur ou si la méthode n'est pas POST, rediriger vers la page de détail de l'hôte
     return redirect('host_detail', host=host)
+
+@login_required
+@role_required(['Admin', 'Roboticien'])
+@csrf_protect
+def update_host_info(request):
+    """Vue pour mettre à jour les informations d'un hôte (client, etc.)"""
+    if request.method == 'POST' and request.POST.get('update_field') == 'client':
+        host = request.POST.get('host')
+        client = request.POST.get('client')
+
+        try:
+            # Mettre à jour le client pour toutes les tâches de cet hôte
+            tasks_updated = ServiceTask.objects.filter(host=host).update(client=client)
+
+            # Si aucune tâche n'existe pour cet hôte, créer une tâche "dummy" pour stocker le client
+            if tasks_updated == 0:
+                ServiceTask.objects.create(
+                    host=host,
+                    title="Configuration initiale",
+                    description="Tâche créée automatiquement pour stocker les informations du client",
+                    priority="low",
+                    status="completed",
+                    client=client
+                )
+
+            return JsonResponse({'success': True})
+        except Exception as e:
+            print(f"Erreur lors de la mise à jour du client: {str(e)}")
+            return JsonResponse({'success': False, 'error': str(e)})
+
+    return JsonResponse({'success': False, 'error': 'Requête invalide'})
