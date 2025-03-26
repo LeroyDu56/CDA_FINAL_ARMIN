@@ -363,12 +363,20 @@ def get_github_commits(repo_owner, repo_name, count=2):
 @role_required(['Admin', 'Roboticien'])
 def sav_list_view(request):
     """Vue pour afficher la liste des tâches SAV"""
-    tasks = ServiceTask.objects.all().order_by('-created_at')
+    all_tasks = ServiceTask.objects.all().order_by('-created_at')
     user_is_admin = request.user.roles.filter(name='Admin').exists()
     user_is_roboticien = request.user.roles.filter(name='Roboticien').exists()
 
+    # Séparer les tâches par statut
+    pending_tasks = all_tasks.filter(status='pending')
+    in_progress_tasks = all_tasks.filter(status='in_progress')
+    completed_tasks = all_tasks.filter(status='completed')
+
     return render(request, 'sav_list.html', {
-        'tasks': tasks,
+        'tasks': all_tasks,  # Garder pour compatibilité
+        'pending_tasks': pending_tasks,
+        'in_progress_tasks': in_progress_tasks,
+        'completed_tasks': completed_tasks,
         'user_is_admin': user_is_admin,
         'user_is_roboticien': user_is_roboticien
     })

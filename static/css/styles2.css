@@ -2410,7 +2410,7 @@ button:hover {
 /* STYLES POUR LA LISTE DES TÂCHES SAV                                      */
 /* ========================================================================= */
 .sav-list-container {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 20px auto;
   padding: 20px;
 }
@@ -2454,18 +2454,76 @@ button:hover {
   background-color: #357ABD;
 }
 
-.sav-tasks-list {
+/* Styles pour le tableau Kanban */
+.sav-kanban-board {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
+  height: calc(100vh - 200px);
+  min-height: 500px;
 }
 
+.sav-column {
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.column-header {
+  background-color: white;
+  padding: 15px;
+  border-bottom: 1px solid #e9ecef;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.column-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--primary-color);
+}
+
+.task-count {
+  background-color: #e9ecef;
+  color: #495057;
+  font-size: 0.8rem;
+  padding: 3px 8px;
+  border-radius: 12px;
+}
+
+.column-tasks {
+  padding: 15px;
+  overflow-y: auto;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Styles spécifiques pour chaque colonne */
+.pending-column .column-header {
+  border-top: 4px solid #6c757d;
+}
+
+.in-progress-column .column-header {
+  border-top: 4px solid #007bff;
+}
+
+.completed-column .column-header {
+  border-top: 4px solid #28a745;
+}
+
+/* Styles pour les cartes de tâches */
 .sav-task-card {
   background-color: white;
   border-radius: 8px;
   padding: 15px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-  border-top: 4px solid #ccc;
+  border-left: 4px solid #ccc;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -2475,19 +2533,19 @@ button:hover {
 }
 
 .sav-task-card.priority-low {
-  border-top-color: #28a745;
+  border-left-color: #28a745;
 }
 
 .sav-task-card.priority-medium {
-  border-top-color: #ffc107;
+  border-left-color: #ffc107;
 }
 
 .sav-task-card.priority-high {
-  border-top-color: #fd7e14;
+  border-left-color: #fd7e14;
 }
 
 .sav-task-card.priority-urgent {
-  border-top-color: #dc3545;
+  border-left-color: #dc3545;
 }
 
 .sav-task-card .task-header {
@@ -2495,7 +2553,7 @@ button:hover {
 }
 
 .sav-task-card h3 {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   color: var(--primary-color);
   margin: 0;
 }
@@ -2530,21 +2588,6 @@ button:hover {
 .priority-badge.priority-urgent {
   background-color: #f8d7da;
   color: #721c24;
-}
-
-.status-badge.status-pending {
-  background-color: #e2e3e5;
-  color: #383d41;
-}
-
-.status-badge.status-in_progress {
-  background-color: #cce5ff;
-  color: #004085;
-}
-
-.status-badge.status-completed {
-  background-color: #d4edda;
-  color: #155724;
 }
 
 .task-host, .task-dates {
@@ -2585,13 +2628,25 @@ button:hover {
   border: 1px solid #ced4da;
 }
 
-.no-tasks-message {
-  grid-column: 1 / -1;
+.empty-column-message {
   text-align: center;
-  padding: 30px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* Responsive design */
+@media (max-width: 992px) {
+  .sav-kanban-board {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  
+  .sav-column {
+    margin-bottom: 20px;
+    height: auto;
+    max-height: 500px;
+  }
 }
 
 /* ========================================================================= */
