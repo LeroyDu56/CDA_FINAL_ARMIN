@@ -11,7 +11,22 @@
 
 <div class="sav-detail-container">
     <div class="sav-detail-header">
-        <h2>{{ task.title }}</h2>
+        <div class="title-edit-container">
+            <h2 id="task-title-display">{{ task.title }}</h2>
+            {% if user_is_admin or user_is_roboticien %}
+            <button id="edit-title-btn" class="edit-btn">✏️</button>
+                
+                <div id="title-edit-form" class="edit-form" style="display: none;">
+                    <input type="text" id="task-title-input" value="{{ task.title }}" class="edit-input" maxlength="30">
+                    <div class="char-counter"><span id="title-char-count">0</span>/30 caractères</div>
+                    <div class="edit-actions">
+                        <button id="save-title-btn" class="save-btn">Enregistrer</button>
+                        <button id="cancel-title-edit" class="cancel-btn">Annuler</button>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        
         <div class="task-badges">
             <span class="priority-badge priority-{{ task.priority }}">{{ task.get_priority_display }}</span>
             <span class="status-badge status-{{ task.status }}">{{ task.get_status_display }}</span>
@@ -35,10 +50,26 @@
     </div>
     
     <div class="sav-detail-description">
-        <h3>Description</h3>
-        <div class="description-content">
+        <div class="description-header">
+            <h3>Description</h3>
+            {% if user_is_admin or user_is_roboticien %}
+            <button id="edit-description-btn" class="edit-btn">✏️</button>
+            {% endif %}
+        </div>
+        
+        <div id="description-display" class="description-content">
             {{ task.description|linebreaks }}
         </div>
+        
+        {% if user_is_admin or user_is_roboticien %}
+            <div id="description-edit-form" class="edit-form" style="display: none;">
+                <textarea id="task-description-input" class="edit-textarea">{{ task.description }}</textarea>
+                <div class="edit-actions">
+                    <button id="save-description-btn" class="save-btn">Enregistrer</button>
+                    <button id="cancel-description-edit" class="cancel-btn">Annuler</button>
+                </div>
+            </div>
+        {% endif %}
     </div>
     
     <div class="sav-detail-actions">
@@ -51,10 +82,162 @@
                     <option value="pending" {% if task.status == 'pending' %}selected{% endif %}>À faire</option>
                     <option value="in_progress" {% if task.status == 'in_progress' %}selected{% endif %}>En cours</option>
                     <option value="completed" {% if task.status == 'completed' %}selected{% endif %}>Terminée</option>
+                    {% if 'archived' in task.get_status_display|lower %}
+                        <option value="archived" {% if task.status == 'archived' %}selected{% endif %}>Archivée</option>
+                    {% endif %}
                 </select>
             </div>
             <button type="submit" name="update_status" class="update-status-btn">Mettre à jour</button>
         </form>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Éléments pour l'édition du titre
+    const titleDisplay = document.getElementById('task-title-display');
+    const editTitleBtn = document.getElementById('edit-title-btn');
+    const titleEditForm = document.getElementById('title-edit-form');
+    const titleInput = document.getElementById('task-title-input');
+    const titleCharCount = document.getElementById('title-char-count');
+    const saveTitleBtn = document.getElementById('save-title-btn');
+    const cancelTitleEdit = document.getElementById('cancel-title-edit');
+    
+    // Éléments pour l'édition de la description
+    const descriptionDisplay = document.getElementById('description-display');
+    const editDescriptionBtn = document.getElementById('edit-description-btn');
+    const descriptionEditForm = document.getElementById('description-edit-form');
+    const descriptionInput = document.getElementById('task-description-input');
+    const saveDescriptionBtn = document.getElementById('save-description-btn');
+    const cancelDescriptionEdit = document.getElementById('cancel-description-edit');
+    
+    // Initialiser le compteur de caractères
+    if (titleInput && titleCharCount) {
+        titleCharCount.textContent = titleInput.value.length;
+        
+        // Mettre à jour le compteur lors de la saisie
+        titleInput.addEventListener('input', function() {
+            titleCharCount.textContent = this.value.length;
+        });
+    }
+    
+    // Fonction pour envoyer les mises à jour via AJAX
+    function updateTaskField(field, value) {
+        const formData = new FormData();
+        formData.append('update_field', field);
+        formData.append(field, value);
+        formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
+        
+        fetch('{% url "sav_detail" task_id=task.id %}', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erreur réseau');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                // Mise à jour réussie
+                if (field === 'title') {
+                    titleDisplay.textContent = value;
+                    titleEditForm.style.display = 'none';
+                    titleDisplay.style.display = 'block';
+                    editTitleBtn.style.display = 'inline-block';
+                } else if (field === 'description') {
+                    // Utiliser linebreaks pour préserver les sauts de ligne
+                    const formattedDescription = value.replace(/\n/g, '<br>');
+                    descriptionDisplay.innerHTML = formattedDescription;
+                    descriptionEditForm.style.display = 'none';
+                    descriptionDisplay.style.display = 'block';
+                    editDescriptionBtn.style.display = 'inline-block';
+                }
+            } else {
+                alert('Erreur lors de la mise à jour: ' + (data.error || 'Erreur inconnue'));
+            }
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            alert('Erreur lors de la mise à jour: ' + error.message);
+        });
+    }
+    
+    // Gestion de l'édition du titre
+    if (editTitleBtn) {
+        editTitleBtn.addEventListener('click', function() {
+            titleDisplay.style.display = 'none';
+            editTitleBtn.style.display = 'none';
+            titleEditForm.style.display = 'block';
+            titleInput.focus();
+            // Sélectionner tout le texte
+            titleInput.select();
+        });
+    }
+    
+    if (saveTitleBtn) {
+        saveTitleBtn.addEventListener('click', function() {
+            const newTitle = titleInput.value.trim();
+            if (newTitle) {
+                if (newTitle.length <= 30) {  // Vérification redondante avec maxlength
+                    updateTaskField('title', newTitle);
+                } else {
+                    alert('Le titre ne peut pas dépasser 30 caractères');
+                }
+            } else {
+                alert('Le titre ne peut pas être vide');
+            }
+        });
+        
+        // Permettre l'envoi avec la touche Entrée
+        titleInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                saveTitleBtn.click();
+            }
+        });
+    }
+    
+    if (cancelTitleEdit) {
+        cancelTitleEdit.addEventListener('click', function() {
+            titleInput.value = titleDisplay.textContent;
+            if (titleCharCount) {
+                titleCharCount.textContent = titleInput.value.length;
+            }
+            titleEditForm.style.display = 'none';
+            titleDisplay.style.display = 'block';
+            editTitleBtn.style.display = 'inline-block';
+        });
+    }
+    
+    // Gestion de l'édition de la description
+    if (editDescriptionBtn) {
+        editDescriptionBtn.addEventListener('click', function() {
+            descriptionDisplay.style.display = 'none';
+            editDescriptionBtn.style.display = 'none';
+            descriptionEditForm.style.display = 'block';
+            descriptionInput.focus();
+        });
+    }
+    
+    if (saveDescriptionBtn) {
+        saveDescriptionBtn.addEventListener('click', function() {
+            const newDescription = descriptionInput.value.trim();
+            updateTaskField('description', newDescription);
+        });
+    }
+    
+    if (cancelDescriptionEdit) {
+        cancelDescriptionEdit.addEventListener('click', function() {
+            // Récupérer le texte brut de la description
+            const originalText = descriptionDisplay.innerText || descriptionDisplay.textContent;
+            descriptionInput.value = originalText;
+            descriptionEditForm.style.display = 'none';
+            descriptionDisplay.style.display = 'block';
+            editDescriptionBtn.style.display = 'inline-block';
+        });
+    }
+});
+</script>
 {% endblock %}

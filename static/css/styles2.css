@@ -2927,10 +2927,20 @@ button:hover {
 }
 
 .description-content {
-  background-color: #f8f9fa;
-  padding: 15px;
-  border-radius: 6px;
-  line-height: 1.6;
+  white-space: pre-wrap;       /* Préserve les espaces et sauts de ligne */
+  word-wrap: break-word;       /* Permet aux mots longs de se couper */
+  overflow-wrap: break-word;   /* Alternative moderne à word-wrap */
+  width: 100%;                 /* Utilise toute la largeur disponible */
+}
+
+/* Assure que les paragraphes dans la description ont un espacement correct */
+.description-content p {
+  margin-bottom: 0.8em;
+}
+
+/* Assure que le dernier paragraphe n'a pas de marge en bas */
+.description-content p:last-child {
+  margin-bottom: 0;
 }
 
 .status-update-form {
@@ -3008,4 +3018,102 @@ button:hover {
   }
 }
 
+/* Styles pour l'édition des champs */
+.title-edit-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
+.edit-btn {
+  background-color: transparent;
+  border: none;
+  color: var(--secondary-color);
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 5px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.edit-btn:hover {
+  background-color: #f0f0f0;
+}
+
+.edit-form {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.edit-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.edit-textarea {
+  width: 100%;
+  min-height: 150px;
+  padding: 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  font-size: 1rem;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  resize: vertical;
+}
+
+.edit-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.save-btn, .cancel-btn {
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.save-btn {
+  background-color: var(--secondary-color);
+  color: white;
+  border: none;
+}
+
+.save-btn:hover {
+  background-color: #357ABD;
+}
+
+.cancel-btn {
+  background-color: #f8f9fa;
+  color: #212529;
+  border: 1px solid #ced4da;
+}
+
+.description-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.description-header h3 {
+  margin: 0;
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+/* Style pour le compteur de caractères */
+.char-counter {
+  font-size: 0.8rem;
+  color: #6c757d;
+  text-align: right;
+  margin-bottom: 5px;
+}

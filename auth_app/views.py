@@ -9,7 +9,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.clickjacking import xframe_options_exempt
-from django.http import HttpResponseForbidden
+from django.http import HttpResponseForbidden, JsonResponse
 from .forms import LoginForm, RegisterForm
 from .models import User, Role, AuthLog, ServiceTask
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -412,6 +412,8 @@ def archive_completed_tasks(request):
 
     return redirect('sav_list')
 
+from django.http import JsonResponse
+
 @login_required
 @role_required(['Admin', 'Roboticien'])
 def sav_detail_view(request, task_id):
@@ -421,11 +423,33 @@ def sav_detail_view(request, task_id):
     user_is_roboticien = request.user.roles.filter(name='Roboticien').exists()
 
     if request.method == 'POST':
+        # Mise à jour du statut via le formulaire standard
         if 'update_status' in request.POST:
             task.status = request.POST.get('status')
             task.save()
             messages.success(request, "Statut de la tâche mis à jour avec succès.")
             return redirect('sav_detail', task_id=task.id)
+        
+        # Mise à jour du titre ou de la description via AJAX
+        elif 'update_field' in request.POST:
+            field = request.POST.get('update_field')
+            
+            if field == 'title':
+                new_title = request.POST.get('title')
+                if new_title:
+                    task.title = new_title
+                    task.save()
+                    return JsonResponse({'success': True})
+                else:
+                    return JsonResponse({'success': False, 'error': 'Le titre ne peut pas être vide'})
+            
+            elif field == 'description':
+                new_description = request.POST.get('description')
+                task.description = new_description
+                task.save()
+                return JsonResponse({'success': True})
+            
+            return JsonResponse({'success': False, 'error': 'Champ non reconnu'})
 
     return render(request, 'sav_detail.html', {
         'task': task,
