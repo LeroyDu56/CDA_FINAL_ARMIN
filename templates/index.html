@@ -31,18 +31,19 @@
                 <span class="stat-label">Actifs</span>
               </div>
             </div>
+            
             <div class="stat-item">
-              <div class="stat-icon">⚠️</div>
+              <div class="stat-icon">📝</div>
               <div class="stat-info">
-                <span class="stat-value">{{ alerts_count|default:"0" }}</span>
-                <span class="stat-label">Alertes</span>
+                <span class="stat-value">{{ pending_tasks_count|default:"0" }}</span>
+                <span class="stat-label">Tâches à faire</span>
               </div>
             </div>
             <div class="stat-item">
-              <div class="stat-icon">📊</div>
+              <div class="stat-icon">⏳</div>
               <div class="stat-info">
-                <span class="stat-value">{{ tasks_count|default:"0" }}</span>
-                <span class="stat-label">Tâches</span>
+                <span class="stat-value">{{ in_progress_tasks_count|default:"0" }}</span>
+                <span class="stat-label">Tâches en cours</span>
               </div>
             </div>
           </div>
@@ -98,9 +99,9 @@
               <span class="action-text">Administration</span>
             </a>
           {% endif %}
-          <a href="#" class="action-button">
-            <span class="action-icon">📊</span>
-            <span class="action-text">Statistiques</span>
+          <a href="{% url 'sav_list' %}" class="action-button">
+            <span class="action-icon">🛠️</span>
+            <span class="action-text">SAV</span>
           </a>
           <a href="#" class="action-button">
             <span class="action-icon">❓</span>

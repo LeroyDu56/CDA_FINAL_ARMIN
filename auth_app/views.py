@@ -64,10 +64,28 @@ def index(request):
         robots_count = '--'
         active_robots = '--'
 
+    # Récupérer les statistiques des tâches SAV
+    try:
+        # Tâches à faire (pending)
+        pending_tasks_count = ServiceTask.objects.filter(
+            status='pending'
+        ).count()
+
+        # Tâches en cours (in_progress)
+        in_progress_tasks_count = ServiceTask.objects.filter(
+            status='in_progress'
+        ).count()
+    except Exception as e:
+        print(f"Erreur lors de la récupération des statistiques des tâches: {e}")
+        pending_tasks_count = 0
+        in_progress_tasks_count = 0
+
     # Si l'utilisateur est un visiteur ou client, afficher "XX" au lieu des valeurs réelles
     if user_is_visitor or user_is_client:
         robots_count = "XX"
         active_robots = "XX"
+        pending_tasks_count = "XX"
+        in_progress_tasks_count = "XX"
 
     context = {
         'user_is_admin': user_is_admin,
@@ -78,7 +96,8 @@ def index(request):
         'robots_count': robots_count if robots_count != '--' else 0,
         'active_robots': active_robots if active_robots != '--' else 0,
         'alerts_count': 0,
-        'tasks_count': 0,
+        'pending_tasks_count': pending_tasks_count,  # Tâches à faire
+        'in_progress_tasks_count': in_progress_tasks_count,  # Tâches en cours
     }
 
     return render(request, 'index.html', context)
