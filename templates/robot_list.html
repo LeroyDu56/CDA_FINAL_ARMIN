@@ -5,25 +5,122 @@
 {% block content %}
 <section class="container">
   <h2>Liste des Hosts</h2>
-  <div class="hosts-buttons">
+  
+  <!-- Formulaire de recherche et filtres -->
+  <div class="search-filters">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Rechercher par host, IP ou client...">
+      <button id="searchButton"><i class="fas fa-search"></i></button>
+    </div>
+    <div class="filter-options">
+      <label class="filter-option">
+        <input type="checkbox" id="onlineOnly"> Uniquement en ligne
+      </label>
+      <select id="clientFilter">
+        <option value="">Tous les clients</option>
+        {% regroup hosts_status.items by 1.client as client_list %}
+        {% for client_group in client_list|dictsort:"grouper" %}
+          <option value="{{ client_group.grouper }}">{{ client_group.grouper }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+  
+  <div class="hosts-container">
     {% if hosts_status %}
-      {% for host, info in hosts_status.items %}
-        <a href="{% url 'host_detail' host=host %}" class="host-card {% if info.is_fresh %}host-ok{% else %}host-ko{% endif %}">
-          <div class="host-card-header">{{ host }}</div>
-          <div class="host-card-content">
-            <div class="host-info-row"><span class="host-info-label">Client:</span> {{ info.client }}</div>
-            <div class="host-info-row"><span class="host-info-label">IP:</span> {{ info.ip }}</div>
-            <div class="host-info-row"><span class="host-info-label">En ligne:</span> 
-              <span class="host-status-indicator {% if info.is_fresh %}online{% else %}offline{% endif %}">
-                {% if info.is_fresh %}Oui{% else %}Non{% endif %}
-              </span>
-            </div>
+      {% regroup hosts_status.items by 1.client as client_list %}
+      {% for client_group in client_list|dictsort:"grouper" %}
+        <div class="client-group" data-client="{{ client_group.grouper }}">
+          <h3 class="client-name">{{ client_group.grouper }}</h3>
+          <div class="hosts-buttons">
+            {% for host_item in client_group.list %}
+              {% with host=host_item.0 info=host_item.1 %}
+                <a href="{% url 'host_detail' host=host %}" 
+                   class="host-card {% if info.is_fresh %}host-ok{% else %}host-ko{% endif %}"
+                   data-host="{{ host }}"
+                   data-ip="{{ info.ip }}"
+                   data-client="{{ info.client }}"
+                   data-online="{% if info.is_fresh %}true{% else %}false{% endif %}">
+                  <div class="host-card-header">{{ host }}</div>
+                  <div class="host-card-content">
+                    <div class="host-info-row"><span class="host-info-label">Client:</span> {{ info.client }}</div>
+                    <div class="host-info-row"><span class="host-info-label">IP:</span> {{ info.ip }}</div>
+                    <div class="host-info-row"><span class="host-info-label">En ligne:</span> 
+                      <span class="host-status-indicator {% if info.is_fresh %}online{% else %}offline{% endif %}">
+                        {% if info.is_fresh %}Oui{% else %}Non{% endif %}
+                      </span>
+                    </div>
+                  </div>
+                </a>
+              {% endwith %}
+            {% endfor %}
           </div>
-        </a>
+        </div>
       {% endfor %}
     {% else %}
       <p>Aucun host trouvé.</p>
     {% endif %}
   </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const searchInput = document.getElementById('searchInput');
+  const searchButton = document.getElementById('searchButton');
+  const onlineOnly = document.getElementById('onlineOnly');
+  const clientFilter = document.getElementById('clientFilter');
+  const hostCards = document.querySelectorAll('.host-card');
+  const clientGroups = document.querySelectorAll('.client-group');
+  
+  // Fonction pour appliquer tous les filtres
+  function applyFilters() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const onlineFilter = onlineOnly.checked;
+    const selectedClient = clientFilter.value;
+    
+    // Réinitialiser la visibilité des groupes clients
+    clientGroups.forEach(group => {
+      group.style.display = 'flex';
+      group.querySelectorAll('.host-card').forEach(card => {
+        card.style.display = 'flex';
+      });
+    });
+    
+    // Appliquer les filtres
+    hostCards.forEach(card => {
+      const host = card.getAttribute('data-host').toLowerCase();
+      const ip = card.getAttribute('data-ip').toLowerCase();
+      const client = card.getAttribute('data-client');
+      const isOnline = card.getAttribute('data-online') === 'true';
+      
+      // Vérifier si la carte correspond à tous les filtres
+      const matchesSearch = host.includes(searchTerm) || 
+                           ip.includes(searchTerm) || 
+                           client.toLowerCase().includes(searchTerm);
+      const matchesOnline = !onlineFilter || isOnline;
+      const matchesClient = !selectedClient || client === selectedClient;
+      
+      // Afficher ou masquer la carte
+      card.style.display = (matchesSearch && matchesOnline && matchesClient) ? 'flex' : 'none';
+    });
+    
+    // Masquer les groupes clients qui n'ont pas de cartes visibles
+    clientGroups.forEach(group => {
+      const visibleCards = Array.from(group.querySelectorAll('.host-card')).filter(card => 
+        card.style.display !== 'none'
+      );
+      
+      group.style.display = visibleCards.length > 0 ? 'flex' : 'none';
+    });
+  }
+  
+  // Événements pour les filtres
+  searchButton.addEventListener('click', applyFilters);
+  searchInput.addEventListener('keyup', function(e) {
+    if (e.key === 'Enter') applyFilters();
+  });
+  onlineOnly.addEventListener('change', applyFilters);
+  clientFilter.addEventListener('change', applyFilters);
+});
+</script>
 {% endblock %}
