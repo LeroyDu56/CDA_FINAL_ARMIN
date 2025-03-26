@@ -7,9 +7,18 @@
   <h2>Liste des Hosts</h2>
   <div class="hosts-buttons">
     {% if hosts_status %}
-      {% for host, is_fresh in hosts_status.items %}
-        <a href="{% url 'host_detail' host=host %}" class="host-button {% if is_fresh %}host-ok{% else %}host-ko{% endif %}">
-          {{ host }}
+      {% for host, info in hosts_status.items %}
+        <a href="{% url 'host_detail' host=host %}" class="host-card {% if info.is_fresh %}host-ok{% else %}host-ko{% endif %}">
+          <div class="host-card-header">{{ host }}</div>
+          <div class="host-card-content">
+            <div class="host-info-row"><span class="host-info-label">Client:</span> {{ info.client }}</div>
+            <div class="host-info-row"><span class="host-info-label">IP:</span> {{ info.ip }}</div>
+            <div class="host-info-row"><span class="host-info-label">En ligne:</span> 
+              <span class="host-status-indicator {% if info.is_fresh %}online{% else %}offline{% endif %}">
+                {% if info.is_fresh %}Oui{% else %}Non{% endif %}
+              </span>
+            </div>
+          </div>
         </a>
       {% endfor %}
     {% else %}

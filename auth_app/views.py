@@ -242,6 +242,7 @@ def admin_roles_view(request):
         'user_is_admin': True,
     })
 
+# Modification de la fonction robot_list_view dans views.py
 @login_required
 @role_required(['Admin', 'Roboticien'])
 def robot_list_view(request):
@@ -250,7 +251,39 @@ def robot_list_view(request):
     user_is_roboticien = request.user.roles.filter(name='Roboticien').exists()
 
     # Récupérer le dict {host: is_fresh}
-    hosts_status = get_hosts_status()
+    basic_hosts_status = get_hosts_status() or {}
+
+    # Récupérer les informations d'adresse IP avec débogage
+    from utils.influx import get_host_ip_info
+    print("\n\n=== DÉBOGAGE ROBOT_LIST_VIEW ===")
+    print(f"Nombre d'hôtes trouvés: {len(basic_hosts_status)}")
+    print(f"Hôtes: {', '.join(basic_hosts_status.keys())}")
+    
+    ip_info = get_host_ip_info()
+    
+    print(f"Informations IP récupérées pour {len(ip_info)} hôtes")
+    print("=== FIN DÉBOGAGE ROBOT_LIST_VIEW ===\n\n")
+
+    # Créer un dictionnaire enrichi avec plus d'informations
+    hosts_status = {}
+
+    for host, is_fresh in basic_hosts_status.items():
+        # Récupérer l'IP
+        ip = ip_info.get(host, {}).get('ip', "Non spécifiée")
+
+        # Déterminer le client (si cette information est disponible)
+        client = "Non spécifié"  # Valeur par défaut
+
+        # Si vous avez un moyen de déterminer le client, utilisez-le ici
+        host_tasks = ServiceTask.objects.filter(host=host).first()
+        if host_tasks and hasattr(host_tasks, 'client') and host_tasks.client:
+            client = host_tasks.client
+
+        hosts_status[host] = {
+            'is_fresh': is_fresh,
+            'client': client,
+            'ip': ip
+        }
 
     return render(request, 'robot_list.html', {
         'user_is_admin': user_is_admin,

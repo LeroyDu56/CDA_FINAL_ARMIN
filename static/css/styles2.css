@@ -3117,3 +3117,105 @@ button:hover {
   text-align: right;
   margin-bottom: 5px;
 }
+
+
+
+
+/* ========================================================================= */
+/* ROBOT_LIST                                                                 */
+/* ========================================================================= */
+
+
+/* Styles pour les cartes d'hôtes améliorées */
+.hosts-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin: 1.5rem 0;
+}
+
+.host-card {
+  width: 250px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+}
+
+.host-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.host-card-header {
+  padding: 12px 15px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+}
+
+.host-ok .host-card-header {
+  background-color: #4CAF50;
+}
+
+.host-ko .host-card-header {
+  background-color: #e74c3c;
+}
+
+.host-card-content {
+  background-color: #fff;
+  padding: 15px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.host-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+  color: var(--dark-text);
+}
+
+.host-info-label {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.host-status-indicator {
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.host-status-indicator.online {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.host-status-indicator.offline {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+/* Responsive design pour les cartes d'hôtes */
+@media (max-width: 768px) {
+  .host-card {
+    width: calc(50% - 15px);
+    min-width: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .host-card {
+    width: 100%;
+  }
+}
