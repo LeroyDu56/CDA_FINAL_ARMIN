@@ -45,10 +45,15 @@
                         </div>
                     </div>
                 {% empty %}
-                    <div class="empty-column-message">
+                    <div class="empty-column-message original">
                         <p>Aucune tâche à faire</p>
                     </div>
                 {% endfor %}
+                {% if pending_tasks %}
+                    <div class="empty-column-message filtered" style="display: none;">
+                        <p>Aucune tâche à faire correspondante</p>
+                    </div>
+                {% endif %}
             </div>
         </div>
         
@@ -78,10 +83,15 @@
                         </div>
                     </div>
                 {% empty %}
-                    <div class="empty-column-message">
+                    <div class="empty-column-message original">
                         <p>Aucune tâche en cours</p>
                     </div>
                 {% endfor %}
+                {% if in_progress_tasks %}
+                    <div class="empty-column-message filtered" style="display: none;">
+                        <p>Aucune tâche en cours correspondante</p>
+                    </div>
+                {% endif %}
             </div>
         </div>
         
@@ -89,7 +99,14 @@
         <div class="sav-column completed-column">
             <div class="column-header">
                 <h3>Terminé</h3>
-                <span class="task-count">{{ completed_tasks|length }}</span>
+                <div class="column-header-actions">
+                    <span class="task-count">{{ completed_tasks|length }}</span>
+                    {% if user_is_admin %}
+                        <button id="archive-completed-btn" class="archive-btn" {% if not completed_tasks %}disabled{% endif %}>
+                            Archiver
+                        </button>
+                    {% endif %}
+                </div>
             </div>
             <div class="column-tasks">
                 {% for task in completed_tasks %}
@@ -111,46 +128,167 @@
                         </div>
                     </div>
                 {% empty %}
-                    <div class="empty-column-message">
+                    <div class="empty-column-message original">
                         <p>Aucune tâche terminée</p>
                     </div>
                 {% endfor %}
+                {% if completed_tasks %}
+                    <div class="empty-column-message filtered" style="display: none;">
+                        <p>Aucune tâche terminée correspondante</p>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
+    
+    <!-- Modal de confirmation d'archivage -->
+    {% if user_is_admin %}
+    <div id="archive-modal" class="archive-modal">
+        <div class="archive-modal-content">
+            <div class="archive-modal-header">
+                <h3>Confirmation d'archivage</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="archive-modal-body">
+                <p>Êtes-vous sûr de vouloir archiver toutes les tâches terminées ?</p>
+                <p class="warning-text">Cette action ne peut pas être annulée.</p>
+            </div>
+            <div class="archive-modal-footer">
+                <button id="cancel-archive" class="cancel-btn">Annuler</button>
+                <form action="{% url 'archive_completed_tasks' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="confirm-archive-btn">Confirmer l'archivage</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 </div>
 
 <script>
-    // Script pour le filtrage des tâches par priorité
-    document.getElementById('apply-filters').addEventListener('click', function() {
-        const priorityFilter = document.getElementById('priority-filter').value;
+// Script pour le filtrage des tâches par priorité
+document.getElementById('apply-filters').addEventListener('click', function() {
+    const priorityFilter = document.getElementById('priority-filter').value;
+    
+    // Filtrer les tâches
+    const taskCards = document.querySelectorAll('.sav-task-card');
+    
+    // Compter les tâches visibles dans chaque colonne
+    let visibleTasksCount = {
+        'pending-column': 0,
+        'in-progress-column': 0,
+        'completed-column': 0
+    };
+    
+    taskCards.forEach(card => {
+        let showByPriority = priorityFilter === 'all' || card.classList.contains('priority-' + priorityFilter);
+        card.style.display = showByPriority ? 'block' : 'none';
         
-        const taskCards = document.querySelectorAll('.sav-task-card');
-        
-        taskCards.forEach(card => {
-            let showByPriority = priorityFilter === 'all' || card.classList.contains('priority-' + priorityFilter);
-            
-            if (showByPriority) {
-                card.style.display = 'block';
-            } else {
-                card.style.display = 'none';
+        // Compter les tâches visibles par colonne
+        if (showByPriority) {
+            const column = card.closest('.sav-column');
+            for (const key in visibleTasksCount) {
+                if (column.classList.contains(key)) {
+                    visibleTasksCount[key]++;
+                    break;
+                }
             }
-        });
-        
-        // Vérifier si les colonnes sont vides après filtrage
-        document.querySelectorAll('.column-tasks').forEach(column => {
-            const visibleTasks = column.querySelectorAll('.sav-task-card[style="display: block"]').length;
-            const emptyMessage = column.querySelector('.empty-column-message');
-            
-            if (visibleTasks === 0 && !emptyMessage) {
-                const newEmptyMessage = document.createElement('div');
-                newEmptyMessage.className = 'empty-column-message filtered';
-                newEmptyMessage.innerHTML = '<p>Aucune tâche correspondante</p>';
-                column.appendChild(newEmptyMessage);
-            } else if (visibleTasks > 0 && emptyMessage && emptyMessage.classList.contains('filtered')) {
-                emptyMessage.remove();
-            }
-        });
+        }
     });
+    
+    // Mettre à jour les compteurs et les messages
+    document.querySelectorAll('.sav-column').forEach(column => {
+        // Identifier la colonne
+        let columnType = '';
+        if (column.classList.contains('pending-column')) columnType = 'pending-column';
+        else if (column.classList.contains('in-progress-column')) columnType = 'in-progress-column';
+        else if (column.classList.contains('completed-column')) columnType = 'completed-column';
+        
+        // Mettre à jour le compteur
+        const taskCount = column.querySelector('.task-count');
+        if (taskCount) {
+            taskCount.textContent = visibleTasksCount[columnType];
+        }
+        
+        // Gérer l'affichage des messages
+        const originalMessage = column.querySelector('.empty-column-message.original');
+        const filteredMessage = column.querySelector('.empty-column-message.filtered');
+        
+        // Si la colonne a des tâches mais aucune n'est visible après filtrage
+        if (filteredMessage) {
+            if (visibleTasksCount[columnType] === 0 && priorityFilter !== 'all') {
+                // Masquer le message original s'il existe
+                if (originalMessage) originalMessage.style.display = 'none';
+                // Afficher le message de filtrage
+                filteredMessage.style.display = 'block';
+            } else {
+                // Masquer le message de filtrage
+                filteredMessage.style.display = 'none';
+                // Afficher le message original uniquement s'il n'y a pas de tâches
+                if (originalMessage) {
+                    originalMessage.style.display = visibleTasksCount[columnType] === 0 ? 'block' : 'none';
+                }
+            }
+        }
+    });
+    
+    // Mettre à jour l'état du bouton d'archivage
+    const archiveBtn = document.getElementById('archive-completed-btn');
+    if (archiveBtn) {
+        const visibleCompletedTasks = visibleTasksCount['completed-column'];
+        archiveBtn.disabled = visibleCompletedTasks === 0;
+    }
+});
+
+// Script pour le modal d'archivage
+const archiveBtn = document.getElementById('archive-completed-btn');
+const archiveModal = document.getElementById('archive-modal');
+const closeModal = document.querySelector('.close-modal');
+const cancelArchive = document.getElementById('cancel-archive');
+
+// Ouvrir le modal
+if (archiveBtn) {
+    archiveBtn.addEventListener('click', function() {
+        archiveModal.style.display = 'flex';
+    });
+}
+
+// Fermer le modal
+if (closeModal) {
+    closeModal.addEventListener('click', function() {
+        archiveModal.style.display = 'none';
+    });
+}
+
+if (cancelArchive) {
+    cancelArchive.addEventListener('click', function() {
+        archiveModal.style.display = 'none';
+    });
+}
+
+// Fermer le modal si on clique en dehors
+window.addEventListener('click', function(event) {
+    if (event.target === archiveModal) {
+        archiveModal.style.display = 'none';
+    }
+});
+
+// Exécuter le filtrage au chargement de la page
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialiser l'affichage des messages
+    document.querySelectorAll('.sav-column').forEach(column => {
+        const originalMessage = column.querySelector('.empty-column-message.original');
+        const filteredMessage = column.querySelector('.empty-column-message.filtered');
+        
+        if (filteredMessage) {
+            filteredMessage.style.display = 'none';
+        }
+        
+        if (originalMessage) {
+            const hasTasks = column.querySelectorAll('.sav-task-card').length > 0;
+            originalMessage.style.display = hasTasks ? 'none' : 'block';
+        }
+    });
+});
 </script>
 {% endblock %}

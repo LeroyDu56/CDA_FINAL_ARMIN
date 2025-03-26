@@ -91,7 +91,7 @@
                     <h4>Tâches existantes :</h4>
                     <ul class="task-list">
                         {% for task in service_tasks %}
-                            <li class="task-item priority-{{ task.priority }}">
+                            <li class="task-item priority-{{ task.priority }} status-{{ task.status }}">
                                 <div class="task-header">
                                     <a href="{% url 'sav_detail' task.id %}" class="task-title">{{ task.title }}</a>
                                     <div class="task-badges">

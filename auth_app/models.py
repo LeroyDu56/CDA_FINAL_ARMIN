@@ -114,7 +114,8 @@ class ServiceTask(models.Model):
     STATUS_CHOICES = [
         ('pending', 'À faire'),
         ('in_progress', 'En cours'),
-        ('completed', 'Terminée')
+        ('completed', 'Terminée'),
+        ('archived', 'Archivée')  # Ajout d'un nouveau statut pour les tâches archivées
     ]
 
     host = models.CharField(max_length=100)

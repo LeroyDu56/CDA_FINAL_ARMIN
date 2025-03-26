@@ -2,7 +2,7 @@
 import requests
 import os
 from datetime import datetime
-from django.db.models import Q
+from django.db.models import Q, Case, When, Value, IntegerField
 from django.urls import reverse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
@@ -306,8 +306,8 @@ def host_detail_view(request, host):
     user_is_admin = request.user.roles.filter(name='Admin').exists()
     user_is_roboticien = request.user.roles.filter(name='Roboticien').exists()
 
-    # Récupérer les tâches SAV pour cet hôte
-    service_tasks = ServiceTask.objects.filter(host=host).order_by('-created_at')
+    # Récupérer les tâches SAV pour cet hôte, en excluant les tâches archivées
+    service_tasks = ServiceTask.objects.filter(host=host).exclude(status='archived').order_by('-created_at')
 
     context = {
         "host": host,
@@ -363,14 +363,31 @@ def get_github_commits(repo_owner, repo_name, count=2):
 @role_required(['Admin', 'Roboticien'])
 def sav_list_view(request):
     """Vue pour afficher la liste des tâches SAV"""
-    all_tasks = ServiceTask.objects.all().order_by('-created_at')
+    # Exclure les tâches avec le statut 'archived'
+    all_tasks = ServiceTask.objects.exclude(status='archived').order_by('-created_at')
     user_is_admin = request.user.roles.filter(name='Admin').exists()
     user_is_roboticien = request.user.roles.filter(name='Roboticien').exists()
 
-    # Séparer les tâches par statut
-    pending_tasks = all_tasks.filter(status='pending')
-    in_progress_tasks = all_tasks.filter(status='in_progress')
-    completed_tasks = all_tasks.filter(status='completed')
+    # Ordre de priorité personnalisé (du plus urgent au moins urgent)
+    priority_order = Case(
+        When(priority='urgent', then=Value(1)),
+        When(priority='high', then=Value(2)),
+        When(priority='medium', then=Value(3)),
+        When(priority='low', then=Value(4)),
+        default=Value(5),
+        output_field=IntegerField(),
+    )
+
+    # Séparer les tâches par statut et les trier par priorité
+    pending_tasks = all_tasks.filter(status='pending').annotate(
+        priority_order=priority_order
+    ).order_by('priority_order', '-created_at')
+
+    in_progress_tasks = all_tasks.filter(status='in_progress').annotate(
+        priority_order=priority_order
+    ).order_by('priority_order', '-created_at')
+
+    completed_tasks = all_tasks.filter(status='completed').order_by('-updated_at')
 
     return render(request, 'sav_list.html', {
         'tasks': all_tasks,  # Garder pour compatibilité
@@ -380,6 +397,20 @@ def sav_list_view(request):
         'user_is_admin': user_is_admin,
         'user_is_roboticien': user_is_roboticien
     })
+
+@login_required
+@role_required(['Admin'])
+def archive_completed_tasks(request):
+    """Vue pour archiver toutes les tâches terminées"""
+    if request.method == 'POST':
+        # Changer le statut des tâches terminées en 'archived'
+        completed_tasks = ServiceTask.objects.filter(status='completed')
+        count = completed_tasks.count()
+        completed_tasks.update(status='archived')
+
+        messages.success(request, f"{count} tâches ont été archivées avec succès.")
+
+    return redirect('sav_list')
 
 @login_required
 @role_required(['Admin', 'Roboticien'])
