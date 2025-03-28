@@ -8,14 +8,19 @@
   
   <!-- Formulaire de recherche et filtres -->
   <div class="search-filters">
+    <!-- Zone de recherche -->
     <div class="search-box">
       <input type="text" id="searchInput" placeholder="Rechercher par host, IP ou client...">
       <button id="searchButton"><i class="fas fa-search"></i></button>
     </div>
+    
+    <!-- Options de filtrage -->
     <div class="filter-options">
       <label class="filter-option">
-        <input type="checkbox" id="onlineOnly"> Uniquement en ligne
+        <input type="checkbox" id="onlineOnly"> 
+        <span>Uniquement en ligne</span>
       </label>
+      
       <select id="clientFilter">
         <option value="">Tous les clients</option>
         {% regroup hosts_status.items by 1.client as client_list %}

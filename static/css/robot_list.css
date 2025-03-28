@@ -116,38 +116,35 @@
     font-weight: 600;
   }
   
-  /* Styles améliorés pour la recherche et les filtres */
+  /* Styles améliorés pour la recherche et les filtres - Version corrigée pour mobile */
   .search-filters {
     display: flex;
     flex-direction: column;
-    gap: 18px;
-    margin-bottom: 30px;
+    gap: 15px;
+    margin-bottom: 25px;
     background-color: #f8f9fa;
-    padding: 20px;
+    padding: 15px;
     border-radius: 10px;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
     border: 1px solid #eaeaea;
-    transition: all 0.3s ease;
   }
   
-  .search-filters:hover {
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  }
-  
+  /* Conteneur de recherche spécifique pour corriger la superposition */
   .search-box {
-    display: flex;
     width: 100%;
     position: relative;
+    height: 42px; /* Hauteur fixe pour éviter les superpositions */
+    margin-bottom: 5px;
   }
   
   .search-box input {
-    flex-grow: 1;
-    padding: 12px 15px;
+    width: 100%;
+    height: 100%;
+    padding: 8px 50px 8px 15px; /* Padding droit augmenté pour laisser place au bouton */
     border: 1px solid #ddd;
     border-radius: 6px;
     font-size: 1rem;
     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
-    transition: all 0.2s ease;
   }
   
   .search-box input:focus {
@@ -161,7 +158,10 @@
     right: 0;
     top: 0;
     height: 100%;
-    padding: 0 15px;
+    width: 42px; /* Largeur fixe */
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: var(--primary-color);
     color: white;
     border: none;
@@ -174,17 +174,20 @@
     background-color: #232830;
   }
   
+  /* Options de filtre */
   .filter-options {
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    align-items: center;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
   }
   
+  /* Option individuelle (checkbox) */
   .filter-option {
     display: flex;
     align-items: center;
     gap: 8px;
+    padding: 5px 0;
     cursor: pointer;
     font-weight: 500;
     color: #555;
@@ -229,17 +232,18 @@
     transform: scale(1);
   }
   
+  /* Sélecteur de client */
   #clientFilter {
-    padding: 10px 15px;
+    width: 100%;
+    padding: 10px;
     border: 1px solid #ddd;
     border-radius: 6px;
     background-color: white;
     font-size: 0.95rem;
     color: #333;
     cursor: pointer;
-    min-width: 180px;
+    height: 42px; /* Hauteur harmonisée */
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    transition: all 0.2s ease;
   }
   
   #clientFilter:focus {
@@ -248,38 +252,35 @@
     box-shadow: 0 0 0 3px rgba(42, 46, 53, 0.2);
   }
   
-  /* Responsive design pour les cartes d'hôtes */
+  /* Media query pour les tablettes et ordinateurs */
+  @media (min-width: 769px) {
+    .search-filters {
+      flex-direction: row;
+      align-items: center;
+    }
+    
+    .search-box {
+      flex: 1;
+      margin-bottom: 0;
+    }
+    
+    .filter-options {
+      flex-direction: row;
+      align-items: center;
+      width: auto;
+    }
+    
+    #clientFilter {
+      width: auto;
+      min-width: 200px;
+    }
+  }
+  
+  /* Responsive pour les cartes d'hôtes */
   @media (max-width: 768px) {
     .host-card {
       width: calc(50% - 15px);
       min-width: 200px;
-    }
-    
-    .search-filters {
-      flex-direction: row;
-      align-items: center;
-      padding: 20px 25px;
-    }
-  
-    .search-box {
-      width: auto;
-      flex-grow: 1;
-      max-width: 50%;
-    }
-  
-    .filter-options {
-      justify-content: flex-end;
-    }
-  }
-  
-  @media (max-width: 767px) {
-    .filter-options {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  
-    #clientFilter {
-      width: 100%;
     }
   }
   
@@ -289,12 +290,7 @@
     }
     
     .search-filters {
-      padding: 15px;
-    }
-    
-    .search-box input {
       padding: 10px;
-      font-size: 0.9rem;
     }
     
     .client-name {

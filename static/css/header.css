@@ -132,24 +132,29 @@
     }
     
     .nav-links {
-      position: fixed;
-      top: 0;
-      right: -100%;
-      width: 80%;
-      max-width: 300px;
-      height: 100vh;
-      background-color: var(--primary-color);
-      flex-direction: column;
-      justify-content: flex-start;
-      padding-top: 80px;
-      transition: right 0.3s ease;
-      box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-      z-index: 1000;
-    }
-    
-    .nav-links.active {
-      right: 0;
-    }
+        position: fixed;
+        top: 0;
+        right: -100%; /* Commence hors écran à droite */
+        width: 80%;
+        max-width: 300px;
+        height: 100vh;
+        background-color: var(--primary-color);
+        flex-direction: column;
+        justify-content: flex-start;
+        padding-top: 80px;
+        transition: right 0.3s ease; /* Assure une transition fluide */
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+      }
+      
+      .nav-links.active {
+        right: 0; /* Apparaît depuis la droite quand actif */
+      }
+      
+      .menu-toggle {
+        display: flex; /* S'assurer qu'il est visible en mode mobile */
+        z-index: 1001; /* Au-dessus du menu pour être toujours cliquable */
+      }
     
     .nav-links a,
     .nav-links form button {
