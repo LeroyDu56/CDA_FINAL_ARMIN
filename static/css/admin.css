@@ -1,0 +1,267 @@
+/* ========================================================================= */
+/* ADMIN PAGE RESPONSIVE - TOUTES LES COLONNES VISIBLES                     */
+/* ========================================================================= */
+
+/* Conteneur de recherche */
+.search-container {
+    margin-bottom: 2rem;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+  }
+  
+  /* Grille de recherche responsive */
+  .search-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+  
+  /* Éléments de recherche */
+  .search-item {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .search-item label {
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--primary-color);
+  }
+  
+  .search-item input {
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  /* Bouton de recherche */
+  .search-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  
+  /* Table responsive - TOUTES COLONNES VISIBLES */
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1rem;
+    scrollbar-width: thin; /* Pour Firefox */
+  }
+  
+  /* Personnalisation de la barre de défilement */
+  .table-responsive::-webkit-scrollbar {
+    height: 6px;
+  }
+  
+  .table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+  }
+  
+  .table-responsive::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+  }
+  
+  .table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  
+  .admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: var(--shadow);
+  }
+  
+  .admin-table th,
+  .admin-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap; /* Empêche le retour à la ligne */
+  }
+  
+  .admin-table th {
+    background: var(--primary-color);
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  
+  /* Largeurs optimisées pour les colonnes */
+  .admin-table th:nth-child(1), .admin-table td:nth-child(1) { min-width: 180px; } /* Email */
+  .admin-table th:nth-child(2), .admin-table td:nth-child(2) { min-width: 120px; } /* Prénom */
+  .admin-table th:nth-child(3), .admin-table td:nth-child(3) { min-width: 120px; } /* Nom */
+  .admin-table th:nth-child(4), .admin-table td:nth-child(4) { min-width: 120px; } /* IP */
+  .admin-table th:nth-child(5), .admin-table td:nth-child(5) { min-width: 120px; } /* Rôle actuel */
+  .admin-table th:nth-child(6), .admin-table td:nth-child(6) { min-width: 180px; } /* Attribuer */
+  
+  /* Formulaire d'attribution de rôle */
+  .role-form {
+    width: 100%;
+  }
+  
+  .role-select-container {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
+  }
+  
+  .role-select-container select {
+    flex: 1;
+    min-width: 100px;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  .role-select-container button {
+    padding: 0.5rem;
+    white-space: nowrap;
+    min-width: 80px;
+  }
+  
+  /* Indicateur de défilement horizontal sur mobile */
+  .scroll-indicator {
+    display: none;
+    text-align: center;
+    padding: 0.5rem;
+    color: var(--primary-color);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    animation: pulse 2s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { opacity: 0.7; }
+    50% { opacity: 1; }
+    100% { opacity: 0.7; }
+  }
+  
+  /* Pagination simplifiée */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+    gap: 0.5rem;
+  }
+  
+  .pagination button {
+    padding: 0.5rem 1rem;
+    background: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .pagination span {
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+  }
+  
+  /* Responsive pour tablettes */
+  @media (max-width: 1024px) {
+    .search-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .scroll-indicator {
+      display: block;
+    }
+    
+    .role-select-container {
+      flex-direction: column;
+    }
+    
+    .role-select-container select,
+    .role-select-container button {
+      width: 100%;
+    }
+  }
+  
+  /* Responsive pour mobile */
+  @media (max-width: 768px) {
+    .search-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .scroll-indicator {
+      display: block;
+    }
+    
+    /* Réduire légèrement les paddings sur mobile */
+    .admin-table th,
+    .admin-table td {
+      padding: 10px 8px;
+      font-size: 0.9rem;
+    }
+    
+    /* Réduire légèrement les largeurs minimales sur mobile */
+    .admin-table th:nth-child(1), .admin-table td:nth-child(1) { min-width: 150px; } /* Email */
+    .admin-table th:nth-child(2), .admin-table td:nth-child(2) { min-width: 100px; } /* Prénom */
+    .admin-table th:nth-child(3), .admin-table td:nth-child(3) { min-width: 100px; } /* Nom */
+    .admin-table th:nth-child(4), .admin-table td:nth-child(4) { min-width: 100px; } /* IP */
+    .admin-table th:nth-child(5), .admin-table td:nth-child(5) { min-width: 100px; } /* Rôle actuel */
+    .admin-table th:nth-child(6), .admin-table td:nth-child(6) { min-width: 150px; } /* Attribuer */
+    
+    .role-select-container {
+      flex-direction: column;
+    }
+    
+    .role-select-container select,
+    .role-select-container button {
+      width: 100%;
+      font-size: 0.9rem;
+      padding: 0.4rem;
+    }
+  }
+  
+  /* Amélioration de la mise en page pour admin.html sur grands écrans */
+  @media (min-width: 1600px) {
+    .search-grid {
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+    }
+    
+    .search-item input {
+      padding: 1rem;
+    }
+    
+    .search-button {
+      align-self: flex-end;
+    }
+    
+    .filtrer-btn {
+      padding: 1rem 1.5rem;
+    }
+    
+    /* Masquer l'indicateur de défilement sur grands écrans */
+    .scroll-indicator {
+      display: none;
+    }
+  }
+  
+  /* Ajustements pour la table admin sur grands écrans */
+  @media (min-width: 2000px) {
+    .admin-table th,
+    .admin-table td {
+      padding: 16px;
+    }
+    
+    /* Largeurs optimisées pour les colonnes sur grands écrans */
+    .admin-table th:nth-child(1), .admin-table td:nth-child(1) { min-width: 250px; } /* Email */
+    .admin-table th:nth-child(2), .admin-table td:nth-child(2) { min-width: 150px; } /* Prénom */
+    .admin-table th:nth-child(3), .admin-table td:nth-child(3) { min-width: 150px; } /* Nom */
+    .admin-table th:nth-child(4), .admin-table td:nth-child(4) { min-width: 150px; } /* IP */
+    .admin-table th:nth-child(5), .admin-table td:nth-child(5) { min-width: 150px; } /* Rôle actuel */
+    .admin-table th:nth-child(6), .admin-table td:nth-child(6) { min-width: 220px; } /* Attribuer */
+  }

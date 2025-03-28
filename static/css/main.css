@@ -1,0 +1,24 @@
+/* ========================================================================= */
+/* FICHIER PRINCIPAL D'IMPORTATION CSS                                      */
+/* ========================================================================= */
+
+/* Import des fichiers de base */
+@import 'base.css';
+@import 'header.css';
+@import 'footer.css';
+
+/* Import des composants spécifiques */
+@import 'buttons.css';
+@import 'forms.css';
+
+/* Import des pages et fonctionnalités */
+@import 'dashboard.css';
+@import 'admin.css';
+@import 'host_detail.css';
+@import 'robot_list.css';
+@import 'sav.css';
+@import 'error_pages.css';
+
+/* Ce fichier permet d'importer tous les fichiers CSS modulaires.
+   Il peut être utilisé comme alternative à l'importation individuelle
+   de chaque fichier dans le template base.html */

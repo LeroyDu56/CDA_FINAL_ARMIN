@@ -3,24 +3,50 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Robot Monitoring{% endblock %}</title>
-  <!-- Feuille de style -->
-  <link rel="stylesheet" href="{% static 'css/styles2.css' %}">
+  
+  <!-- Option 1: Utiliser le fichier principal qui importe tous les autres -->
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  
+  <!-- Option 2 (alternative): Charger les fichiers individuels
+  <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <link rel="stylesheet" href="{% static 'css/headers.css' %}">
+  <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+  <link rel="stylesheet" href="{% static 'css/buttons.css' %}">
+  <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+  -->
+  
+  <!-- Fichiers CSS spécifiques qui ne seraient pas dans main.css -->
+  {% block specific_css %}{% endblock %}
+  
   <!-- Font Awesome pour les icônes -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  
+  <!-- Scripts JS supplémentaires dans l'en-tête si nécessaire -->
+  {% block head_scripts %}{% endblock %}
 </head>
 <body>
+  <!-- En-tête du site -->
   {% include 'header.html' %}
   
+  <!-- Contenu supplémentaire avant le contenu principal si nécessaire -->
   {% block extra_body %}{% endblock %}
   
-  {# Bloc enveloppant par défaut, que l'on peut surcharger dans certaines pages #}
+  <!-- Contenu principal encapsulé dans un conteneur -->
   {% block content_wrapper %}
   <main class="container">
     {% block content %}{% endblock %}
   </main>
   {% endblock %}
   
+  <!-- Pied de page du site -->
   {% include 'footer.html' %}
+  
+  <!-- Scripts JS de base -->
+  <script src="{% static 'js/responsive-nav.js' %}"></script>
+  
+  <!-- Scripts JS spécifiques aux templates -->
+  {% block specific_js %}{% endblock %}
 </body>
 </html>

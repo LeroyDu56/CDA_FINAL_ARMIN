@@ -1,0 +1,515 @@
+/* ========================================================================= */
+/* HOST DETAIL PAGE (POUR HOST_DETAIL.HTML)                                  */
+/* ========================================================================= */
+.host-detail-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+  }
+  
+  .host-main-info {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px 25px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    margin-bottom: 25px;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .host-main-info h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+  }
+  
+  .host-main-info p {
+    font-size: 1.05rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    color: #666;
+  }
+  
+  /* Conteneur des sections de la page host_detail */
+  .host-sections {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .host-section {
+    flex: 1 1 45%;
+    min-width: 300px;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+  
+  .host-section h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+  }
+  
+  /* Amélioration des iframes Grafana */
+  .grafana-panel {
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    margin-bottom: 25px;
+    position: relative;
+    padding-top: 56.25%; /* Ratio 16:9 pour les iframes */
+    height: 0;
+  }
+  
+  .grafana-panel iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+  }
+  
+  /* ========================================================================= */
+  /* STATUS INDICATORS (POUR HOST_DETAIL.HTML)                                 */
+  /* ========================================================================= */
+  .status-indicator {
+    padding: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 6px;
+    font-size: 1.1rem;
+  }
+  
+  .status-indicator.active {
+    background-color: #dff0d8;
+    color: #3c763d;
+    border: 1px solid #d6e9c6;
+  }
+  
+  .status-indicator.inactive {
+    background-color: #f2dede;
+    color: #a94442;
+    border: 1px solid #ebccd1;
+  }
+  
+  .host-status {
+    display: flex;
+    align-items: center;
+    font-size: 1.05rem;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+  
+  .status-active, .status-inactive {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 12px;
+    border-radius: 50px;
+    font-weight: 500;
+    margin-left: 8px;
+  }
+  
+  .status-active {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .status-inactive {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  .status-active:before, .status-inactive:before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 8px;
+  }
+  
+  .status-active:before {
+    background-color: #28a745;
+  }
+  
+  .status-inactive:before {
+    background-color: #dc3545;
+  }
+  
+  /* Bannière "Données statiques" améliorée */
+  .static-data-banner {
+    background-color: #f8d7da;
+    color: #721c24;
+    text-align: center;
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin: 15px 0 20px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+    animation: pulse 2s infinite;
+    border-left: 4px solid #dc3545;
+  }
+  
+  @keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.85; }
+    100% { opacity: 1; }
+  }
+  
+  /* Sélecteur de plage amélioré */
+  .time-range-selector {
+    background: white;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    flex-wrap: wrap;
+  }
+  
+  .time-range-selector label {
+    margin-right: 12px;
+    font-weight: 600;
+    color: var(--primary-color);
+  }
+  
+  .time-range-selector select {
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    min-width: 100px;
+    background-color: #f8f9fa;
+    color: var(--dark-text);
+  }
+  
+  /* ========================================================================= */
+  /* HOST INFO DISPLAY AND EDITING - VERSION COHÉRENTE SANS CADRES             */
+  /* ========================================================================= */
+  
+  /* Style commun pour toutes les informations de l'hôte */
+  .host-info-row, .host-status, .host-main-info p {
+    color: #333;
+    font-size: 1.05rem;
+    margin-bottom: 12px;
+  }
+  
+  /* Styles pour les rangées d'informations */
+  .host-info-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  /* Style commun pour les valeurs importantes */
+  #client-display, #last-connection {
+    font-weight: 600;
+    color: #333;
+    display: inline-block;
+  }
+  
+  /* Client info avec édition */
+  .client-info {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  /* Bouton d'édition */
+  .edit-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 2px 5px;
+    color: #666;
+    transition: all 0.2s ease;
+  }
+  
+  .edit-btn:hover {
+    color: #007bff;
+  }
+  
+  /* Formulaire d'édition */
+  .edit-form {
+    margin-top: 8px;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e9ecef;
+  }
+  
+  .edit-input {
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    width: 250px;
+    font-size: 0.95rem;
+    color: #333;
+  }
+  
+  .edit-actions {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  /* Boutons d'action */
+  .save-btn, .cancel-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+  
+  .save-btn {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .save-btn:hover {
+    background-color: #218838;
+  }
+  
+  .cancel-btn {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .cancel-btn:hover {
+    background-color: #c82333;
+  }
+  
+  /* ========================================================================= */
+  /* TIME RANGE SELECTOR (POUR LES DASHBOARDS)                                  */
+  /* ========================================================================= */
+  .time-range-selector {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .time-range-selector label {
+    font-weight: bold;
+    margin-right: 10px;
+    font-size: 1rem;
+    color: var(--primary-color);
+  }
+  
+  .time-range-selector select {
+    padding: 5px 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    color: var(--dark-text);
+  }
+  
+  /* Amélioration bouton retour */
+  .back-btn-container {
+    margin-bottom: 20px;
+  }
+  
+  .back-btn-red {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #e74c3c;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .back-btn-red:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    background-color: #c0392b;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 992px) {
+    .host-sections {
+      flex-direction: column;
+    }
+    
+    .host-section {
+      min-width: 100%;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .host-detail-container {
+      margin: 15px auto;
+      padding: 15px;
+    }
+    
+    .host-main-info {
+      padding: 15px 20px;
+    }
+    
+    .host-main-info h2 {
+      font-size: 1.5rem;
+    }
+    
+    .host-main-info p {
+      font-size: 0.95rem;
+    }
+    
+    .host-section {
+      padding: 15px;
+    }
+    
+    .host-section h3 {
+      font-size: 1.2rem;
+    }
+    
+    .time-range-selector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .time-range-selector label {
+      margin-right: 0;
+      margin-bottom: 8px;
+    }
+    
+    .time-range-selector select {
+      width: 100%;
+      max-width: 200px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .host-detail-container {
+      margin: 10px auto;
+      padding: 10px;
+    }
+    
+    .host-main-info h2 {
+      font-size: 1.3rem;
+    }
+    
+    .grafana-panel {
+      padding-top: 75%; /* Ratio plus élevé pour les petits écrans */
+    }
+    
+    .status-indicator {
+      padding: 10px;
+      font-size: 1rem;
+    }
+    
+    .host-status {
+      font-size: 0.95rem;
+      margin-top: 10px;
+    }
+    
+    .status-active, .status-inactive {
+      padding: 4px 10px;
+      margin-top: 5px;
+    }
+    
+    .time-range-selector {
+      padding: 10px;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .time-range-selector label {
+      margin-right: 0;
+      margin-bottom: 8px;
+    }
+    
+    .time-range-selector select {
+      width: 100%;
+    }
+    
+    .host-info-row, .host-status {
+      font-size: 0.95rem;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .client-info {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .edit-input {
+      width: 100%;
+    }
+    
+    .edit-actions {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+  
+  /* Amélioration de host_detail.html pour grands écrans */
+  @media (min-width: 1600px) {
+    .host-detail-container {
+      max-width: 1400px;
+    }
+    
+    .host-main-info h2 {
+      font-size: 2.2rem;
+    }
+    
+    .host-main-info p {
+      font-size: 1.2rem;
+    }
+    
+    .host-status {
+      font-size: 1.2rem;
+    }
+    
+    .status-active, .status-inactive {
+      padding: 6px 15px;
+    }
+    
+    .time-range-selector {
+      padding: 15px 20px;
+    }
+    
+    .time-range-selector label {
+      font-size: 1.2rem;
+    }
+    
+    .time-range-selector select {
+      padding: 10px 15px;
+      font-size: 1.1rem;
+    }
+    
+    /* Amélioration des sections pour grands écrans */
+    .host-section h3 {
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+    }
+  }

@@ -1,0 +1,441 @@
+/* ========================================================================= */
+/* VARIABLES                                                                */
+/* ========================================================================= */
+:root {
+    --primary-color: #2A2E35;
+    --secondary-color: #4A90E2;
+    --accent-color: #00C7B7;
+    --light-text: #F8F9FA;
+    --dark-text: #2A2E35;
+    --background: #F8F9FA;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    
+    /* Breakpoints */
+    --mobile: 480px;
+    --tablet: 768px;
+    --desktop: 1024px;
+    --large-desktop: 1200px;
+    --xlarge-desktop: 1600px;
+    --xxlarge-desktop: 2000px;
+    --max-content-width: 1400px;
+  }
+  
+  /* ========================================================================= */
+  /* RESET & STYLES GLOBAUX                                                   */
+  /* ========================================================================= */
+  
+  /* Réinitialisation basique */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+  }
+  
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+  }
+  
+  /* Media query pour ajuster la taille de base du texte sur mobile */
+  @media (max-width: 480px) {
+    html {
+      font-size: 14px;
+    }
+  }
+  
+  body {
+    background-color: var(--background);
+    color: var(--dark-text);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden; /* Évite le défilement horizontal sur mobile */
+  }
+  
+  /* Conteneur général */
+  .container {
+    width: 100%;
+    max-width: var(--max-content-width);
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  /* Media queries pour les conteneurs */
+  @media (max-width: 768px) {
+    .container {
+      padding: 0 0.75rem;
+    }
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  /* ========================================================================= */
+  /* MAIN CONTENT                                                             */
+  /* ========================================================================= */
+  main.container {
+    flex: 1;
+    padding: 4rem 0;
+    width: 100%;
+  }
+  main.container h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    text-align: center;
+  }
+  main.container p {
+    font-size: 1.1rem;
+    color: #666;
+    max-width: 600px;
+    line-height: 1.8;
+  }
+  
+  @media (max-width: 768px) {
+    main.container {
+      padding: 2rem 0;
+    }
+    
+    main.container h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    main.container p {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    main.container {
+      padding: 1.5rem 0;
+    }
+    
+    main.container h2 {
+      font-size: 1.8rem;
+    }
+  }
+  
+  /* ========================================================================= */
+  /* FORMULAIRES & AUTHENTIFICATION                                          */
+  /* ========================================================================= */
+  .auth-container {
+    background: white;
+    padding: 3rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    max-width: 500px;
+    width: 90%;
+    margin: 3rem auto;
+    text-align: center;
+  }
+  .auth-container h2 {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+  }
+  .auth-description {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 2rem;
+  }
+  .form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+  }
+  .form-group label {
+    display: block;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+  }
+  .form-group input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+    background-color: #f9f9f9;
+  }
+  .form-group input:focus {
+    border-color: var(--secondary-color);
+    outline: none;
+  }
+  
+  /* Boutons (authentification & administration) */
+  .auth-container .auth-btn,
+  .search-cell .admin-btn {
+    width: 100%;
+    padding: 0.8rem;
+    background: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+  }
+  .filtrer-btn {
+    padding: 0.8rem 1rem;
+    background: var(--secondary-color);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+  }
+  .filtrer-btn:hover,
+  button:hover {
+    background: #357ABD;
+  }
+  
+  @media (max-width: 768px) {
+    .auth-container {
+      padding: 2rem;
+      margin: 2rem auto;
+    }
+    
+    .auth-container h2 {
+      font-size: 1.8rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .auth-container {
+      padding: 1.5rem;
+      margin: 1.5rem auto;
+      width: 95%;
+    }
+    
+    .auth-container h2 {
+      font-size: 1.6rem;
+    }
+    
+    .form-group input {
+      padding: 0.7rem;
+    }
+    
+    .auth-container .auth-btn,
+    .search-cell .admin-btn,
+    .filtrer-btn {
+      padding: 0.7rem;
+      font-size: 1rem;
+    }
+  }
+  
+  /* ========================================================================= */
+  /* FLASH MESSAGES & ERREURS                                                 */
+  /* ========================================================================= */
+  
+  /* Flash messages */
+  .flash-messages {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10000;
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+    transition: opacity 0.3s ease;
+    width: 90%;
+    max-width: 500px;
+    background-color: transparent;
+    pointer-events: none; /* Permet aux clics de passer à travers le conteneur */
+  }
+  
+  .flash-messages ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    pointer-events: none; /* La liste laisse passer les clics */
+  }
+  
+  .flash-messages li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    margin-bottom: 5px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    pointer-events: none; /* Les messages laissent passer les clics */
+  }
+  
+  /* Seul le bouton de fermeture est cliquable */
+  .flash-messages .close {
+    background: none;
+    border: none;
+    color: inherit;
+    font-weight: bold;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-left: 10px;
+    pointer-events: auto; /* Le bouton de fermeture est cliquable */
+  }
+  
+  .flash-messages li.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+  }
+  
+  .flash-messages li.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+  }
+  
+  .flash-messages li.logout {
+    background-color: #cce5ff;
+    color: #004085;
+    border: 1px solid #b8daff;
+  }
+  
+  .flash-messages .close:hover {
+    color: #000;
+  }
+  
+  @keyframes fade-out {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+  }
+  
+  .flash-messages li {
+    animation: fade-out 4s ease forwards;
+  }
+  
+  /* Gestion des erreurs */
+  .error-global {
+    background-color: #ffe6e6;
+    border: 2px solid #e74c3c;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+  }
+  
+  .form-group.has-error {
+    border: 2px solid #e74c3c;
+    background-color: #ffe6e6;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+  }
+  
+  .error-text {
+    color: #e74c3c;
+    font-weight: bold;
+    margin: 6px 0;
+  }
+  
+  @media (max-width: 480px) {
+    .flash-messages {
+      top: 10px;
+      width: 95%;
+    }
+    
+    .flash-messages li {
+      padding: 8px 15px;
+      font-size: 0.85rem;
+    }
+    
+    .flash-messages .close {
+      font-size: 1.2rem;
+    }
+  }
+  
+  /* ========================================================================= */
+  /* TRANSITIONS                                                              */
+  /* ========================================================================= */
+  @media (prefers-reduced-motion: no-preference) {
+    button {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+  }
+  
+  /* ========================================================================= */
+  /* UTILITAIRES RESPONSIVE                                                   */
+  /* ========================================================================= */
+  .hide-on-mobile {
+    display: block;
+  }
+  
+  .show-on-mobile {
+    display: none;
+  }
+  
+  @media (max-width: 768px) {
+    .hide-on-mobile {
+      display: none;
+    }
+    
+    .show-on-mobile {
+      display: block;
+    }
+  }
+  
+  /* Grille responsive */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 20px;
+  }
+  
+  @media (max-width: 992px) {
+    .grid {
+      grid-template-columns: repeat(6, 1fr);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+    }
+  }
+  
+  /* Optimisations pour grands écrans */
+  @media (min-width: 1600px) {
+    html {
+      font-size: 17px; /* Augmentation légère de la taille de base des polices */
+    }
+    
+    .container {
+      padding: 0 2rem;
+    }
+  }
+  
+  @media (min-width: 2000px) {
+    html {
+      font-size: 20px;
+    }
+  }
+  
+  /* Optimisations pour écrans de 15 pouces */
+  @media (min-width: 1366px) and (max-width: 1599px) {
+    html {
+      font-size: 15px; /* Taille de base réduite */
+    }
+    
+    /* Réduction des marges et paddings */
+    .container {
+      max-width: 1200px;
+    }
+  }
