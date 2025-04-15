@@ -291,7 +291,7 @@ def robot_list_view(request):
         'user_is_roboticien': user_is_roboticien,
         'hosts_status': hosts_status,
     })
-
+ 
 @login_required
 @role_required(['Admin', 'Roboticien'])
 def host_detail_view(request, host):
