@@ -147,3 +147,15 @@ class HostIpMapping(models.Model):
 
     def __str__(self):
         return f"{self.host}: {self.ip_address}"
+    
+
+class HostContact(models.Model):
+    """Modèle pour stocker les informations de contact associées à un hôte"""
+    host = models.CharField(max_length=255, unique=True)
+    contact_name = models.CharField(max_length=100, blank=True, null=True)
+    contact_email = models.EmailField(max_length=100, blank=True, null=True)
+    contact_phone = models.CharField(max_length=20, blank=True, null=True)
+    last_updated = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Contact pour {self.host}: {self.contact_name}"

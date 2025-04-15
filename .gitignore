@@ -1,1 +1,39 @@
+# Environnement virtuel
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Fichiers de configuration Django
 .env
+*.sqlite3
+db.sqlite3
+
+# Fichiers générés
+.DS_Store
+*.log
+*.pot
+*.pyc
+local_settings.py
+
+# Dossiers spécifiques à l'IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Fichiers de migrations (optionnel, selon votre stratégie)
+# */migrations/*.py
+# !*/migrations/__init__.py
+
+# Fichiers média et statiques collectés
+/media/
+/static_collected/
+
+# Fichiers de cache
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+.hypothesis/

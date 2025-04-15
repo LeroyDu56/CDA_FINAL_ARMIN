@@ -11,6 +11,148 @@
     box-shadow: var(--shadow);
 }
 
+/* Styles pour la section boutons d'action */
+.host-action-buttons {
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px 20px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    margin-bottom: 25px;
+}
+
+.host-action-buttons h3 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    width: 100%;
+    text-align: center;
+}
+
+.action-buttons-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
+.action-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 20px;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.action-button:hover {
+    background-color: #357ABD;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.action-button i {
+    font-size: 1.1rem;
+}
+
+/* Styles pour les popups */
+.action-popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background-color: white;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.popup-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    color: var(--primary-color);
+}
+
+.close-popup {
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #6c757d;
+    line-height: 1;
+}
+
+.close-popup:hover {
+    color: #343a40;
+}
+
+.popup-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.quick-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px 15px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--primary-color);
+    font-weight: 500;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.quick-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #e9ecef;
+}
+
+.quick-link i {
+    font-size: 1.1rem;
+    color: var(--secondary-color);
+}
+
 /* Amélioration de la mise en page des informations hôte */
 .host-main-info {
     background-color: white;
@@ -348,6 +490,173 @@
 }
 
 @media (max-width: 768px) {
+    .host-action-buttons {
+        padding: 12px;
+    }
+    
+    .host-action-buttons h3 {
+        font-size: 1.2rem;
+    }
+    
+    .action-button {
+        padding: 10px 15px;
+        font-size: 0.95rem;
+    }
+    
+    .popup-content {
+        width: 95%;
+    }
+    
+    .popup-header {
+        padding: 12px 15px;
+    }
+    
+    .popup-header h3 {
+        font-size: 1.2rem;
+    }
+    
+    .popup-body {
+        padding: 15px;
+    }
+    
+    .quick-link {
+        padding: 8px 12px;
+        font-size: 0.9rem;
+    }
+    
+
+    /* Styles pour le popup de contact */
+.contact-info-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    padding: 12px;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    width: 100%;
+}
+
+.contact-label {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.contact-label i {
+    color: var(--secondary-color);
+    font-size: 1.1rem;
+}
+
+.contact-value {
+    font-size: 1.05rem;
+    color: #333;
+    word-break: break-word;
+}
+
+.edit-contact-btn {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 15px;
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.edit-contact-btn:hover {
+    background-color: #357ABD;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.edit-contact-btn i {
+    font-size: 1.1rem;
+}
+
+/* Formulaire d'édition des contacts */
+#contact-edit-form {
+    width: 100%;
+}
+
+.contact-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 1rem;
+    margin-top: 5px;
+}
+
+.contact-edit-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.contact-edit-actions button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+/* Responsive pour le popup de contact */
+@media (max-width: 768px) {
+    .contact-info-row {
+        padding: 10px;
+    }
+    
+    .contact-label {
+        font-size: 0.95rem;
+    }
+    
+    .contact-value {
+        font-size: 1rem;
+    }
+    
+    .edit-contact-btn {
+        padding: 8px 12px;
+        font-size: 0.95rem;
+    }
+    
+    .contact-input {
+        padding: 8px;
+        font-size: 0.95rem;
+    }
+    
+    .contact-edit-actions button {
+        padding: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-info-row {
+        padding: 8px;
+    }
+    
+    .contact-label {
+        font-size: 0.9rem;
+    }
+    
+    .contact-value {
+        font-size: 0.95rem;
+    }
+}
+
     .host-detail-container {
         margin: 15px auto;
         padding: 15px;

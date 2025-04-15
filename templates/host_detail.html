@@ -43,6 +43,93 @@
         </p>
     </div>
     
+    <!-- Ajout de la section boutons d'action -->
+    <div class="host-action-buttons">
+        <h3>Actions disponibles</h3>
+        <div class="action-buttons-container">
+            <button id="quick-links-btn" class="action-button">
+                <i class="fas fa-link"></i> Liens Rapides
+            </button>
+            <!-- Nouveau bouton Contact -->
+            <button id="contact-btn" class="action-button">
+                <i class="fas fa-address-card"></i> Contact
+            </button>
+            <!-- Vous pourrez ajouter d'autres boutons ici -->
+        </div>
+    </div>
+    
+    <!-- Popup des liens rapides -->
+    <div id="quick-links-popup" class="action-popup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h3>Liens Rapides</h3>
+                <button class="close-popup">&times;</button>
+            </div>
+            <div class="popup-body">
+                <a href="http://{{ info.ip }}" target="_blank" class="quick-link">
+                    <i class="fas fa-external-link-alt"></i> Lien direct : {{ info.ip }}
+                </a>
+                <a href="http://{{ info.ip }}/admin" target="_blank" class="quick-link">
+                    <i class="fas fa-cog"></i> Lien Django : {{ info.ip }}/admin
+                </a>
+                <a href="http://{{ info.ip }}/backups/all" target="_blank" class="quick-link">
+                    <i class="fas fa-database"></i> Lien Backup : {{ info.ip }}/backups/all
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Popup des informations de contact -->
+    <div id="contact-popup" class="action-popup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h3>Informations de contact</h3>
+                <button class="close-popup">&times;</button>
+            </div>
+            <div class="popup-body">
+                <!-- Mode affichage -->
+                <div id="contact-display">
+                    <div class="contact-info-row">
+                        <div class="contact-label"><i class="fas fa-user"></i> Nom prénom:</div>
+                        <div class="contact-value" id="contact-name-display">{{ contact.name|default:"Non renseigné" }}</div>
+                    </div>
+                    <div class="contact-info-row">
+                        <div class="contact-label"><i class="fas fa-envelope"></i> Email:</div>
+                        <div class="contact-value" id="contact-email-display">{{ contact.email|default:"Non renseigné" }}</div>
+                    </div>
+                    <div class="contact-info-row">
+                        <div class="contact-label"><i class="fas fa-phone"></i> Téléphone:</div>
+                        <div class="contact-value" id="contact-phone-display">{{ contact.phone|default:"Non renseigné" }}</div>
+                    </div>
+                    <button id="edit-contact-btn" class="edit-contact-btn">
+                        <i class="fas fa-edit"></i> Modifier
+                    </button>
+                </div>
+                
+                <!-- Mode édition -->
+                <div id="contact-edit-form" style="display: none;">
+                    <div class="form-group">
+                        <label for="contact-name-input">Nom prénom</label>
+                        <input type="text" id="contact-name-input" class="contact-input" value="{{ contact.name|default:'' }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-email-input">Email</label>
+                        <input type="email" id="contact-email-input" class="contact-input" value="{{ contact.email|default:'' }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-phone-input">Téléphone</label>
+                        <input type="tel" id="contact-phone-input" class="contact-input" value="{{ contact.phone|default:'' }}">
+                    </div>
+                    <div class="contact-edit-actions">
+                        <button id="save-contact-btn" class="save-btn">Enregistrer</button>
+                        <button id="cancel-contact-edit" class="cancel-btn">Annuler</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="time-range-selector">
         <label for="time_range">Plage de temps :</label>
         <select id="time_range">
@@ -178,180 +265,4 @@
 </script>
 
 <script src="{% static 'js/host_detail.js' %}"></script>
-
-<script>
-    // Fonction pour mettre à jour l'affichage de la dernière connexion
-    function updateLastConnectionTime() {
-        const lastConnectionTimestamp = "{{ last_connection_timestamp }}";
-        if (lastConnectionTimestamp && "{{ is_host_active }}" !== "True") {
-            const lastConnectionTime = new Date(lastConnectionTimestamp);
-            const now = new Date();
-            const timeDiff = Math.floor((now - lastConnectionTime) / 1000); // différence en secondes
-
-            let displayText = "";
-            if (timeDiff < 60) {
-                displayText = "Il y a quelques secondes";
-            } else if (timeDiff < 3600) {
-                const minutes = Math.floor(timeDiff / 60);
-                displayText = `Il y a ${minutes} minute${minutes > 1 ? 's' : ''}`;
-            } else if (timeDiff < 86400) {
-                const hours = Math.floor(timeDiff / 3600);
-                displayText = `Il y a ${hours} heure${hours > 1 ? 's' : ''}`;
-            } else if (timeDiff < 2592000) { // moins de 30 jours
-                const days = Math.floor(timeDiff / 86400);
-                displayText = `Il y a ${days} jour${days > 1 ? 's' : ''}`;
-            } else {
-                // Format: DD/MM/YYYY
-                const day = lastConnectionTime.getDate().toString().padStart(2, '0');
-                const month = (lastConnectionTime.getMonth() + 1).toString().padStart(2, '0');
-                const year = lastConnectionTime.getFullYear();
-                displayText = `Dernière connexion le ${day}/${month}/${year}`;
-            }
-
-            document.getElementById('last-connection').textContent = displayText;
-        }
-    }
-
-    // Mettre à jour l'affichage toutes les minutes
-    setInterval(updateLastConnectionTime, 60000);
-
-    // Gestion des boutons d'action
-    document.addEventListener('DOMContentLoaded', function() {
-        const rebootBtn = document.getElementById('rebootBtn');
-        const shutdownBtn = document.getElementById('shutdownBtn');
-
-        if (rebootBtn) {
-            rebootBtn.addEventListener('click', function() {
-                if (confirm('Êtes-vous sûr de vouloir redémarrer cet hôte ?')) {
-                    // Envoyer une requête pour redémarrer l'hôte
-                    fetch(`/api/host/{{ host }}/reboot`, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRFToken': '{{ csrf_token }}',
-                            'Content-Type': 'application/json'
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert('Commande de redémarrage envoyée avec succès.');
-                        } else {
-                            alert('Erreur lors de l\'envoi de la commande de redémarrage: ' + data.error);
-                        }
-                    })
-                    .catch(error => {
-                        alert('Erreur lors de l\'envoi de la commande de redémarrage: ' + error);
-                    });
-                }
-            });
-        }
-
-        if (shutdownBtn) {
-            shutdownBtn.addEventListener('click', function() {
-                if (confirm('Êtes-vous sûr de vouloir éteindre cet hôte ?')) {
-                    // Envoyer une requête pour éteindre l'hôte
-                    fetch(`/api/host/{{ host }}/shutdown`, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRFToken': '{{ csrf_token }}',
-                            'Content-Type': 'application/json'
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            alert('Commande d\'extinction envoyée avec succès.');
-                        } else {
-                            alert('Erreur lors de l\'envoi de la commande d\'extinction: ' + data.error);
-                        }
-                    })
-                    .catch(error => {
-                        alert('Erreur lors de l\'envoi de la commande d\'extinction: ' + error);
-                    });
-                }
-            });
-        }
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const clientDisplay = document.getElementById('client-display');
-        const editClientBtn = document.getElementById('edit-client-btn');
-        const clientEditForm = document.getElementById('client-edit-form');
-        const clientInput = document.getElementById('client-input');
-        const saveClientBtn = document.getElementById('save-client-btn');
-        const cancelClientEdit = document.getElementById('cancel-client-edit');
-        
-        // Fonction pour envoyer les mises à jour via AJAX
-        function updateClientName(value) {
-            const formData = new FormData();
-            formData.append('update_field', 'client');
-            formData.append('client', value);
-            formData.append('host', '{{ host }}');
-            formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-            
-            fetch('{% url "update_host_info" %}', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Erreur réseau');
-                }
-                return response.json();
-            })
-            .then(data => {
-                if (data.success) {
-                    clientDisplay.textContent = value;
-                    clientEditForm.style.display = 'none';
-                    clientDisplay.style.display = 'inline';
-                    editClientBtn.style.display = 'inline-block';
-                } else {
-                    alert('Erreur lors de la mise à jour: ' + (data.error || 'Erreur inconnue'));
-                }
-            })
-            .catch(error => {
-                console.error('Erreur:', error);
-                alert('Erreur lors de la mise à jour: ' + error.message);
-            });
-        }
-        
-        if (editClientBtn) {
-            editClientBtn.addEventListener('click', function() {
-                clientDisplay.style.display = 'none';
-                editClientBtn.style.display = 'none';
-                clientEditForm.style.display = 'block';
-                clientInput.focus();
-                clientInput.select();
-            });
-        }
-        
-        if (saveClientBtn) {
-            saveClientBtn.addEventListener('click', function() {
-                const newClient = clientInput.value.trim();
-                if (newClient) {
-                    updateClientName(newClient);
-                } else {
-                    alert('Le nom du client ne peut pas être vide');
-                }
-            });
-            
-            // Permettre l'envoi avec la touche Entrée
-            clientInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    saveClientBtn.click();
-                }
-            });
-        }
-        
-        if (cancelClientEdit) {
-            cancelClientEdit.addEventListener('click', function() {
-                clientInput.value = clientDisplay.textContent;
-                clientEditForm.style.display = 'none';
-                clientDisplay.style.display = 'inline';
-                editClientBtn.style.display = 'inline-block';
-            });
-        }
-    });
-</script>
 {% endblock %}

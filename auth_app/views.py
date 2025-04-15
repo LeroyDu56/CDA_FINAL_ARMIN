@@ -418,6 +418,24 @@ def host_detail_view(request, host):
         'client': client
     }
 
+    # Récupérer les informations de contact de l'hôte
+    from auth_app.models import HostContact
+    contact_info = HostContact.objects.filter(host=host).first()
+    
+    # Si aucune info de contact n'existe, créer un dictionnaire vide
+    if not contact_info:
+        contact = {
+            'name': None,
+            'email': None,
+            'phone': None
+        }
+    else:
+        contact = {
+            'name': contact_info.contact_name,
+            'email': contact_info.contact_email,
+            'phone': contact_info.contact_phone
+        }
+    
     context = {
         "host": host,
         "is_host_active": is_host_active,
@@ -426,7 +444,8 @@ def host_detail_view(request, host):
         "user_is_admin": user_is_admin,
         "user_is_roboticien": user_is_roboticien,
         "service_tasks": service_tasks,
-        "info": host_info,  # Ajouter les informations IP et client au contexte
+        "info": host_info,
+        "contact": contact,
     }
     return render(request, "host_detail.html", context)
 
@@ -618,33 +637,64 @@ def add_sav_task_view(request, host):
     # En cas d'erreur ou si la méthode n'est pas POST, rediriger vers la page de détail de l'hôte
     return redirect('host_detail', host=host)
 
+# Modifiez votre fonction update_host_info dans views.py
+
 @login_required
 @role_required(['Admin', 'Roboticien'])
 @csrf_protect
 def update_host_info(request):
-    """Vue pour mettre à jour les informations d'un hôte (client, etc.)"""
-    if request.method == 'POST' and request.POST.get('update_field') == 'client':
+    """Vue pour mettre à jour les informations d'un hôte (client, contact, etc.)"""
+    if request.method == 'POST':
+        update_field = request.POST.get('update_field')
         host = request.POST.get('host')
-        client = request.POST.get('client')
+        
+        if not host:
+            return JsonResponse({'success': False, 'error': 'Hôte non spécifié'})
+        
+        # Mise à jour du client
+        if update_field == 'client':
+            client = request.POST.get('client')
 
-        try:
-            # Mettre à jour le client pour toutes les tâches de cet hôte
-            tasks_updated = ServiceTask.objects.filter(host=host).update(client=client)
+            try:
+                # Mettre à jour le client pour toutes les tâches de cet hôte
+                tasks_updated = ServiceTask.objects.filter(host=host).update(client=client)
 
-            # Si aucune tâche n'existe pour cet hôte, créer une tâche "dummy" pour stocker le client
-            if tasks_updated == 0:
-                ServiceTask.objects.create(
-                    host=host,
-                    title="Configuration initiale",
-                    description="Tâche créée automatiquement pour stocker les informations du client",
-                    priority="low",
-                    status="completed",
-                    client=client
-                )
+                # Si aucune tâche n'existe pour cet hôte, créer une tâche "dummy" pour stocker le client
+                if tasks_updated == 0:
+                    ServiceTask.objects.create(
+                        host=host,
+                        title="Configuration initiale",
+                        description="Tâche créée automatiquement pour stocker les informations du client",
+                        priority="low",
+                        status="completed",
+                        client=client
+                    )
 
-            return JsonResponse({'success': True})
-        except Exception as e:
-            print(f"Erreur lors de la mise à jour du client: {str(e)}")
-            return JsonResponse({'success': False, 'error': str(e)})
+                return JsonResponse({'success': True})
+            except Exception as e:
+                print(f"Erreur lors de la mise à jour du client: {str(e)}")
+                return JsonResponse({'success': False, 'error': str(e)})
+        
+        # Mise à jour des informations de contact
+        elif update_field == 'contact':
+            contact_name = request.POST.get('contact_name', '')
+            contact_email = request.POST.get('contact_email', '')
+            contact_phone = request.POST.get('contact_phone', '')
+            
+            try:
+                # Récupérer ou créer l'entrée de contact pour cet hôte
+                from auth_app.models import HostContact
+                contact, created = HostContact.objects.get_or_create(host=host)
+                
+                # Mettre à jour les informations
+                contact.contact_name = contact_name
+                contact.contact_email = contact_email
+                contact.contact_phone = contact_phone
+                contact.save()
+                
+                return JsonResponse({'success': True})
+            except Exception as e:
+                print(f"Erreur lors de la mise à jour des informations de contact: {str(e)}")
+                return JsonResponse({'success': False, 'error': str(e)})
 
     return JsonResponse({'success': False, 'error': 'Requête invalide'})
