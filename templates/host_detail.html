@@ -32,7 +32,9 @@
             </div>
         </div>
         
-        <p>Dernière connexion : <span id="last-connection">{{ last_connection_display }}</span></p>
+        <div class="host-info-row">
+            <p>Dernière connexion : <span id="last-connection">{{ last_connection_display }}</span></p>
+        </div>
         <p class="host-status">
             État: 
             <span class="{% if is_host_active %}status-active{% else %}status-inactive{% endif %}">

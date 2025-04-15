@@ -254,7 +254,7 @@ def robot_list_view(request):
     # Récupérer le dict {host: is_fresh}
     basic_hosts_status = get_hosts_status() or {}
 
-    # Récupérer les informations d'adresse IP avec débogage
+    # Récupérer les informations d'adresse IP
     from utils.influx import get_host_ip_info
     print("\n\n=== DÉBOGAGE ROBOT_LIST_VIEW ===")
     print(f"Nombre d'hôtes trouvés: {len(basic_hosts_status)}")
@@ -276,8 +276,8 @@ def robot_list_view(request):
         client = "Non spécifié"  # Valeur par défaut
 
         # Si vous avez un moyen de déterminer le client, utilisez-le ici
-        host_tasks = ServiceTask.objects.filter(host=host).first()
-        if host_tasks and hasattr(host_tasks, 'client') and host_tasks.client:
+        host_tasks = ServiceTask.objects.filter(host=host).exclude(client="").exclude(client="Non spécifié").first()
+        if host_tasks and host_tasks.client:
             client = host_tasks.client
 
         hosts_status[host] = {
@@ -379,11 +379,38 @@ def host_detail_view(request, host):
     ip_info = get_host_ip_info()
     host_ip = ip_info.get(host, {}).get('ip', "Non spécifiée")
 
-    # Récupérer le client depuis les tâches SAV
-    client = "Non spécifié"
-    task_with_client = service_tasks.exclude(client="").exclude(client="Non spécifié").first()
-    if task_with_client:
-        client = task_with_client.client
+    # Assurer que l'hôte est enregistré en base de données
+    from auth_app.models import HostIpMapping
+    host_mapping, created = HostIpMapping.objects.get_or_create(
+        host=host,
+        defaults={'ip_address': host_ip}
+    )
+    if created:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.info(f"Nouvel hôte enregistré en base de données: {host}")
+
+    # Récupérer le client de la même manière que dans robot_list_view
+    basic_hosts_status = get_hosts_status() or {}
+    complete_hosts_status = {}
+    
+    for h, is_fresh in basic_hosts_status.items():
+        h_ip = ip_info.get(h, {}).get('ip', "Non spécifiée")
+        h_client = "Non spécifié"
+        
+        # Chercher le client dans les tâches SAV
+        h_task = ServiceTask.objects.filter(host=h).exclude(client="").exclude(client="Non spécifié").first()
+        if h_task:
+            h_client = h_task.client
+            
+        complete_hosts_status[h] = {
+            'is_fresh': is_fresh,
+            'client': h_client,
+            'ip': h_ip
+        }
+    
+    # Utilisez exactement les mêmes informations client que dans robot_list
+    client = complete_hosts_status.get(host, {}).get('client', "Non spécifié")
 
     # Créer un dictionnaire d'informations pour l'hôte
     host_info = {

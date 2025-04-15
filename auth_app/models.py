@@ -136,3 +136,14 @@ class ServiceTask(models.Model):
 
     def get_status_display(self):
         return dict(self.STATUS_CHOICES).get(self.status, '')
+    
+
+class HostIpMapping(models.Model):
+    """Modèle pour stocker les associations host-IP de manière persistante."""
+    host = models.CharField(max_length=255, unique=True)
+    ip_address = models.CharField(max_length=45, null=True, blank=True)
+    last_updated = models.DateTimeField(auto_now=True)
+    is_active = models.BooleanField(default=True)  # Ajout d'un champ pour gérer manuellement l'état
+
+    def __str__(self):
+        return f"{self.host}: {self.ip_address}"

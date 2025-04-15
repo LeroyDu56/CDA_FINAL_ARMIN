@@ -99,10 +99,12 @@
               <span class="action-text">Administration</span>
             </a>
           {% endif %}
+          {% if user_is_admin or user_is_roboticien %}
           <a href="{% url 'sav_list' %}" class="action-button">
             <span class="action-icon">🛠️</span>
             <span class="action-text">SAV</span>
           </a>
+          {% endif %}
           <a href="#" class="action-button">
             <span class="action-icon">❓</span>
             <span class="action-text">Aide</span>
