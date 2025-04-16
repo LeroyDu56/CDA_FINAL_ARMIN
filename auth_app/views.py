@@ -718,6 +718,33 @@ def update_host_info(request):
                 print(f"Erreur lors de la mise à jour de l'adresse IP: {str(e)}")
                 return JsonResponse({'success': False, 'error': str(e)})
         
+        # Mise à jour du client
+        elif update_field == 'client':
+            client = request.POST.get('client', '')
+            
+            try:
+                # Chercher une tâche existante pour cet hôte
+                task = ServiceTask.objects.filter(host=host).first()
+                
+                if task:
+                    # Mettre à jour le client pour toutes les tâches de cet hôte
+                    ServiceTask.objects.filter(host=host).update(client=client)
+                else:
+                    # Créer une nouvelle tâche avec le client spécifié
+                    ServiceTask.objects.create(
+                        host=host,
+                        title="Configuration client",
+                        description="Mise à jour du client pour cet hôte",
+                        priority="low",
+                        status="completed",
+                        client=client
+                    )
+                
+                return JsonResponse({'success': True})
+            except Exception as e:
+                print(f"Erreur lors de la mise à jour du client: {str(e)}")
+                return JsonResponse({'success': False, 'error': str(e)})
+        
         # Mise à jour des informations de contact
         elif update_field == 'contact':
             contact_name = request.POST.get('contact_name', '')
