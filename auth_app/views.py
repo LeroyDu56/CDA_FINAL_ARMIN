@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.http import HttpResponseForbidden, JsonResponse
 from .forms import LoginForm, RegisterForm
-from .models import User, Role, AuthLog, ServiceTask, HostIpMapping
+from .models import User, Role, AuthLog, ServiceTask, HostIpMapping, HostContact
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from utils.influx import get_hosts_status
 from .decorators import role_required
@@ -688,28 +688,34 @@ def update_host_info(request):
         if not host:
             return JsonResponse({'success': False, 'error': 'Hôte non spécifié'})
         
-        # Mise à jour du client
-        if update_field == 'client':
-            client = request.POST.get('client')
-
+        # Mise à jour de l'adresse IP (uniquement pour les hôtes manuels)
+        if update_field == 'ip_address':
+            ip_address = request.POST.get('ip_address')
+            
             try:
-                # Mettre à jour le client pour toutes les tâches de cet hôte
-                tasks_updated = ServiceTask.objects.filter(host=host).update(client=client)
-
-                # Si aucune tâche n'existe pour cet hôte, créer une tâche "dummy" pour stocker le client
-                if tasks_updated == 0:
-                    ServiceTask.objects.create(
-                        host=host,
-                        title="Configuration initiale",
-                        description="Tâche créée automatiquement pour stocker les informations du client",
-                        priority="low",
-                        status="completed",
-                        client=client
-                    )
-
+                # Vérifier que l'hôte existe et qu'il est manuel
+                host_mapping = HostIpMapping.objects.get(host=host)
+                
+                if not host_mapping.is_manual:
+                    return JsonResponse({'success': False, 'error': "Seuls les hôtes manuels peuvent avoir leur IP modifiée."})
+                
+                # Vérifier si l'IP est déjà utilisée par un autre hôte
+                existing_host_with_ip = HostIpMapping.objects.filter(ip_address=ip_address).exclude(host=host).first()
+                if existing_host_with_ip:
+                    return JsonResponse({
+                        'success': False, 
+                        'error': f"Cette adresse IP est déjà utilisée par l'hôte {existing_host_with_ip.host}."
+                    })
+                
+                # Mettre à jour l'adresse IP
+                host_mapping.ip_address = ip_address
+                host_mapping.save()
+                
                 return JsonResponse({'success': True})
+            except HostIpMapping.DoesNotExist:
+                return JsonResponse({'success': False, 'error': "Cet hôte n'existe pas."})
             except Exception as e:
-                print(f"Erreur lors de la mise à jour du client: {str(e)}")
+                print(f"Erreur lors de la mise à jour de l'adresse IP: {str(e)}")
                 return JsonResponse({'success': False, 'error': str(e)})
         
         # Mise à jour des informations de contact
@@ -766,7 +772,7 @@ def add_manual_host(request):
                 # Vérifier si un hôte avec cette IP existe déjà
                 existing_host_ip = HostIpMapping.objects.filter(ip_address=ip_address).first()
                 if existing_host_ip:
-                    messages.warning(request, f"Un hôte avec l'IP {ip_address} existe déjà ({existing_host_ip.host}). Veuillez vérifier.")
+                    messages.error(request, f"Un hôte avec l'IP {ip_address} existe déjà ({existing_host_ip.host}). Veuillez utiliser une autre adresse IP.")
                     return redirect('robot_list')
                 
                 # Créer un nouvel hôte manuel
@@ -795,3 +801,40 @@ def add_manual_host(request):
             messages.error(request, "Veuillez fournir un nom d'hôte et une adresse IP.")
             
     return redirect('robot_list')
+
+
+@login_required
+@role_required(['Admin', 'Roboticien'])
+def delete_manual_host(request, host):
+    """Vue pour supprimer un hôte manuel."""
+    if request.method == 'POST':
+        try:
+            # Vérifier que l'hôte existe et qu'il est manuel
+            host_mapping = HostIpMapping.objects.get(host=host)
+            
+            # Vérifier que c'est bien un hôte manuel
+            if not host_mapping.is_manual:
+                messages.error(request, f"L'hôte {host} n'est pas un hôte manuel et ne peut pas être supprimé.")
+                return redirect('host_detail', host=host)
+            
+            # Supprimer les tâches SAV associées
+            ServiceTask.objects.filter(host=host).delete()
+            
+            # Supprimer les contacts associés
+            HostContact.objects.filter(host=host).delete()
+            
+            # Supprimer l'hôte
+            host_mapping.delete()
+            
+            messages.success(request, f"L'hôte manuel {host} a été supprimé avec succès.")
+            return redirect('robot_list')
+            
+        except HostIpMapping.DoesNotExist:
+            messages.error(request, f"L'hôte {host} n'existe pas.")
+            return redirect('robot_list')
+        except Exception as e:
+            messages.error(request, f"Erreur lors de la suppression de l'hôte: {str(e)}")
+            return redirect('host_detail', host=host)
+    
+    # Si la méthode n'est pas POST, rediriger vers la page de détail
+    return redirect('host_detail', host=host)

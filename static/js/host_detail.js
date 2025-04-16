@@ -440,4 +440,135 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Erreur lors de la mise à jour: ' + error.message);
         });
     }
+
+        // Gestion du popup de suppression d'hôte
+    const deleteHostBtn = document.getElementById('delete-host-btn');
+    const deleteHostPopup = document.getElementById('delete-host-popup');
+    const cancelDeleteBtn = document.getElementById('cancel-delete');
+
+    // Ouvrir le popup de suppression
+    if (deleteHostBtn && deleteHostPopup) {
+        deleteHostBtn.addEventListener('click', function() {
+            deleteHostPopup.style.display = 'flex';
+        });
+    }
+
+    // Fermer le popup de suppression avec le bouton Annuler
+    if (cancelDeleteBtn) {
+        cancelDeleteBtn.addEventListener('click', function() {
+            deleteHostPopup.style.display = 'none';
+        });
+    }
+
+    // Inclure le popup de suppression dans la fermeture générale des popups
+    window.addEventListener('click', function(event) {
+        if (event.target.classList.contains('action-popup')) {
+            event.target.style.display = 'none';
+        }
+    });
+
+
+    
+
+
+        // Gestion du formulaire d'édition d'adresse IP (pour les hôtes manuels)
+    const ipDisplay = document.getElementById('ip-display');
+    const editIpBtn = document.getElementById('edit-ip-btn');
+    const ipEditForm = document.getElementById('ip-edit-form');
+    const ipInput = document.getElementById('ip-input');
+    const saveIpBtn = document.getElementById('save-ip-btn');
+    const cancelIpEdit = document.getElementById('cancel-ip-edit');
+
+    // Fonction pour valider une adresse IP
+    function isValidIp(ip) {
+        // Regex simple pour IPv4
+        const ipv4Regex = /^(\d{1,3}\.){3}\d{1,3}$/;
+        if (ipv4Regex.test(ip)) {
+            // Vérifier que chaque octet est bien entre 0 et 255
+            const octets = ip.split('.');
+            return octets.every(octet => parseInt(octet) <= 255);
+        }
+        return false;
+    }
+
+    // Fonction pour envoyer la mise à jour de l'IP via AJAX
+    function updateIpAddress(value) {
+        const formData = new FormData();
+        formData.append('update_field', 'ip_address');
+        formData.append('ip_address', value);
+        formData.append('host', host);
+        formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+        
+        fetch('/update_host_info/', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erreur réseau');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                ipDisplay.textContent = value;
+                ipEditForm.style.display = 'none';
+                ipDisplay.style.display = 'inline';
+                editIpBtn.style.display = 'inline-block';
+            } else {
+                alert('Erreur lors de la mise à jour: ' + (data.error || 'Erreur inconnue'));
+            }
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            alert('Erreur lors de la mise à jour: ' + error.message);
+        });
+    }
+
+    // Passer en mode édition de l'IP
+    if (editIpBtn) {
+        editIpBtn.addEventListener('click', function() {
+            ipDisplay.style.display = 'none';
+            editIpBtn.style.display = 'none';
+            ipEditForm.style.display = 'block';
+            ipInput.focus();
+            ipInput.select();
+        });
+    }
+
+    // Sauvegarder l'IP
+    if (saveIpBtn) {
+        saveIpBtn.addEventListener('click', function() {
+            const newIp = ipInput.value.trim();
+            if (newIp) {
+                if (isValidIp(newIp)) {
+                    updateIpAddress(newIp);
+                } else {
+                    alert('Veuillez entrer une adresse IP valide (format: xxx.xxx.xxx.xxx)');
+                }
+            } else {
+                alert("L'adresse IP ne peut pas être vide");
+            }
+        });
+        
+        // Permettre l'envoi avec la touche Entrée
+        if (ipInput) {
+            ipInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    saveIpBtn.click();
+                }
+            });
+        }
+    }
+
+    // Annuler l'édition de l'IP
+    if (cancelIpEdit) {
+        cancelIpEdit.addEventListener('click', function() {
+            ipInput.value = ipDisplay.textContent;
+            ipEditForm.style.display = 'none';
+            ipDisplay.style.display = 'inline';
+            editIpBtn.style.display = 'inline-block';
+        });
+    }
 });

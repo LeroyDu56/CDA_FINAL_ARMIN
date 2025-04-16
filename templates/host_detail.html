@@ -16,7 +16,18 @@
         
         <!-- Ajout des informations IP et client -->
         <div class="host-info-row">
-            <p>Adresse IP : {{ info.ip }}</p>
+            <p>Adresse IP : <span id="ip-display">{{ info.ip }}</span></p>
+            {% if is_manual_host %}
+            <button id="edit-ip-btn" class="edit-btn">✏️</button>
+            
+            <div id="ip-edit-form" class="edit-form" style="display: none;">
+                <input type="text" id="ip-input" value="{{ info.ip }}" class="edit-input" maxlength="45">
+                <div class="edit-actions">
+                    <button id="save-ip-btn" class="save-btn">Enregistrer</button>
+                    <button id="cancel-ip-edit" class="cancel-btn">Annuler</button>
+                </div>
+            </div>
+            {% endif %}
         </div>
         
         <div class="host-info-row client-info">
@@ -47,18 +58,23 @@
         </p>
     </div>
     
-    <!-- Ajout de la section boutons d'action -->
+    <!-- Section boutons d'action -->
     <div class="host-action-buttons">
         <h3>Actions disponibles</h3>
         <div class="action-buttons-container">
             <button id="quick-links-btn" class="action-button">
                 <i class="fas fa-link"></i> Liens Rapides
             </button>
-            <!-- Nouveau bouton Contact -->
+            <!-- Bouton Contact -->
             <button id="contact-btn" class="action-button">
                 <i class="fas fa-address-card"></i> Contact
             </button>
-            <!-- Vous pourrez ajouter d'autres boutons ici -->
+            <!-- Bouton de suppression visible uniquement pour les hôtes manuels -->
+            {% if is_manual_host %}
+            <button id="delete-host-btn" class="action-button action-button-danger">
+                <i class="fas fa-trash"></i> Supprimer l'hôte
+            </button>
+            {% endif %}
         </div>
     </div>
     
@@ -83,67 +99,90 @@
         </div>
     </div>
     
-<!-- Popup des informations de contact -->
-<div id="contact-popup" class="action-popup">
-    <div class="popup-content">
-        <div class="popup-header">
-            <h3>Informations de contact</h3>
-            <button class="close-popup">&times;</button>
-        </div>
-        <div class="popup-body">
-            <!-- Mode affichage -->
-            <div id="contact-display">
-                <div class="contact-info-row">
-                    <div class="contact-label"><i class="fas fa-user"></i> Nom prénom:</div>
-                    <div class="contact-value" id="contact-name-display">{{ contact.name|default:"Non renseigné" }}</div>
-                </div>
-                <div class="contact-info-row">
-                    <div class="contact-label"><i class="fas fa-envelope"></i> Email:</div>
-                    <div class="contact-value" id="contact-email-display">{{ contact.email|default:"Non renseigné" }}</div>
-                </div>
-                <div class="contact-info-row">
-                    <div class="contact-label"><i class="fas fa-phone"></i> Téléphone:</div>
-                    <div class="contact-value" id="contact-phone-display">{{ contact.phone|default:"Non renseigné" }}</div>
-                </div>
-                
-                <!-- Indicateur de dernière modification -->
-                <div class="last-updated">
-                    <i class="fas fa-clock"></i> Dernière modification: 
-                    <span id="last-update-display">
-                        {% if contact.last_updated %}{{ contact.last_updated|date:"d/m/Y H:i" }}{% else %}Jamais{% endif %}
-                    </span>
-                </div>
-                
-                <button id="edit-contact-btn" class="edit-contact-btn">
-                    <i class="fas fa-edit"></i> Modifier
-                </button>
+    <!-- Popup des informations de contact -->
+    <div id="contact-popup" class="action-popup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h3>Informations de contact</h3>
+                <button class="close-popup">&times;</button>
             </div>
-            
-            <!-- Mode édition -->
-            <div id="contact-edit-form" style="display: none;">
-                <div class="form-group">
-                    <label for="contact-name-input">Nom prénom</label>
-                    <input type="text" id="contact-name-input" class="contact-input" value="{{ contact.name|default:'' }}" placeholder="Saisir un nom">
+            <div class="popup-body">
+                <!-- Mode affichage -->
+                <div id="contact-display">
+                    <div class="contact-info-row">
+                        <div class="contact-label"><i class="fas fa-user"></i> Nom prénom:</div>
+                        <div class="contact-value" id="contact-name-display">{{ contact.name|default:"Non renseigné" }}</div>
+                    </div>
+                    <div class="contact-info-row">
+                        <div class="contact-label"><i class="fas fa-envelope"></i> Email:</div>
+                        <div class="contact-value" id="contact-email-display">{{ contact.email|default:"Non renseigné" }}</div>
+                    </div>
+                    <div class="contact-info-row">
+                        <div class="contact-label"><i class="fas fa-phone"></i> Téléphone:</div>
+                        <div class="contact-value" id="contact-phone-display">{{ contact.phone|default:"Non renseigné" }}</div>
+                    </div>
+                    
+                    <!-- Indicateur de dernière modification -->
+                    <div class="last-updated">
+                        <i class="fas fa-clock"></i> Dernière modification: 
+                        <span id="last-update-display">
+                            {% if contact.last_updated %}{{ contact.last_updated|date:"d/m/Y H:i" }}{% else %}Jamais{% endif %}
+                        </span>
+                    </div>
+                    
+                    <button id="edit-contact-btn" class="edit-contact-btn">
+                        <i class="fas fa-edit"></i> Modifier
+                    </button>
                 </div>
-                <div class="form-group">
-                    <label for="contact-email-input">Email</label>
-                    <input type="email" id="contact-email-input" class="contact-input" value="{{ contact.email|default:'' }}" placeholder="Saisir un email">
-                </div>
-                <div class="form-group">
-                    <label for="contact-phone-input">Téléphone</label>
-                    <input type="tel" id="contact-phone-input" class="contact-input" value="{{ contact.phone|default:'' }}" placeholder="Saisir un numéro de téléphone">
-                </div>
-                <div class="contact-edit-actions">
-                    <button id="save-contact-btn" class="save-btn">Enregistrer</button>
-                    <button id="cancel-contact-edit" class="cancel-btn">Annuler</button>
+                
+                <!-- Mode édition -->
+                <div id="contact-edit-form" style="display: none;">
+                    <div class="form-group">
+                        <label for="contact-name-input">Nom prénom</label>
+                        <input type="text" id="contact-name-input" class="contact-input" value="{{ contact.name|default:'' }}" placeholder="Saisir un nom">
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-email-input">Email</label>
+                        <input type="email" id="contact-email-input" class="contact-input" value="{{ contact.email|default:'' }}" placeholder="Saisir un email">
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-phone-input">Téléphone</label>
+                        <input type="tel" id="contact-phone-input" class="contact-input" value="{{ contact.phone|default:'' }}" placeholder="Saisir un numéro de téléphone">
+                    </div>
+                    <div class="contact-edit-actions">
+                        <button id="save-contact-btn" class="save-btn">Enregistrer</button>
+                        <button id="cancel-contact-edit" class="cancel-btn">Annuler</button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
+    <!-- Popup de confirmation pour la suppression -->
+    <div id="delete-host-popup" class="action-popup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <h3>Confirmation de suppression</h3>
+                <button class="close-popup">&times;</button>
+            </div>
+            <div class="popup-body">
+                <p>Êtes-vous sûr de vouloir supprimer définitivement l'hôte <strong>{{ host }}</strong> ?</p>
+                <p>Cette action supprimera également toutes les tâches SAV et contacts associés.</p>
+                <p class="warning-text">Cette action est irréversible.</p>
+                
+                <div class="popup-actions">
+                    <button id="cancel-delete" class="cancel-btn">Annuler</button>
+                    <form action="{% url 'delete_manual_host' host=host %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-btn">Confirmer la suppression</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="time-range-selector">
+        {% if not is_manual_host %}
         <label for="time_range">Plage de temps :</label>
         <select id="time_range">
             <option value="60m">1h</option>
@@ -151,9 +190,11 @@
             <option value="12h">12h</option>
             <option value="24h">24h</option>
         </select>
+        {% endif %}
     </div>
     
     <div class="host-sections">
+        {% if not is_manual_host %}
         <div class="host-section pc-section">
             <!-- Section CPU -->
             <h3>Utilisation du CPU</h3>
@@ -202,6 +243,25 @@
             <h3>Informations du Robot</h3>
             <p>Les informations spécifiques au robot seront affichées ici ultérieurement.</p>
         </div>
+        {% else %}
+        <!-- Message pour les hôtes manuels - DANS UNE LAYOUT SIMILAIRE -->
+        <div class="host-section pc-section">
+            <h3>Informations de surveillance</h3>
+            <div class="manual-host-info">
+                <i class="fas fa-info-circle"></i>
+                <p>Cet hôte a été créé manuellement. Les données de surveillance ne sont pas disponibles.</p>
+                <p>Les données seront disponibles si l'hôte est détecté automatiquement par le système.</p>
+            </div>
+        </div>
+        
+        <div class="host-section robot-section">
+            <h3>Informations du Robot</h3>
+            <div class="manual-host-info">
+                <i class="fas fa-robot"></i>
+                <p>Les informations spécifiques au robot ne sont pas disponibles pour les hôtes manuels.</p>
+            </div>
+        </div>
+        {% endif %}
         
         <div class="host-section sav-section">
             <h3>Service Après-Vente (SAV)</h3>
@@ -230,7 +290,7 @@
                     <p class="no-tasks">Aucune tâche SAV pour cet hôte.</p>
                 {% endif %}
             </div>
-
+    
             <!-- Formulaire pour ajouter une nouvelle tâche -->
             <div class="add-task-form">
                 <h4>Ajouter une nouvelle tâche :</h4>
@@ -266,7 +326,6 @@
             </div>
         </div>
     </div>
-</div>
 
 <script id="host-data" type="application/json">
     {
@@ -280,7 +339,4 @@
 
 <script src="{% static 'js/host_detail.js' %}"></script>
 
-
-
 {% endblock %}
-

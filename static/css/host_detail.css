@@ -918,3 +918,110 @@
         margin-bottom: 20px;
     }
 }
+
+/* Style pour le bouton de suppression */
+.action-button-danger {
+    background-color: #dc3545;
+}
+
+.action-button-danger:hover {
+    background-color: #c82333;
+}
+
+/* Style pour la popup de suppression */
+.warning-text {
+    color: #dc3545;
+    font-weight: 500;
+    font-size: 0.95rem;
+    margin: 10px 0;
+}
+
+.popup-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.cancel-btn {
+    background-color: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.cancel-btn:hover {
+    background-color: #5a6268;
+}
+
+.delete-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+    background-color: #c82333;
+}
+
+/* Style pour la section d'information des hôtes manuels */
+.manual-host-notice {
+    margin-bottom: 25px;
+}
+
+/* Style pour la section d'information des hôtes manuels */
+.manual-host-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+    background-color: #fff3cd;
+    border: 1px solid #ffeeba;
+    border-radius: 6px;
+    color: #856404;
+    text-align: center;
+    min-height: 200px; /* Pour avoir une hauteur similaire aux graphiques */
+    margin-bottom: 25px;
+}
+
+.manual-host-info i {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: #ff9800;
+}
+
+.manual-host-info p {
+    margin-bottom: 10px;
+    color: #856404;
+    max-width: 600px;
+    line-height: 1.5;
+}
+
+.manual-host-info p:last-child {
+    margin-bottom: 0;
+}
+
+/* Pour assurer une structure cohérente lors du changement de disposition responsive */
+@media (max-width: 992px) {
+    .host-sections {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .host-section {
+        width: 100%;
+    }
+    
+    .manual-host-info {
+        min-height: auto;
+        padding: 20px;
+    }
+}

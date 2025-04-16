@@ -22,5 +22,6 @@ urlpatterns = [
     path('sav/archive-completed/', views.archive_completed_tasks, name='archive_completed_tasks'),
     path('update_host_info/', views.update_host_info, name='update_host_info'),
     path('add_manual_host/', views.add_manual_host, name='add_manual_host'),
+    path('host/<str:host>/delete/', views.delete_manual_host, name='delete_manual_host'),
     
 ]
