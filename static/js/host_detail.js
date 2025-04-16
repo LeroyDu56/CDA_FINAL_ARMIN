@@ -314,6 +314,16 @@ document.addEventListener('DOMContentLoaded', function() {
             contactEmailDisplay.textContent = email || "Non renseigné";
             contactPhoneDisplay.textContent = phone || "Non renseigné";
             
+            // Création d'une date formatée
+            const now = new Date();
+            const day = now.getDate().toString().padStart(2, '0');
+            const month = (now.getMonth() + 1).toString().padStart(2, '0'); 
+            const year = now.getFullYear();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            
+            const formattedDate = `${day}/${month}/${year} ${hours}:${minutes}`;
+            
             // Sauvegarder les données via AJAX
             updateContactInfo(name, email, phone);
             
@@ -370,6 +380,43 @@ document.addEventListener('DOMContentLoaded', function() {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     }
-
+    
+    // Fonction pour mettre à jour les informations de contact via AJAX
+    function updateContactInfo(name, email, phone) {
+        const formData = new FormData();
+        formData.append('update_field', 'contact');
+        formData.append('contact_name', name);
+        formData.append('contact_email', email);
+        formData.append('contact_phone', phone);
+        formData.append('host', host);
+        formData.append('csrfmiddlewaretoken', document.querySelector('[name=csrfmiddlewaretoken]').value);
+        
+        fetch('/update_host_info/', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erreur réseau');
+            }
+            return response.json();
+        })
+        .then(data => {
+            if (data.success) {
+                console.log("Informations de contact mises à jour avec succès");
+                
+                // Mettre à jour la date de dernière modification si elle est fournie
+                if (data.last_updated) {
+                    document.getElementById('last-update-display').textContent = data.last_updated;
+                }
+            } else {
+                alert('Erreur lors de la mise à jour: ' + (data.error || 'Erreur inconnue'));
+            }
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            alert('Erreur lors de la mise à jour: ' + error.message);
+        });
+    }
 
 });

@@ -79,55 +79,64 @@
         </div>
     </div>
     
-    <!-- Popup des informations de contact -->
-    <div id="contact-popup" class="action-popup">
-        <div class="popup-content">
-            <div class="popup-header">
-                <h3>Informations de contact</h3>
-                <button class="close-popup">&times;</button>
-            </div>
-            <div class="popup-body">
-                <!-- Mode affichage -->
-                <div id="contact-display">
-                    <div class="contact-info-row">
-                        <div class="contact-label"><i class="fas fa-user"></i> Nom prénom:</div>
-                        <div class="contact-value" id="contact-name-display">{{ contact.name|default:"Non renseigné" }}</div>
-                    </div>
-                    <div class="contact-info-row">
-                        <div class="contact-label"><i class="fas fa-envelope"></i> Email:</div>
-                        <div class="contact-value" id="contact-email-display">{{ contact.email|default:"Non renseigné" }}</div>
-                    </div>
-                    <div class="contact-info-row">
-                        <div class="contact-label"><i class="fas fa-phone"></i> Téléphone:</div>
-                        <div class="contact-value" id="contact-phone-display">{{ contact.phone|default:"Non renseigné" }}</div>
-                    </div>
-                    <button id="edit-contact-btn" class="edit-contact-btn">
-                        <i class="fas fa-edit"></i> Modifier
-                    </button>
+<!-- Popup des informations de contact -->
+<div id="contact-popup" class="action-popup">
+    <div class="popup-content">
+        <div class="popup-header">
+            <h3>Informations de contact</h3>
+            <button class="close-popup">&times;</button>
+        </div>
+        <div class="popup-body">
+            <!-- Mode affichage -->
+            <div id="contact-display">
+                <div class="contact-info-row">
+                    <div class="contact-label"><i class="fas fa-user"></i> Nom prénom:</div>
+                    <div class="contact-value" id="contact-name-display">{{ contact.name|default:"Non renseigné" }}</div>
+                </div>
+                <div class="contact-info-row">
+                    <div class="contact-label"><i class="fas fa-envelope"></i> Email:</div>
+                    <div class="contact-value" id="contact-email-display">{{ contact.email|default:"Non renseigné" }}</div>
+                </div>
+                <div class="contact-info-row">
+                    <div class="contact-label"><i class="fas fa-phone"></i> Téléphone:</div>
+                    <div class="contact-value" id="contact-phone-display">{{ contact.phone|default:"Non renseigné" }}</div>
                 </div>
                 
-                <!-- Mode édition -->
-                <div id="contact-edit-form" style="display: none;">
-                    <div class="form-group">
-                        <label for="contact-name-input">Nom prénom</label>
-                        <input type="text" id="contact-name-input" class="contact-input" value="{{ contact.name|default:'' }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="contact-email-input">Email</label>
-                        <input type="email" id="contact-email-input" class="contact-input" value="{{ contact.email|default:'' }}">
-                    </div>
-                    <div class="form-group">
-                        <label for="contact-phone-input">Téléphone</label>
-                        <input type="tel" id="contact-phone-input" class="contact-input" value="{{ contact.phone|default:'' }}">
-                    </div>
-                    <div class="contact-edit-actions">
-                        <button id="save-contact-btn" class="save-btn">Enregistrer</button>
-                        <button id="cancel-contact-edit" class="cancel-btn">Annuler</button>
-                    </div>
+                <!-- Indicateur de dernière modification -->
+                <div class="last-updated">
+                    <i class="fas fa-clock"></i> Dernière modification: 
+                    <span id="last-update-display">
+                        {% if contact.last_updated %}{{ contact.last_updated|date:"d/m/Y H:i" }}{% else %}Jamais{% endif %}
+                    </span>
+                </div>
+                
+                <button id="edit-contact-btn" class="edit-contact-btn">
+                    <i class="fas fa-edit"></i> Modifier
+                </button>
+            </div>
+            
+            <!-- Mode édition -->
+            <div id="contact-edit-form" style="display: none;">
+                <div class="form-group">
+                    <label for="contact-name-input">Nom prénom</label>
+                    <input type="text" id="contact-name-input" class="contact-input" value="{{ contact.name|default:'' }}" placeholder="Saisir un nom">
+                </div>
+                <div class="form-group">
+                    <label for="contact-email-input">Email</label>
+                    <input type="email" id="contact-email-input" class="contact-input" value="{{ contact.email|default:'' }}" placeholder="Saisir un email">
+                </div>
+                <div class="form-group">
+                    <label for="contact-phone-input">Téléphone</label>
+                    <input type="tel" id="contact-phone-input" class="contact-input" value="{{ contact.phone|default:'' }}" placeholder="Saisir un numéro de téléphone">
+                </div>
+                <div class="contact-edit-actions">
+                    <button id="save-contact-btn" class="save-btn">Enregistrer</button>
+                    <button id="cancel-contact-edit" class="cancel-btn">Annuler</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 
     <div class="time-range-selector">
@@ -265,4 +274,8 @@
 </script>
 
 <script src="{% static 'js/host_detail.js' %}"></script>
+
+
+
 {% endblock %}
+

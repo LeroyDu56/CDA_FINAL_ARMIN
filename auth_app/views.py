@@ -427,13 +427,15 @@ def host_detail_view(request, host):
         contact = {
             'name': None,
             'email': None,
-            'phone': None
+            'phone': None,
+            'last_updated': None
         }
     else:
         contact = {
             'name': contact_info.contact_name,
             'email': contact_info.contact_email,
-            'phone': contact_info.contact_phone
+            'phone': contact_info.contact_phone,
+            'last_updated': contact_info.last_updated 
         }
     
     context = {
@@ -684,6 +686,8 @@ def update_host_info(request):
             try:
                 # Récupérer ou créer l'entrée de contact pour cet hôte
                 from auth_app.models import HostContact
+                from django.utils import timezone  # Ajoutez cette importation
+                
                 contact, created = HostContact.objects.get_or_create(host=host)
                 
                 # Mettre à jour les informations
@@ -692,7 +696,14 @@ def update_host_info(request):
                 contact.contact_phone = contact_phone
                 contact.save()
                 
-                return JsonResponse({'success': True})
+                # Convertir explicitement la date UTC en heure locale
+                local_time = timezone.localtime(contact.last_updated)
+                formatted_date = local_time.strftime('%d/%m/%Y %H:%M')
+                
+                return JsonResponse({
+                    'success': True,
+                    'last_updated': formatted_date
+                })
             except Exception as e:
                 print(f"Erreur lors de la mise à jour des informations de contact: {str(e)}")
                 return JsonResponse({'success': False, 'error': str(e)})
