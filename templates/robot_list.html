@@ -1,10 +1,20 @@
 <!-- templates/robot_list.html -->
 {% extends 'base.html' %}
 {% block title %}Liste des Hosts{% endblock %}
+{% load static %}
 
 {% block content %}
 <section class="container">
   <h2>Liste des Hosts</h2>
+  
+  <!-- Bouton pour ouvrir le popup d'ajout d'hôte -->
+  {% if user_is_admin or user_is_roboticien %}
+  <div class="add-host-button-container">
+    <button id="add-host-btn" class="add-host-btn">
+      <i class="fas fa-plus"></i> Ajouter un hôte
+    </button>
+  </div>
+  {% endif %}
   
   <!-- Formulaire de recherche et filtres -->
   <div class="search-filters">
@@ -66,6 +76,39 @@
       <p>Aucun host trouvé.</p>
     {% endif %}
   </div>
+  
+  <!-- Modal pour l'ajout manuel d'hôte -->
+  {% if user_is_admin or user_is_roboticien %}
+  <div id="add-host-modal" class="add-host-modal">
+    <div class="add-host-modal-content">
+      <div class="add-host-modal-header">
+        <h3>Ajouter un nouvel hôte</h3>
+        <button class="close-host-modal">&times;</button>
+      </div>
+      <div class="add-host-modal-body">
+        <form id="add-host-form" action="{% url 'add_manual_host' %}" method="post" class="add-host-form">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="host_name">Nom de l'hôte *</label>
+            <input type="text" id="host_name" name="host_name" required placeholder="Exemple: robot123">
+          </div>
+          <div class="form-group">
+            <label for="ip_address">Adresse IP *</label>
+            <input type="text" id="ip_address" name="ip_address" required placeholder="Exemple: 192.168.1.100">
+          </div>
+          <div class="form-group">
+            <label for="client">Client</label>
+            <input type="text" id="client" name="client" placeholder="Nom du client (optionnel)">
+          </div>
+          <div class="add-host-modal-footer">
+            <button type="button" id="cancel-add-host" class="add-host-cancel-btn">Annuler</button>
+            <button type="submit" class="add-host-submit-btn">Créer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endif %}
 </section>
 
 <script>
@@ -128,4 +171,6 @@ document.addEventListener('DOMContentLoaded', function() {
   clientFilter.addEventListener('change', applyFilters);
 });
 </script>
+
+<script src="{% static 'js/add_host.js' %}"></script>
 {% endblock %}

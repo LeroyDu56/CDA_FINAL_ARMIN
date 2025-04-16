@@ -2,6 +2,7 @@
 from influxdb_client import InfluxDBClient
 from django.conf import settings
 from datetime import datetime, timezone
+from auth_app.models import ServiceTask, HostIpMapping
 import logging
 
 # Configuration du logger
@@ -23,7 +24,7 @@ def get_hosts_status():
     de la dernière donnée reçue.
     """
     # Import ici pour éviter les imports circulaires
-    from auth_app.models import HostIpMapping
+    from auth_app.models import HostIpMapping, ServiceTask, HostContact
     from datetime import datetime, timezone, timedelta
     
     logger.info("Récupération de l'état des hôtes.")
@@ -48,6 +49,9 @@ def get_hosts_status():
             host_status = {}
             now_utc = datetime.now(timezone.utc)
             
+            # Dictionnaire pour stocker les informations d'IP détectées automatiquement
+            auto_hosts_ips = {}
+            
             for table in tables:
                 for record in table.records:
                     host_name = record.values["host"]
@@ -65,17 +69,78 @@ def get_hosts_status():
                     host_status[host_name] = is_active
                     
                     # Sauvegarder ou mettre à jour l'hôte dans la base de données
-                    HostIpMapping.objects.get_or_create(
+                    host_mapping, created = HostIpMapping.objects.get_or_create(
                         host=host_name,
-                        defaults={'ip_address': "Non spécifiée"}
+                        defaults={
+                            'ip_address': "Non spécifiée",
+                            'is_manual': False  # Marquer comme hôte automatique
+                        }
                     )
+                    
+                    # Si l'hôte existait déjà et était manuel, le marquer comme automatique
+                    if not created and host_mapping.is_manual:
+                        host_mapping.is_manual = False
+                        host_mapping.save()
+                        
+            # Maintenant, récupérons les IP pour tous les hôtes automatiques
+            ip_info = get_host_ip_info()
+            for host_name, info in ip_info.items():
+                if host_name in host_status and info['ip'] != "Non spécifiée":
+                    auto_hosts_ips[info['ip']] = host_name
+            
+            # Vérifions s'il y a des hôtes manuels avec des IPs correspondant à des hôtes automatiques
+            manual_hosts = HostIpMapping.objects.filter(is_manual=True)
+            for manual_host in manual_hosts:
+                if manual_host.ip_address in auto_hosts_ips:
+                    auto_host_name = auto_hosts_ips[manual_host.ip_address]
+                    
+                    # Vérifier que les noms sont différents
+                    if manual_host.host != auto_host_name:
+                        try:
+                            logger.info(f"Tentative de remplacement de l'hôte manuel {manual_host.host} par l'hôte automatique {auto_host_name}")
+                            
+                            # Transférer les informations client
+                            manual_tasks = ServiceTask.objects.filter(host=manual_host.host)
+                            for task in manual_tasks:
+                                # Créer une tâche équivalente pour l'hôte automatique
+                                ServiceTask.objects.get_or_create(
+                                    host=auto_host_name,
+                                    title=task.title,
+                                    defaults={
+                                        'description': task.description,
+                                        'priority': task.priority,
+                                        'status': task.status,
+                                        'client': task.client
+                                    }
+                                )
+                            
+                            # Transférer les contacts
+                            manual_contact = HostContact.objects.filter(host=manual_host.host).first()
+                            if manual_contact:
+                                HostContact.objects.update_or_create(
+                                    host=auto_host_name,
+                                    defaults={
+                                        'contact_name': manual_contact.contact_name,
+                                        'contact_email': manual_contact.contact_email,
+                                        'contact_phone': manual_contact.contact_phone
+                                    }
+                                )
+                            
+                            # Supprimer l'hôte manuel et ses données associées
+                            manual_tasks.delete()
+                            if manual_contact:
+                                manual_contact.delete()
+                            manual_host.delete()
+                            
+                            logger.info(f"Hôte manuel {manual_host.host} remplacé avec succès par {auto_host_name}")
+                            
+                        except Exception as e:
+                            logger.error(f"Erreur lors du remplacement de l'hôte manuel: {e}")
 
-            # Ajouter les hôtes connus depuis la base de données qui ne sont pas dans les résultats d'InfluxDB
-            db_hosts = HostIpMapping.objects.all()
-            for host_mapping in db_hosts:
-                if host_mapping.host not in host_status:
-                    # L'hôte existe en base mais pas dans InfluxDB récent
-                    host_status[host_mapping.host] = False
+            # Ajouter les hôtes manuels au dictionnaire de statut
+            for manual_host in HostIpMapping.objects.filter(is_manual=True):
+                if manual_host.host not in host_status:
+                    host_status[manual_host.host] = False  # Les hôtes manuels sont toujours inactifs
                     
             return host_status
 

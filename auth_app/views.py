@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.http import HttpResponseForbidden, JsonResponse
 from .forms import LoginForm, RegisterForm
-from .models import User, Role, AuthLog, ServiceTask
+from .models import User, Role, AuthLog, ServiceTask, HostIpMapping
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from utils.influx import get_hosts_status
 from .decorators import role_required
@@ -709,3 +709,54 @@ def update_host_info(request):
                 return JsonResponse({'success': False, 'error': str(e)})
 
     return JsonResponse({'success': False, 'error': 'Requête invalide'})
+
+
+@login_required
+@role_required(['Admin', 'Roboticien'])
+def add_manual_host(request):
+    """Vue pour ajouter un hôte manuellement."""
+    if request.method == 'POST':
+        host_name = request.POST.get('host_name')
+        ip_address = request.POST.get('ip_address')
+        client = request.POST.get('client', 'Non spécifié')
+        
+        if host_name and ip_address:
+            try:
+                # Vérifier si un hôte avec ce nom existe déjà
+                existing_host_name = HostIpMapping.objects.filter(host=host_name).first()
+                if existing_host_name:
+                    messages.error(request, f"Un hôte avec le nom '{host_name}' existe déjà. Veuillez choisir un autre nom.")
+                    return redirect('robot_list')
+                
+                # Vérifier si un hôte avec cette IP existe déjà
+                existing_host_ip = HostIpMapping.objects.filter(ip_address=ip_address).first()
+                if existing_host_ip:
+                    messages.warning(request, f"Un hôte avec l'IP {ip_address} existe déjà ({existing_host_ip.host}). Veuillez vérifier.")
+                    return redirect('robot_list')
+                
+                # Créer un nouvel hôte manuel
+                host_mapping = HostIpMapping.objects.create(
+                    host=host_name,
+                    ip_address=ip_address,
+                    is_manual=True
+                )
+                
+                # Créer une tâche SAV pour stocker le client
+                if client:
+                    ServiceTask.objects.create(
+                        host=host_name,
+                        title="Configuration initiale",
+                        description="Hôte créé manuellement",
+                        priority="low",
+                        status="completed",
+                        client=client
+                    )
+                
+                messages.success(request, f"Hôte {host_name} ajouté avec succès.")
+                
+            except Exception as e:
+                messages.error(request, f"Erreur lors de l'ajout de l'hôte: {str(e)}")
+        else:
+            messages.error(request, "Veuillez fournir un nom d'hôte et une adresse IP.")
+            
+    return redirect('robot_list')

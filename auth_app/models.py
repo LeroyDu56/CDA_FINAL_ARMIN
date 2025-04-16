@@ -143,7 +143,8 @@ class HostIpMapping(models.Model):
     host = models.CharField(max_length=255, unique=True)
     ip_address = models.CharField(max_length=45, null=True, blank=True)
     last_updated = models.DateTimeField(auto_now=True)
-    is_active = models.BooleanField(default=True)  # Ajout d'un champ pour gérer manuellement l'état
+    is_active = models.BooleanField(default=True)
+    is_manual = models.BooleanField(default=False)  # Nouvel attribut pour les hôtes manuels
 
     def __str__(self):
         return f"{self.host}: {self.ip_address}"
@@ -155,6 +156,7 @@ class HostContact(models.Model):
     contact_name = models.CharField(max_length=100, blank=True, null=True)
     contact_email = models.EmailField(max_length=100, blank=True, null=True)
     contact_phone = models.CharField(max_length=20, blank=True, null=True)
+    contact_address = models.CharField(max_length=255, blank=True, null=True)  
     last_updated = models.DateTimeField(auto_now=True)
     
     def __str__(self):
