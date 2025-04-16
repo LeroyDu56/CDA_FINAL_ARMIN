@@ -319,6 +319,8 @@ def host_detail_view(request, host):
     """
     from utils.influx import get_hosts_status, get_last_connection_time, get_host_ip_info
     from datetime import datetime, timezone
+    # Importer les modèles dès le début
+    from auth_app.models import HostIpMapping, ServiceTask, HostContact
 
     # Traitement du formulaire d'ajout de tâche SAV
     if request.method == 'POST':

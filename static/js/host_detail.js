@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     const { 
         isHostActive, 
+        isManualHost, // Nouvel attribut
         host, 
         lastConnectionTime, 
         grafanaBaseUrl
@@ -49,67 +50,86 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
     
-    // Construire les URLs de base avec le refresh approprié
-    const refreshParam = isHostActive ? "&refresh=5s" : "&refresh=0";
-    
-    // Fonction pour convertir les plages temporelles en millisecondes
-    function convertTimeRangeToMs(range) {
-        const value = parseInt(range.replace(/[^0-9]/g, ''));
-        const unit = range.replace(/[0-9]/g, '');
-        
-        const multipliers = {
-            'm': 60 * 1000,
-            'h': 60 * 60 * 1000,
-            'd': 24 * 60 * 60 * 1000
-        };
-        
-        return value * (multipliers[unit] || 60 * 1000);
-    }
-    
-    // Fonction pour générer l'URL d'un panneau
-    function generatePanelUrl(panel, timeRange) {
-        const baseUrl = `${grafanaBaseUrl}/${panel.dashboard}?orgId=1&timezone=browser&panelId=${panel.id}&var-host=${host}${refreshParam}`;
-        
-        if (isHostActive) {
-            return `${baseUrl}&from=now-${timeRange}&to=now`;
-        } 
-        
-        if (lastConnectionTime) {
-            const lastConnDate = new Date(lastConnectionTime);
-            const endTimeMs = lastConnDate.getTime() + (5 * 60 * 1000);
-            const startTimeMs = endTimeMs - convertTimeRangeToMs(timeRange);
-            
-            return `${baseUrl}&from=${startTimeMs}&to=${endTimeMs}`;
-        }
-        
-        // Cas par défaut
-        return `${baseUrl}&from=now-${timeRange}&to=now`;
-    }
-    
-    // Mettre à jour tous les iframes
-    function updateIframes(timeRange) {
-        // Parcourir tous les panneaux et mettre à jour leurs iframes
+    // Si c'est un hôte manuel, remplacer les iframes par un message d'information
+    if (isManualHost) {
+        // Pour chaque panneau Grafana
         Object.values(panels).forEach(panel => {
             const iframe = document.getElementById(panel.element);
             if (iframe) {
-                iframe.src = generatePanelUrl(panel, timeRange);
+                // Remplacer l'iframe par un message d'information
+                const container = iframe.parentNode;
+                const infoDiv = document.createElement('div');
+                infoDiv.className = 'manual-host-info';
+                infoDiv.innerHTML = 'Pas de données disponibles pour cet hôte manuel. Les données seront disponibles lorsque l\'hôte sera détecté automatiquement.';
+                container.replaceChild(infoDiv, iframe);
             }
         });
-    }
-    
-    // Initialiser avec la plage de temps par défaut
-    updateIframes("60m");
-    
-    // Gérer le changement de plage de temps
-    const timeRangeSelector = document.getElementById("time_range");
-    if (timeRangeSelector) {
-        timeRangeSelector.addEventListener("change", function() {
-            updateIframes(this.value);
-        });
+    } else {
+        // Construire les URLs de base avec le refresh approprié pour les hôtes automatiques
+        const refreshParam = isHostActive ? "&refresh=5s" : "&refresh=0";
+        
+        // Fonction pour convertir les plages temporelles en millisecondes
+        function convertTimeRangeToMs(range) {
+            const value = parseInt(range.replace(/[^0-9]/g, ''));
+            const unit = range.replace(/[0-9]/g, '');
+            
+            const multipliers = {
+                'm': 60 * 1000,
+                'h': 60 * 60 * 1000,
+                'd': 24 * 60 * 60 * 1000
+            };
+            
+            return value * (multipliers[unit] || 60 * 1000);
+        }
+        
+        // Fonction pour générer l'URL d'un panneau
+        function generatePanelUrl(panel, timeRange) {
+            const baseUrl = `${grafanaBaseUrl}/${panel.dashboard}?orgId=1&timezone=browser&panelId=${panel.id}&var-host=${host}${refreshParam}`;
+            
+            if (isHostActive) {
+                return `${baseUrl}&from=now-${timeRange}&to=now`;
+            } 
+            
+            if (lastConnectionTime) {
+                const lastConnDate = new Date(lastConnectionTime);
+                const endTimeMs = lastConnDate.getTime() + (5 * 60 * 1000);
+                const startTimeMs = endTimeMs - convertTimeRangeToMs(timeRange);
+                
+                return `${baseUrl}&from=${startTimeMs}&to=${endTimeMs}`;
+            }
+            
+            // Cas par défaut
+            return `${baseUrl}&from=now-${timeRange}&to=now`;
+        }
+        
+        // Mettre à jour tous les iframes
+        function updateIframes(timeRange) {
+            // Parcourir tous les panneaux et mettre à jour leurs iframes
+            Object.values(panels).forEach(panel => {
+                const iframe = document.getElementById(panel.element);
+                if (iframe) {
+                    iframe.src = generatePanelUrl(panel, timeRange);
+                }
+            });
+        }
+        
+        // Initialiser avec la plage de temps par défaut
+        updateIframes("60m");
+        
+        // Gérer le changement de plage de temps
+        const timeRangeSelector = document.getElementById("time_range");
+        if (timeRangeSelector) {
+            timeRangeSelector.addEventListener("change", function() {
+                updateIframes(this.value);
+            });
+        }
     }
 
     // Fonction pour mettre à jour l'affichage de la dernière connexion
     function updateLastConnectionTime() {
+        // Ne pas mettre à jour pour les hôtes manuels
+        if (isManualHost) return;
+        
         const lastConnectionElement = document.getElementById('last-connection');
         
         if (!lastConnectionElement) return;
@@ -143,9 +163,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Mettre à jour l'affichage toutes les minutes
-    updateLastConnectionTime();
-    setInterval(updateLastConnectionTime, 60000);
+    // Mettre à jour l'affichage toutes les minutes pour les hôtes non manuels
+    if (!isManualHost) {
+        updateLastConnectionTime();
+        setInterval(updateLastConnectionTime, 60000);
+    }
 
     // Gestion du formulaire d'édition client
     const clientDisplay = document.getElementById('client-display');
@@ -258,7 +280,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-        // Gestion du popup Contact
+    // Gestion du popup Contact
     const contactBtn = document.getElementById('contact-btn');
     const contactPopup = document.getElementById('contact-popup');
 
@@ -418,5 +440,4 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Erreur lors de la mise à jour: ' + error.message);
         });
     }
-
 });
