@@ -50,23 +50,46 @@
           <div class="hosts-buttons">
             {% for host_item in client_group.list %}
               {% with host=host_item.0 info=host_item.1 %}
-                <a href="{% url 'host_detail' host=host %}" 
-                   class="host-card {% if info.is_fresh %}host-ok{% else %}host-ko{% endif %}"
-                   data-host="{{ host }}"
-                   data-ip="{{ info.ip }}"
-                   data-client="{{ info.client }}"
-                   data-online="{% if info.is_fresh %}true{% else %}false{% endif %}">
-                  <div class="host-card-header">{{ host }}</div>
-                  <div class="host-card-content">
-                    <div class="host-info-row"><span class="host-info-label">Client:</span> {{ info.client }}</div>
-                    <div class="host-info-row"><span class="host-info-label">IP:</span> {{ info.ip }}</div>
-                    <div class="host-info-row"><span class="host-info-label">En ligne:</span> 
-                      <span class="host-status-indicator {% if info.is_fresh %}online{% else %}offline{% endif %}">
-                        {% if info.is_fresh %}Oui{% else %}Non{% endif %}
-                      </span>
+                <!-- Déterminer la classe CSS basée sur le statut et si c'est un hôte manuel -->
+                {% if info.is_manual %}
+                  {% with card_class="host-manual" %}
+                    <a href="{% url 'host_detail' host=host %}" 
+                       class="host-card {{ card_class }}"
+                       data-host="{{ host }}"
+                       data-ip="{{ info.ip }}"
+                       data-client="{{ info.client }}"
+                       data-online="{% if info.is_fresh %}true{% else %}false{% endif %}"
+                       data-manual="true">
+                      <div class="host-card-header">{{ host }}</div>
+                      <div class="host-card-content">
+                        <div class="host-info-row"><span class="host-info-label">Client:</span> {{ info.client }}</div>
+                        <div class="host-info-row"><span class="host-info-label">IP:</span> {{ info.ip }}</div>
+                        <div class="host-info-row"><span class="host-info-label">État:</span> 
+                          <span class="host-status-indicator manual">Manuel</span>
+                        </div>
+                      </div>
+                    </a>
+                  {% endwith %}
+                {% else %}
+                  <a href="{% url 'host_detail' host=host %}" 
+                     class="host-card {% if info.is_fresh %}host-ok{% else %}host-ko{% endif %}"
+                     data-host="{{ host }}"
+                     data-ip="{{ info.ip }}"
+                     data-client="{{ info.client }}"
+                     data-online="{% if info.is_fresh %}true{% else %}false{% endif %}"
+                     data-manual="false">
+                    <div class="host-card-header">{{ host }}</div>
+                    <div class="host-card-content">
+                      <div class="host-info-row"><span class="host-info-label">Client:</span> {{ info.client }}</div>
+                      <div class="host-info-row"><span class="host-info-label">IP:</span> {{ info.ip }}</div>
+                      <div class="host-info-row"><span class="host-info-label">État:</span> 
+                        <span class="host-status-indicator {% if info.is_fresh %}online{% else %}offline{% endif %}">
+                          {% if info.is_fresh %}Connecté{% else %}Déconnecté{% endif %}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                </a>
+                  </a>
+                {% endif %}
               {% endwith %}
             {% endfor %}
           </div>
@@ -140,12 +163,15 @@ document.addEventListener('DOMContentLoaded', function() {
       const ip = card.getAttribute('data-ip').toLowerCase();
       const client = card.getAttribute('data-client');
       const isOnline = card.getAttribute('data-online') === 'true';
+      const isManual = card.getAttribute('data-manual') === 'true';
       
       // Vérifier si la carte correspond à tous les filtres
       const matchesSearch = host.includes(searchTerm) || 
                            ip.includes(searchTerm) || 
                            client.toLowerCase().includes(searchTerm);
-      const matchesOnline = !onlineFilter || isOnline;
+      
+      // Pour le filtre "Uniquement en ligne", les hôtes manuels sont toujours acceptés
+      const matchesOnline = !onlineFilter || isOnline || isManual;
       const matchesClient = !selectedClient || client === selectedClient;
       
       // Afficher ou masquer la carte

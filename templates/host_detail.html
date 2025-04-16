@@ -37,9 +37,13 @@
         </div>
         <p class="host-status">
             État: 
+            {% if is_manual_host %}
+            <span class="status-manual">Manuel</span>
+            {% else %}
             <span class="{% if is_host_active %}status-active{% else %}status-inactive{% endif %}">
                 {% if is_host_active %}Connecté{% else %}Déconnecté{% endif %}
             </span>
+            {% endif %}
         </p>
     </div>
     
@@ -267,6 +271,7 @@
 <script id="host-data" type="application/json">
     {
         "isHostActive": {{ is_host_active|yesno:"true,false" }},
+        "isManualHost": {{ is_manual_host|yesno:"true,false" }},
         "host": "{{ host }}",
         "lastConnectionTime": "{{ last_connection_timestamp|default:'' }}",
         "grafanaBaseUrl": "http://192.168.20.28:3001/d-solo/dee0o5db5zgn4f"

@@ -280,10 +280,22 @@ def robot_list_view(request):
         if host_tasks and host_tasks.client:
             client = host_tasks.client
 
+        # Vérifier si c'est un hôte manuel
+        is_manual = False
+        try:
+            host_mapping = HostIpMapping.objects.get(host=host)
+            is_manual = host_mapping.is_manual
+            # S'assurer d'utiliser l'IP correcte pour les hôtes manuels
+            if is_manual and host_mapping.ip_address:
+                ip = host_mapping.ip_address
+        except HostIpMapping.DoesNotExist:
+            pass
+
         hosts_status[host] = {
             'is_fresh': is_fresh,
             'client': client,
-            'ip': ip
+            'ip': ip,
+            'is_manual': is_manual  # Nouvel attribut pour les hôtes manuels
         }
 
     return render(request, 'robot_list.html', {
@@ -343,11 +355,21 @@ def host_detail_view(request, host):
     is_host_active = hosts_status.get(host, False)
     last_connection_time = get_last_connection_time(host)
 
+    # Vérifier si c'est un hôte manuel
+    is_manual_host = False
+    try:
+        host_mapping = HostIpMapping.objects.get(host=host)
+        is_manual_host = host_mapping.is_manual
+    except HostIpMapping.DoesNotExist:
+        pass
+
     # Formater le timestamp pour JavaScript
     last_connection_timestamp = last_connection_time.isoformat() if last_connection_time else ""
 
     # Déterminer l'affichage de la dernière connexion
-    if is_host_active:
+    if is_manual_host:
+        last_connection_display = "Hôte configuré manuellement"
+    elif is_host_active:
         last_connection_display = "Connecté actuellement"
     elif last_connection_time:
         now = datetime.now(timezone.utc)
@@ -378,6 +400,15 @@ def host_detail_view(request, host):
     # Récupérer les informations IP
     ip_info = get_host_ip_info()
     host_ip = ip_info.get(host, {}).get('ip', "Non spécifiée")
+
+    # Pour les hôtes manuels, utiliser l'IP stockée dans le modèle
+    if is_manual_host:
+        try:
+            host_mapping = HostIpMapping.objects.get(host=host)
+            if host_mapping.ip_address:
+                host_ip = host_mapping.ip_address
+        except Exception as e:
+            logger.error(f"Erreur lors de la récupération de l'IP pour l'hôte manuel {host}: {e}")
 
     # Assurer que l'hôte est enregistré en base de données
     from auth_app.models import HostIpMapping
@@ -415,7 +446,8 @@ def host_detail_view(request, host):
     # Créer un dictionnaire d'informations pour l'hôte
     host_info = {
         'ip': host_ip,
-        'client': client
+        'client': client,
+        'is_manual': is_manual_host
     }
 
     # Récupérer les informations de contact de l'hôte
@@ -441,6 +473,7 @@ def host_detail_view(request, host):
     context = {
         "host": host,
         "is_host_active": is_host_active,
+        "is_manual_host": is_manual_host,  # Nouveau: ajout de l'info si c'est un hôte manuel
         "last_connection_timestamp": last_connection_timestamp,
         "last_connection_display": last_connection_display,
         "user_is_admin": user_is_admin,
@@ -742,7 +775,7 @@ def add_manual_host(request):
                 )
                 
                 # Créer une tâche SAV pour stocker le client
-                if client:
+                if client and client != 'Non spécifié':
                     ServiceTask.objects.create(
                         host=host_name,
                         title="Configuration initiale",

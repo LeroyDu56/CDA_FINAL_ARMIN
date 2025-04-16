@@ -486,3 +486,35 @@
     padding: 15px;
   }
 }
+
+
+/* Styles pour les hôtes manuels */
+.host-manual .host-card-header {
+  background-color: #FF9800; /* Orange pour les hôtes manuels */
+}
+
+.host-status-indicator.manual {
+  background-color: #FFE0B2; /* Fond orange clair */
+  color: #E65100; /* Texte orange foncé */
+}
+
+/* Style pour l'état Manuel dans host_detail.html */
+.status-manual {
+  background-color: #FFE0B2;
+  color: #E65100;
+  padding: 5px 12px;
+  border-radius: 50px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+}
+
+.status-manual:before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 8px;
+  background-color: #FF9800;
+}
