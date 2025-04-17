@@ -782,35 +782,64 @@ def update_host_info(request):
 @login_required
 @role_required(['Admin', 'Roboticien'])
 def add_manual_host(request):
-    """Vue pour ajouter un hôte manuellement."""
+    """Vue pour ajouter un hôte manuellement avec vérification complète des IP."""
+    import logging
+    logger = logging.getLogger(__name__)
+    
     if request.method == 'POST':
         host_name = request.POST.get('host_name')
         ip_address = request.POST.get('ip_address')
         client = request.POST.get('client', 'Non spécifié')
         
+        logger.info(f"Tentative d'ajout d'un hôte manuel - Nom: {host_name}, IP: {ip_address}, Client: {client}")
+        
         if host_name and ip_address:
             try:
-                # Vérifier si un hôte avec ce nom existe déjà
+                # 1. Vérifier si un hôte avec ce nom existe déjà
                 existing_host_name = HostIpMapping.objects.filter(host=host_name).first()
                 if existing_host_name:
+                    logger.warning(f"Un hôte avec le nom '{host_name}' existe déjà.")
                     messages.error(request, f"Un hôte avec le nom '{host_name}' existe déjà. Veuillez choisir un autre nom.")
                     return redirect('robot_list')
                 
-                # Vérifier si un hôte avec cette IP existe déjà
-                existing_host_ip = HostIpMapping.objects.filter(ip_address=ip_address).first()
-                if existing_host_ip:
-                    messages.error(request, f"Un hôte avec l'IP {ip_address} existe déjà ({existing_host_ip.host}). Veuillez utiliser une autre adresse IP.")
+                # 2. VÉRIFICATION DIRECTE : récupérer TOUTES les adresses IP connues
+                # Cette approche est plus directe que de faire des appels séparés
+                all_known_ips = {}  # {ip: hostname}
+                
+                # 2.1 D'abord depuis la base de données locale
+                all_db_hosts = HostIpMapping.objects.all()
+                for db_host in all_db_hosts:
+                    if db_host.ip_address and db_host.ip_address != "Non spécifiée":
+                        all_known_ips[db_host.ip_address] = db_host.host
+                        logger.info(f"IP connue dans la DB: {db_host.ip_address} pour l'hôte {db_host.host}")
+                
+                # 2.2 Puis depuis les données InfluxDB
+                from utils.influx import get_host_ip_info
+                ip_info = get_host_ip_info()
+                for host, info in ip_info.items():
+                    host_ip = info.get('ip')
+                    if host_ip and host_ip != "Non spécifiée":
+                        all_known_ips[host_ip] = host
+                        logger.info(f"IP connue dans InfluxDB: {host_ip} pour l'hôte {host}")
+                
+                # 2.3 Vérifier si l'IP est déjà connue
+                if ip_address in all_known_ips:
+                    existing_host = all_known_ips[ip_address]
+                    logger.warning(f"L'IP {ip_address} est déjà utilisée par l'hôte {existing_host}")
+                    messages.error(request, f"L'adresse IP {ip_address} est déjà utilisée par l'hôte '{existing_host}'. Veuillez utiliser une autre adresse IP.")
                     return redirect('robot_list')
                 
-                # Créer un nouvel hôte manuel
+                # 3. Si tout est bon, créer un nouvel hôte manuel
+                logger.info(f"Création de l'hôte manuel {host_name} avec l'IP {ip_address}")
                 host_mapping = HostIpMapping.objects.create(
                     host=host_name,
                     ip_address=ip_address,
                     is_manual=True
                 )
                 
-                # Créer une tâche SAV pour stocker le client
+                # 4. Créer une tâche SAV pour stocker le client
                 if client and client != 'Non spécifié':
+                    logger.info(f"Création d'une tâche SAV pour l'hôte {host_name} avec le client {client}")
                     ServiceTask.objects.create(
                         host=host_name,
                         title="Configuration initiale",
@@ -823,8 +852,10 @@ def add_manual_host(request):
                 messages.success(request, f"Hôte {host_name} ajouté avec succès.")
                 
             except Exception as e:
+                logger.exception(f"Erreur lors de l'ajout de l'hôte: {str(e)}")
                 messages.error(request, f"Erreur lors de l'ajout de l'hôte: {str(e)}")
         else:
+            logger.warning("Tentative d'ajout d'un hôte sans nom ou IP")
             messages.error(request, "Veuillez fournir un nom d'hôte et une adresse IP.")
             
     return redirect('robot_list')
