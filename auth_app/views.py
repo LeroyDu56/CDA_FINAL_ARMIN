@@ -896,3 +896,6 @@ def delete_manual_host(request, host):
     
     # Si la méthode n'est pas POST, rediriger vers la page de détail
     return redirect('host_detail', host=host)
+
+
+
