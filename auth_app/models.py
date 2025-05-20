@@ -1,6 +1,7 @@
 import uuid
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from datetime import datetime, timezone, timedelta
 
 # --- Manager pour le modèle utilisateur personnalisé ---
 class CustomUserManager(BaseUserManager):
@@ -27,7 +28,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     user_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(max_length=255, unique=True)
     is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)  # Pour accès à l'interface admin
+    is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(null=True, blank=True)
     first_name = models.CharField(max_length=50, null=True, blank=True)
@@ -162,5 +163,28 @@ class HostContact(models.Model):
     def __str__(self):
         return f"Contact pour {self.host}: {self.contact_name}"
     
-
+class LoginAttempt(models.Model):
+    """Modèle pour suivre les tentatives de connexion échouées."""
+    email = models.EmailField()
+    ip_address = models.CharField(max_length=45, blank=True, null=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.email} - {self.timestamp}"
+    
+    @classmethod
+    def get_recent_attempts(cls, email, ip_address, minutes=5):
+        """Récupère les tentatives récentes pour un email et une IP."""
+        time_threshold = datetime.now(timezone.utc) - timedelta(minutes=minutes)
+        return cls.objects.filter(
+            email=email,
+            ip_address=ip_address,
+            timestamp__gt=time_threshold
+        ).count()
+    
+    @classmethod
+    def clear_old_attempts(cls, minutes=5):
+        """Supprime les tentatives plus anciennes que X minutes."""
+        time_threshold = datetime.now(timezone.utc) - timedelta(minutes=minutes)
+        cls.objects.filter(timestamp__lt=time_threshold).delete()
     

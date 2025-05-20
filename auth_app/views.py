@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.http import HttpResponseForbidden, JsonResponse
 from .forms import LoginForm, RegisterForm
-from .models import User, Role, AuthLog, ServiceTask, HostIpMapping, HostContact
+from .models import User, Role, AuthLog, ServiceTask, HostIpMapping, HostContact, LoginAttempt
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from utils.influx import get_hosts_status
 from .decorators import role_required
@@ -104,24 +104,53 @@ def index(request):
     return render(request, 'index.html', context)
 
 def login_view(request):
-    """Vue de connexion"""
+    """Vue de connexion avec limitation de tentatives."""
     if request.method == "POST":
         form = LoginForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
             password = form.cleaned_data['password']
+            
+            # Récupérer l'adresse IP du client
+            ip_address = request.META.get('REMOTE_ADDR')
+            
+            # Vérifier si l'utilisateur a dépassé le nombre de tentatives autorisées
+            recent_attempts = LoginAttempt.get_recent_attempts(email, ip_address)
+            max_attempts = 5  # Nombre maximum de tentatives
+            
+            if recent_attempts >= max_attempts:
+                messages.error(
+                    request, 
+                    "Compte temporairement verrouillé suite à de multiples tentatives infructueuses. "
+                    "Veuillez réessayer dans 5 minutes."
+                )
+                return redirect('login')
+            
+            # Tentative d'authentification
             user = authenticate(request, email=email, password=password)
+            
             if user is not None:
                 login(request, user)
+                # Enregistrer la connexion réussie
                 AuthLog.objects.create(
                     user=user,
                     action_type="login",
-                    ip_address=request.META.get('REMOTE_ADDR'),
+                    ip_address=ip_address,
                     user_agent=request.META.get('HTTP_USER_AGENT')
                 )
                 messages.success(request, "Connexion réussie !")
+                
+                # Nettoyer les tentatives de connexion pour cet utilisateur et cette IP
+                LoginAttempt.objects.filter(email=email, ip_address=ip_address).delete()
+                
                 return redirect('index')
             else:
+                # Enregistrer la tentative échouée
+                LoginAttempt.objects.create(
+                    email=email,
+                    ip_address=ip_address
+                )
+                
                 messages.error(request, "Identifiants invalides.")
         else:
             messages.error(request, "Formulaire invalide.")
